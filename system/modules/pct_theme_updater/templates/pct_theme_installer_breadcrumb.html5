@@ -1,0 +1,32 @@
+
+<div class="breadcrumb">
+	<table>
+		<thead>
+			<tr>
+				<th class="col1">Status</th>
+				<th class="col2">Job</th>
+				<th class="col3">Beschreibung</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+			<?php foreach($this->items as $item): ?>
+			
+			<tr class="<?= $item['class']; ?>">
+				<td><i></i></td>
+				<td>
+					<?php if($item['isActive']): ?>
+					<span><?= $item['label']; ?></span>
+					<?php else: ?>
+					<span href="<?= $item['href']; ?>" title="<?= $item['title']; ?>"><?= $item['label']; ?></span>
+					<?php endif; ?>
+				</td>
+				<td><?= $item['description']; ?></td>
+			</tr>
+			
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+</div>
+	
+		

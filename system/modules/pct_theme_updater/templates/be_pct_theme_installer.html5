@@ -1,0 +1,412 @@
+<?php
+namespace Contao;
+
+$this->l_status = strtolower($this->status);
+$this->l_step = strtolower($this->step);
+$this->l_status_step = strtolower($this->status).($this->step ? '.'.strtolower($this->step) : '');
+$arrLang = $GLOBALS['TL_LANG']['PCT_THEME_INSTALLER'];
+$arrLangTpl = $GLOBALS['TL_LANG']['PCT_THEME_INSTALLER']['TEMPLATE'];
+$strStatus = $arrLang['STATUS'][$this->l_status];
+$strStep = $arrLang['STATUS'][$this->l_status_step];
+$strTheme = $GLOBALS['PCT_THEME_INSTALLER']['THEMES'][$this->theme]['label'] ?: '';
+if(strlen($strStatus) < 1 && strlen($strStep) > 0)
+{
+	$strStatus = $strStep;
+}
+if(isset($this->license->registration->domains) && !is_array($this->license->registration->domains))
+{
+	$this->license->registration->domains = (array)$this->license->registration->domains;
+}
+?>
+
+<div id="pct_eclipse_installer" class="<?php if(version_compare(VERSION, '3.5','>')): ?>contao-ht35<?php endif; ?>">
+	<div class="tl_formbody">
+		<div id="tl_buttons">
+			<a class="shop_link" href="https://premium-contao-themes.com" target="_blank"><?= $arrLangTpl['button_buy']; ?></a>
+			<?php if($strStatus): ?>
+			<span class="status hidden"><?= sprintf($arrLangTpl['label_status'],$strStatus); ?></span>
+			<?php endif; ?>
+			<a href="<?= $this->resetUrl; ?>" class="tl_button reset header_back" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a>
+		</div>
+		
+		<div class="backend_explanation"><?= sprintf($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step],$strTheme); ?></div>
+
+<!-- ! WELCOME screen -->
+<?php if($this->status == 'WELCOME'): ?>
+		<div class="backend_explanation_additional">
+			<?= $arrLangTpl['welcome_info']; ?>
+		</div>
+		
+		<form action="<?php echo $this->action; ?>" class="tl_form" method="post">
+			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
+			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
+			
+			<div class="tl_formbody_top">
+				<div class="input_wrapper licence_check">
+					<div class="widget field w50 license">
+						<h3><?= $arrLangTpl['input_license'][0]; ?></h3>
+						<input type="text" name="license" value="<?= $this->test_license[0]; ?>" class="tl_text" placeholder="">
+						<p class="tl_help tl_tip"><?= $arrLangTpl['input_license'][1]; ?></p>
+					</div>
+					<div class="widget field w50 email">
+						<h3><?= $arrLangTpl['input_email'][0]; ?></h3>
+						<input type="text" name="email" value="<?= $this->test_license[1]; ?>" class="tl_text" placeholder="">
+						<p class="tl_help tl_tip"><?= $arrLangTpl['input_email'][1]; ?></p>
+					</div>
+				</div>
+			</div>
+			
+			<div class="tl_formbody_middle">
+				<?php if($this->breadcrumb): ?>
+					<?= $this->breadcrumb; ?>
+				<?php endif; ?>
+			</div>
+
+			<div class="tl_formbody_bottom tl_formbody_submit">
+				<div class="tl_submit_container">
+					<input type="submit" name="validate_license" class="tl_submit" value="<?= $arrLangTpl['submit_license']; ?>">
+				</div>
+			</div>
+		</form>
+
+<?php elseif($this->status == 'ERROR'): ?>
+<!-- ! ERROR screen -->
+	
+	<div class="tl_formbody_middle">
+	<?php if($this->errors): ?>
+	<div class="backend_explanation_additional error"><?= implode("\n", $this->errors); ?></div>
+	<?php endif; ?>
+	
+	
+	<p class="tl_message"><a href="<?= StringUtil::decodeEntities( Controller::addToUrl('do=log',true,array('step','status')) ); ?>" title="<?= $arrLangTpl['button_systemlog'][0]; ?>"><?= $arrLangTpl['button_systemlog'][0]; ?></a></p>
+	<p class="tl_message header_back"><a class="reset" href="<?= StringUtil::decodeEntities( Controller::addToUrl('status=reset',true) ); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
+	</div>
+
+<?php elseif( in_array($this->status, array('VERSION_CONFLICT', 'MIN_REQUIREMENT')) ): ?>
+<!-- ! VERSION_CONFLICT screen -->
+	
+	<div class="tl_formbody_middle">
+	<?php if($this->errors): ?>
+	<div class="backend_explanation_additional error"><?= implode("\n", $this->errors); ?></div>
+	<?php endif; ?>
+	
+	</div>
+		
+<?php elseif($this->status == 'SESSION_LOST'): ?>
+<!-- ! SESSION LOST -->
+	
+	<p class="tl_message header_back"><a class="reset" href="<?= StringUtil::decodeEntities( Backend::addToUrl('status=reset',true) ); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
+	
+<?php elseif($this->status == 'CHOOSE_PRODUCT'): ?>
+<!-- ! CHOOSE_PRODUCT  -->
+		
+		<div class="license_information tl_formbody_middle">
+			<!-- wrong domain registration -->
+			<?php if($this->hasRegistrationError): ?>
+			<div class="tl_message">
+				<p class="tl_error"><?= sprintf($arrLangTpl['domainRegistrationError'],$this->license->domain); ?></p>
+			</div>
+			<?php endif; ?>
+			<!-- file information -->
+			<div class="product file"><?= $this->license->file->name; ?></div>	
+		</div>
+		
+		<form id="form_pct_theme_installer" action="<?php echo $this->action; ?>" class="tl_form" method="post">
+			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
+			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
+			<input type="hidden" name="license" value="<?= $this->license->key; ?>">
+			<input type="hidden" name="email" value="<?= $this->license->email; ?>">
+
+			<div class="tl_formbody_top">
+			</div>
+			
+			<?php if($this->license->products): ?>
+			<p class="tl_message"><?= $arrLangTpl['choose_product_info']; ?></p>
+			<div class="select_container">
+				<select name="product" class="tl_select">
+					<option value="-"><?= $arrLangTpl['product_select_blankOption']; ?></option>
+					<?php foreach($this->license->products as $product): ?>
+					<option value="<?= $product->value; ?>"><?= $product->name; ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			
+			<script type="text/javascript">
+			/* <![CDATA[ */
+			
+			/**
+			 * Autosubmit on select change
+			 */
+			window.addEvent('domready', function() 
+			{
+				$$('#form_pct_theme_installer').addEvents(
+				{
+					'change' : function(e) 
+					{
+						//console.log(e.target.value);
+						this.submit();
+					},	
+				});;
+			});
+			
+			
+			/* ]]> */
+			</script>
+			
+			<?php endif; ?>
+			
+			<div class="tl_formbody_middle">
+				<?php if($this->breadcrumb): ?>
+					<?= $this->breadcrumb; ?>
+				<?php endif; ?>
+			</div>
+
+		</form>
+
+<?php elseif($this->status == 'READY'): ?>
+<!-- ! READY  -->
+		
+		<div class="license_information tl_formbody_middle">
+				
+			<?php if($this->errors): ?>
+			<div class="tl_message">
+				<p class="tl_error"><?= implode("\n", $this->errors); ?></p>
+			</div>
+			<?php endif; ?>
+
+			<!-- wrong domain registration -->
+			<?php if($this->hasRegistrationError): ?>
+			<div class="tl_message">
+				<p class="tl_error"><?= sprintf($arrLangTpl['domainRegistrationError'],$this->license->domain); ?></p>
+			</div>
+			<?php endif; ?>
+			
+			<div class="tl_message">
+				<p class="tl_error"><?= $arrLangTpl['dataOverwriteMsg']; ?></p>
+			</div>
+			
+			<!-- file information -->
+			<div class="product file"><?= $this->license->file->name; ?></div>	
+		</div>
+		
+		<div class="tl_formbody_middle">
+			<?php if($this->breadcrumb): ?>
+				<?= $this->breadcrumb; ?>
+			<?php endif; ?>
+		</div>
+		
+		<form id="form_pct_theme_installer" action="<?php echo $this->action; ?>" class="tl_form" method="post">
+			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
+			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
+			
+			<div class="tl_formbody_top">
+			</div>
+			
+			<div class="tl_formbody_bottom tl_formbody_submit">
+				<div class="tl_submit_container">
+					<input type="submit" name="install" class="tl_submit" value="<?= $arrLangTpl['submit_install']; ?>">
+				</div>
+			</div>
+			
+		</form>
+		
+<?php elseif($this->status == 'INSTALLATION' && $this->step == 'UNZIP'): ?>
+<!-- ! INSTALLATION : STEP UNZIP (1): Unzip -->		
+		
+		<div class="tl_formbody_middle">
+			<?php if($this->breadcrumb): ?>
+				<?= $this->breadcrumb; ?>
+			<?php endif; ?>
+		</div>
+		
+		<?php if(!$this->ajax_running): ?>
+		<!-- start the unzip command via ajax -->
+		<script type="text/javascript">
+		/* <![CDATA[ */
+		<?php 
+		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=copy_files') );
+		?>
+		PCT_ThemeInstaller.ajax_infotext = '<?= $arrLang['AJAX_INFO']['unzip']; ?>';
+		PCT_ThemeInstaller.request({'action':'run','redirectTo':'<?= $url; ?>'});
+		/* ]]> */
+		</script>
+		<?php endif; ?>
+		
+<?php elseif($this->status == 'INSTALLATION' && $this->step == 'COPY_FILES'): ?>
+<!-- ! INSTALLATION : STEP UNZIP (2): Copy the files -->		
+		
+		<div class="tl_formbody_middle">
+			<?php if($this->breadcrumb): ?>
+				<?= $this->breadcrumb; ?>
+			<?php endif; ?>
+		</div>
+		
+		<?php if(!$this->ajax_running): ?>
+		<!-- start the file coping via ajax -->
+		<script type="text/javascript">
+		/* <![CDATA[ */
+		<?php 
+		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=clear_cache') );
+		?>
+		PCT_ThemeInstaller.ajax_infotext = '<?= $arrLang['AJAX_INFO']['copy_files']; ?>';
+		PCT_ThemeInstaller.request({'action':'run','redirectTo':'<?= $url; ?>'});
+		/* ]]> */
+		</script>
+		<?php endif; ?>
+		
+<?php elseif($this->status == 'INSTALLATION' && $this->step == 'CLEAR_CACHE'): ?>
+<!-- ! INSTALLATION : STEP : Clear the internal caches -->		
+		
+		<div class="tl_formbody_middle">
+			<?php if($this->breadcrumb): ?>
+				<?= $this->breadcrumb; ?>
+			<?php endif; ?>
+		</div>
+		
+		<?php if(!$this->ajax_running): ?>
+		<script type="text/javascript">
+		/* <![CDATA[ */
+		<?php 
+		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=db_update_modules') );
+		?>
+		PCT_ThemeInstaller.ajax_infotext = '<?= $arrLang['AJAX_INFO']['clear_cache']; ?>';
+		PCT_ThemeInstaller.request({'action':'run','redirectTo':'<?= $url; ?>'});
+		/* ]]> */
+		</script>
+		<?php endif; ?>
+
+<?php elseif($this->status == 'INSTALLATION' && $this->step == 'DB_UPDATE_MODULES'): ?>
+<!-- ! INSTALLATION : STEP DB_UPDATE_MODULES -->		
+		
+		<?php if($this->errors): ?>
+		<p><?= $this->errors; ?></p>
+		<?php else: ?>
+		
+		<p class="hidden">Datenbank ist up to date.</p>
+		
+		<script type="text/javascript">
+		/* <![CDATA[ */
+		<?php 
+		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=sql_template_wait') );
+		?>
+		PCT_ThemeInstaller.ajax_infotext = '<?= $arrLang['AJAX_INFO']['db_update_modules']; ?>';
+		PCT_ThemeInstaller.redirectTo('<?= $url; ?>',3000);
+		/* ]]> */
+		</script>
+		
+		<?php endif; ?>
+		
+		<div class="tl_formbody_middle">
+			<?php if($this->breadcrumb): ?>
+				<?= $this->breadcrumb; ?>
+			<?php endif; ?>
+		</div>
+		
+<?php elseif($this->status == 'INSTALLATION' && $this->step == 'SQL_TEMPLATE_WAIT'): ?>
+<!-- ! INSTALLATION : STEP UNZIP (3.1): SQL_TEMPLATE : WAIT FOR USER -->		
+		
+		
+		<h2><?= $arrLangTpl['sql_template_headline']; ?></h2>
+		<h3 class="tl_info"><?= $arrLangTpl['sql_template_subheadline']; ?></h3>
+		
+		<?php 
+		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=sql_template_import') );
+		?>
+		
+		<p><a class="tl_button tl_submit button import" href="<?= $url; ?>"><?= $arrLangTpl['button_sql_template_import']; ?></a></p>
+			
+		<div class="tl_formbody_middle">
+			<?php if($this->breadcrumb): ?>
+				<?= $this->breadcrumb; ?>
+			<?php endif; ?>
+		</div>
+		
+<?php elseif($this->status == 'INSTALLATION' && $this->step == 'SQL_TEMPLATE_IMPORT'): ?>
+<!-- ! INSTALLATION : STEP UNZIP (3.2): SQL_TEMPLATE : IMPORT -->		
+		
+		<div class="backend_explanation_additional">
+			<?= $arrLangTpl['sql_template_import_info']; ?>
+		</div>
+		
+		<div class="tl_formbody_middle">
+			<?php if($this->breadcrumb): ?>
+				<?= $this->breadcrumb; ?>
+			<?php endif; ?>
+		</div>
+		
+		<?php if(!$this->ajax_running): ?>
+		<!-- start the file coping via ajax -->
+		<script type="text/javascript">
+		/* <![CDATA[ */
+		<?php 
+		#$url = StringUtil::decodeEntities( \Backend::addToUrl('status=completed&theme='.$this->theme) );
+		$url = StringUtil::decodeEntities( Environment::get('base').'contao?completed=1&theme='.$this->theme.'&sql='.$this->sqlFile );
+		if(version_compare(VERSION, '4.4','>='))
+		{
+			$url = StringUtil::decodeEntities( Environment::get('base').'contao/login?completed=1&theme='.$this->theme.'&sql='.$this->sqlFile );
+		}
+		?>
+		PCT_ThemeInstaller.ajax_infotext = '<?= $arrLang['AJAX_INFO']['sql_template_import']; ?>';
+		PCT_ThemeInstaller.request({'action':'run','redirectTo':'<?= $url; ?>'});
+		/* ]]> */
+		</script>
+		<?php endif; ?>
+
+<?php elseif($this->status == 'FILE_EXISTS'): ?>
+<!-- ! FILE_EXISTS :: Waiting to start for the installation to begin-->
+		
+		
+<?php elseif($this->status == 'FILE_NOT_EXISTS'): ?>
+<!-- ! FILE_NOT_EXISTS -->
+		
+		<p class="tl_message header_back"><a class="reset" href="<?= Backend::addToUrl('status=reset',true,array('status','step')); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
+
+<?php elseif($this->status == 'LOADING'): ?>
+<!-- ! LICENSE ACCEPTED... begin loading -->
+		
+		<div class="tl_formbody_middle">
+			<?php if($this->breadcrumb): ?>
+				<?= $this->breadcrumb; ?>
+			<?php endif; ?>
+		</div>
+		
+		<?php if(!$this->ajax_running): ?>
+		<!-- start the loading process via ajax -->
+		<script type="text/javascript">
+		/* <![CDATA[ */
+		
+		<?php 
+		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=unzip') );
+		?>
+		PCT_ThemeInstaller.ajax_infotext = '<?= sprintf($arrLang['AJAX_INFO']['loading'],$this->license->file->name); ?>';
+		PCT_ThemeInstaller.request({'action':'run','redirectTo':'<?= $url; ?>'});
+		/* ]]> */
+		</script>
+		<?php endif; ?>
+
+<?php elseif($this->status == 'NOT_ACCEPTED' || $this->status == 'ACCESS_DENIED'): ?>
+<!-- ! LICENSE NOT_ACCEPTED... -->
+		
+		<p class="backend_explanation_additional error"><?= sprintf($arrLangTpl['access_denied'], $this->license->error); ?></p>
+		<p class="tl_message header_back"><a class="reset" href="<?= Backend::addToUrl('status=reset',true,array('status','step')); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
+
+<?php elseif($this->status == 'NOT_SUPPORTED'): ?>
+<!-- ! THEME NOT SUPPORTED... -->
+		
+		<?php 
+		$themes = array();
+		foreach($GLOBALS['PCT_THEME_INSTALLER']['THEMES'] as $data)
+		{
+			$themes[] = $data['label'];
+		}	
+		?>
+		
+		<p class="backend_explanation_additional error"><?= sprintf($arrLangTpl['not_supported'], implode(', ', $themes)); ?></p>
+		<p class="tl_message header_back"><a class="reset" href="<?= Backend::addToUrl('status=reset',true,array('status','step')); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
+						
+<?php endif; ?>
+
+
+	</div>
+
+</div>

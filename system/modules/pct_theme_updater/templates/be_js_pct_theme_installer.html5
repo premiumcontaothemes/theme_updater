@@ -1,0 +1,179 @@
+<script type='text/javascript'>
+/* <![CDATA[ */
+
+/**
+ * Class
+ * PCT_ThemeInstaller
+ */
+var PCT_ThemeInstaller = 
+{
+	/**
+	 * Contaos request token
+	 * @var string
+	 */
+	request_token : '<?= REQUEST_TOKEN; ?>',
+	
+	/**
+	 * Misc texts
+	 * @var object json
+	 */
+	texts : '<?= $this->texts ?: ''; ?>',
+	
+	/**
+	 * Default delay before redirects
+	 * @var integer
+	 */
+	delay : <?= $this->delay ?: 1000; ?>,
+	
+	/**
+	 * Contao ajax info text
+	 * @var string
+	 */
+	ajax_infotext : '',
+	
+	
+	/**
+	 * Perform ajax requests
+	 * @var object
+	 */
+	request : function(objData)
+	{
+		if(objData == undefined)
+		{
+			objData = {}
+		}
+		
+		var strMethod = 'get';
+		
+		if(objData.REQUEST_TOKEN == undefined && strMethod == 'post')
+		{
+			objData.REQUEST_TOKEN = this.request_token;
+		}
+		
+		if(objData.rt == undefined && strMethod == 'get')
+		{
+			objData.rt = this.request_token;
+		}
+		
+		var blnReload = false;
+		if(objData.reload === true)
+		{
+			blnReload = true;
+		}
+		
+		//var headers = {'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET, POST, PATCH, PUT, DELETE, OPTIONS','Access-Control-Allow-Headers':'Origin, Content-Type, X-Auth-Token'};
+		var objRequest = new Request.Contao(
+		{
+			url:window.location.href,
+			followRedirects:false,
+			method: strMethod,
+			// start
+			onRequest: function()
+			{
+		    	//console.log('Start loading: <?= $this->license->file->name; ?>');
+		    	//console.log('Please wait...');
+		    	// show Contaos loading box
+		    	PCT_ThemeInstaller.showAjaxInfobox( PCT_ThemeInstaller.ajax_infotext );
+		    },
+			// process
+			onProgress: function(event, xhr)
+			{
+		        var loaded = event.loaded, total = event.total;
+			},
+			// request failed
+			onFailure: function(xhr)
+			{
+				console.log('Request failed!');
+				console.log(objData);
+				console.log(xhr);
+			},
+		     // loading successful
+			onSuccess: function(response)
+			{
+				// redirct on success
+				if(objData.redirectTo != undefined && objData.redirectTo != '')
+				{
+					PCT_ThemeInstaller.redirectTo(objData.redirectTo,PCT_ThemeInstaller.delay)
+					return;
+				}
+				
+				// reload on success
+				if(blnReload)
+				{
+					//console.log('File successfully created in: <?= $this->file_target_directory; ?>. You will be redirected...');
+					// reload page
+					location.reload();
+				}
+				else
+				{
+					console.log(response);
+				}
+				
+				// hide Contaos loading box
+				AjaxRequest.hideBox();
+			},
+		});
+		objRequest.get(objData);
+	},
+	
+	
+	/**
+	 * Perform timed redirects
+	 * @var string		The request url
+	 * @var integer		The offset time in ms
+	 */
+	redirectTo : function(strUrl,intDelay)
+	{
+		if(strUrl == undefined || strUrl == '')
+		{
+			return;
+		}
+		
+		if(intDelay == undefined)
+		{
+			intDelay = 0;
+		}
+		
+		if(intDelay >= 50)
+		{
+			// show Contaos loading box
+		    PCT_ThemeInstaller.showAjaxInfobox( PCT_ThemeInstaller.ajax_infotext );
+		}
+		
+		setTimeout(function()
+		{
+			// hide Contaos loading box
+			PCT_ThemeInstaller.hideAjaxInfobox();
+			// log
+			console.log('ThemeInstaller redirect: '+strUrl);
+			// redirect
+			window.location = strUrl;		
+		}, intDelay);
+	},
+	
+	
+	/**
+	 * Show loading box
+	 * @var string	The info text
+	 */
+	showAjaxInfobox : function(strText)
+	{
+		if(strText == undefined)
+		{
+			strText = Contao.lang.loading + ' …';
+		}
+		AjaxRequest.displayBox(strText);
+	},
+	
+	
+	/**
+	 * Hide the loading box
+	 */
+	hideAjaxInfobox : function()
+	{
+		AjaxRequest.hideBox();
+	}
+}
+
+/* ]]> */
+</script>
