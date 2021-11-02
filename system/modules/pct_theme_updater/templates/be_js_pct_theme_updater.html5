@@ -1,11 +1,10 @@
 <script type='text/javascript'>
-/* <![CDATA[ */
 
 /**
  * Class
- * PCT_ThemeInstaller
+ * PCT_ThemeUpdater
  */
-var PCT_ThemeInstaller = 
+var PCT_ThemeUpdater = 
 {
 	/**
 	 * Contaos request token
@@ -73,7 +72,7 @@ var PCT_ThemeInstaller =
 		    	//console.log('Start loading: <?= $this->license->file->name; ?>');
 		    	//console.log('Please wait...');
 		    	// show Contaos loading box
-		    	PCT_ThemeInstaller.showAjaxInfobox( PCT_ThemeInstaller.ajax_infotext );
+		    	PCT_ThemeUpdater.showAjaxInfobox( PCT_ThemeUpdater.ajax_infotext );
 		    },
 			// process
 			onProgress: function(event, xhr)
@@ -93,7 +92,7 @@ var PCT_ThemeInstaller =
 				// redirct on success
 				if(objData.redirectTo != undefined && objData.redirectTo != '')
 				{
-					PCT_ThemeInstaller.redirectTo(objData.redirectTo,PCT_ThemeInstaller.delay)
+					PCT_ThemeUpdater.redirectTo(objData.redirectTo,PCT_ThemeUpdater.delay)
 					return;
 				}
 				
@@ -137,15 +136,15 @@ var PCT_ThemeInstaller =
 		if(intDelay >= 50)
 		{
 			// show Contaos loading box
-		    PCT_ThemeInstaller.showAjaxInfobox( PCT_ThemeInstaller.ajax_infotext );
+		    PCT_ThemeUpdater.showAjaxInfobox( PCT_ThemeUpdater.ajax_infotext );
 		}
 		
 		setTimeout(function()
 		{
 			// hide Contaos loading box
-			PCT_ThemeInstaller.hideAjaxInfobox();
+			PCT_ThemeUpdater.hideAjaxInfobox();
 			// log
-			console.log('ThemeInstaller redirect: '+strUrl);
+			console.log('ThemeUpdater redirect: '+strUrl);
 			// redirect
 			window.location = strUrl;		
 		}, intDelay);
@@ -175,5 +174,4 @@ var PCT_ThemeInstaller =
 	}
 }
 
-/* ]]> */
 </script>

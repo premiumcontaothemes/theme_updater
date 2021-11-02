@@ -32,7 +32,7 @@ use Contao\File;
 use Contao\StringUtil;
 use Contao\Session;
 use Contao\BackendTemplate;
-
+use stdClass;
 
 /**
  * Class file
@@ -80,7 +80,20 @@ class ThemeUpdater extends \Contao\BackendModule
 		$objDatabase = Database::getInstance();
 		$arrErrors = array();
 		$arrParams = array();
-		$objLicense = $arrSession['license'] ? json_decode($arrSession['license']) : null;
+		$objLicense = $arrSession['license'];
+		if( \is_string($arrSession['license']) && empty($arrSession['license']) === false)
+		{
+			$objLicense = \json_decode($arrSession['license']);
+		}
+
+		$objUpdaterLicense = $arrSession['updater_license'];
+		if( \is_string($arrSession['updater_license']) && empty($arrSession['updater_license']) === false)
+		{
+			$objUpdaterLicense = \json_decode($arrSession['updater_license']);
+		}
+
+		$strStatus = Input::get('status');
+		
 		// template vars
 		$strForm = 'pct_theme_updater';
 		$this->Template->status = '';
@@ -101,7 +114,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		$this->Template->value_submit = $GLOBALS['TL_LANG']['pct_theme_updater']['value_submit'];
 		$this->Template->file_written_response = 'file_written';
 		$this->Template->file_target_directory = $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'];
-		$this->Template->ajax_action = 'theme_installer_loading'; // just a simple action status message
+		$this->Template->ajax_action = 'theme_updater_loading'; // just a simple action status message
 		$this->Template->test_license = $GLOBALS['PCT_THEME_UPDATER']['test_license'];
 		$this->Template->license = $objLicense;
 
@@ -111,22 +124,6 @@ class ThemeUpdater extends \Contao\BackendModule
 			$blnAjax = true;
 		}
 		$this->Template->ajax_running = $blnAjax;
-
-
-//! status : SESSION_LOST
-
-
-		if(empty($objLicense) && !in_array(Input::get('status'),array('welcome','reset','error','version_conflict')))
-		{
-			$this->Template->status = 'SESSION_LOST';
-			$this->Template->content = $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['session_lost'];
-			$this->Template->breadcrumb = '';
-
-			// redirect to the beginning
-			$this->redirect( Backend::addToUrl('status=reset') );
-
-			return;
-		}
 
 		// the theme or module name of this lizence
 		$this->strTheme = $objLicense->name ?: $objLicense->file->name ?: '';
@@ -150,6 +147,120 @@ class ThemeUpdater extends \Contao\BackendModule
 		{
 			$this->Template->status = 'VERSION_CONFLICT';
 			$this->Template->errors = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['version_conflict'] ?: 'Please use the LTS version 4.9');
+			return;
+		}
+
+
+//! status: VALIDATION: ENTER UPDATER LICENSE
+
+
+		// check : UPDATER-LICENSE FILE
+		if( $objUpdaterLicense->status != 'OK' && !in_array($strStatus,array('welcome','enter_updater_license','enter_theme_license','reset','error','version_conflict')))
+		{
+			$this->redirect( Backend::addToUrl('status=enter_updater_license',true) );
+		}
+		
+		if( Input::get('status') == 'enter_updater_license' )
+		{
+			$this->Template->status = 'ENTER_UPDATER_LICENSE';
+			$this->Template->breadcrumb = '';
+			
+			$objLicenseFile = new File('var/pct_license_themeupdater');
+			if( $objLicenseFile->exists() )
+			{
+				$strLicense = \trim( $objLicenseFile->getContent() ?: '' );
+			}
+
+			// license has been submitted
+			if(Input::post('license') != '' && Input::post('FORM_SUBMIT') == $strForm)
+			{
+				$strLicense = \trim( Input::post('license') );
+			}
+
+			// validate
+			$arrParams = array
+			(
+				'domain'	=> StringUtil::decodeEntities( Environment::get('host') ),
+				'key'		=> $strLicense,
+			);
+
+			// request license
+			$objUpdaterLicense = \json_decode( $this->request('https://api.premium-contao-themes.com/license_api.php',$arrParams) );
+			
+			// create license file, if not exists
+			if( !$objLicenseFile->exists() && $objUpdaterLicense->status == 'OK' )
+			{
+				$objLicenseFile->write($objUpdaterLicense->key);
+				$objLicenseFile->close();
+			}
+			
+			// redirect to theme license
+			if( $objUpdaterLicense->status == 'OK' )
+			{	
+				// update license session
+				$arrSession['updater_status'] = $objUpdaterLicense->status;
+				$arrSession['updater_license'] = $objUpdaterLicense;
+				$objSession->set($this->strSession,$arrSession);
+
+				$this->redirect( Backend::addToUrl('status=enter_theme_license',true) );
+			}
+
+			return;
+		}
+
+
+//! status: VALIDATION: ENTER THEME LICENSE
+
+
+		if( Input::get('status') == 'enter_theme_license' )
+		{	
+			$this->Template->status = 'ENTER_THEME_LICENSE';
+			$this->Template->breadcrumb = '';
+
+			// check if license file exists and if so, validate the license
+			$objLicenseFile = new File('var/pct_license');
+			if( $objLicenseFile->exists() && $objLicense->status != 'OK' )
+			{
+				$strLicense = \trim( $objLicenseFile->getContent() ?: '' );
+				$arrParams = array
+				(
+					'domain'	=> StringUtil::decodeEntities( Environment::get('host') ),
+					'key'		=> $strLicense,
+				);
+			}
+
+			// check license from formular
+			if(Input::post('license') != '' && Input::post('email') != '' && Input::post('FORM_SUBMIT') == $strForm)
+			{
+				$arrParams = array
+				(
+					'key'   => trim(Input::post('license')),
+					'email'  => trim(Input::post('email')),
+					'domain' => StringUtil::decodeEntities( Environment::get('host') ),
+				);
+
+				if(Input::post('product') != '')
+				{
+					$arrParams['product'] = Input::post('product');
+				}
+			}
+			
+			
+			// request license
+			$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
+			
+			// license is ok
+			if( $objLicense->status == 'OK' )
+			{
+				// store the api response in the session
+				$arrSession['status'] = $objLicense->status;
+				$arrSession['license'] = $objLicense;
+				$objSession->set($this->strSession,$arrSession);
+				
+				// redirect to the beginning
+				$this->redirect( Backend::addToUrl('status=ready',true) );
+			}
+
 			return;
 		}
 
@@ -180,13 +291,14 @@ class ThemeUpdater extends \Contao\BackendModule
 
 
 		// clear the session on status reset
-		if(Input::get('status') == 'reset' || Input::get('status') == '')
+		if(Input::get('status') == 'reset')
 		{
 			$objLicense = null;
-			$objSession->remove('pct_theme_updater');
+			$objLicenseUpdater = null;
+			$objSession->remove( $this->strSession );
 
 			// redirect to the beginning
-			$this->redirect( Backend::addToUrl('status=welcome',true,array('step')) );
+			$this->redirect( Backend::addToUrl('status=enter_updater_license',true,array('step')) );
 		}
 				
 
@@ -553,254 +665,6 @@ class ThemeUpdater extends \Contao\BackendModule
 			
 			return;
 		}
-		//! status: INSTALLATION | STEP 6.0 : SQL_TEMPLATE_IMPORT : Import the sql file
-		else if(Input::get('status') == 'installation' && Input::get('step') == 'sql_template_import')
-		{
-			$this->Template->status = 'INSTALLATION';
-			$this->Template->step = 'SQL_TEMPLATE_IMPORT';
-			
-			// get the template by contao version
-			$strTemplate = $GLOBALS['pct_theme_updater']['THEMES'][$this->strTheme]['sql_templates'][VERSION];
-			
-			if(empty($strTemplate))
-			{
-				$this->Template->error = $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['sql_not_found'];
-				return;
-			}
-			// create a tmp copy
-			$strTmpTemplate = 'tmp_'.$strTemplate;
-			$strOrigTemplate = $strTemplate;
-			$blnIsCustomCatalog = (boolean)$GLOBALS['pct_theme_updater']['THEMES'][$this->strTheme]['isCustomCatalog'];
-			
-			if( $blnIsCustomCatalog === false && \file_exists(TL_ROOT.'/templates/'.$strOrigTemplate) )
-			{
-				if(Files::getInstance()->copy('templates/'.$strTemplate,'templates/tmp_'.$strTemplate))
-				{
-					$file = fopen(TL_ROOT.'/templates/tmp_'.$strTemplate,'r');
-
-					$str = '';
-					while(!feof($file))
-					{
-						$line = fgets($file);
-						if(strlen(strpos($line, 'INSERT INTO `tl_user`')) > 0)
-						{
-							continue;
-						}
-
-						$str .= $line;
-					}
-					fclose($file);
-					unset($file);
-
-					// fetch tl_user information
-					$objUsers = $objDatabase->prepare("SELECT * FROM tl_user")->execute();
-					while($objUsers->next())
-					{
-						$str .= $objDatabase->prepare("INSERT INTO `tl_user` %s")->set( $objUsers->row() )->__get('query') . "\n";
-					}
-
-					$objFile = new File('templates/tmp_'.$strTemplate);
-					$objFile->write($str);
-					$objFile->close();
-
-					unset($str);
-
-					$strTemplate = $strTmpTemplate;
-				}
-			}
-			
-			$this->Template->sqlFile = $strOrigTemplate;
-			
-			// @author Leo Feyer
-			$objDatabase->query("SET AUTOCOMMIT = 0");
-
-			// Eclipse + CustomCatalog sqls
-			$strZipFolder = $GLOBALS['pct_theme_updater']['THEMES'][$this->strTheme]['zip_folder'];
-			$strFileCC = TL_ROOT.'/'.$GLOBALS['pct_theme_updater']['tmpFolder'].'/'.$strZipFolder.'/'.$strTemplate;
-			if(Input::get('action') == 'run' && $blnIsCustomCatalog === true && file_exists($strFileCC))
-			{
-				$skipTables = array('tl_user','tl_user_group','tl_member','tl_member_group','tl_session','tl_repository_installs','tl_repository_instfiles','tl_undo','tl_log','tl_version');
-				
-				$objFile = fopen($strFileCC,'r');
-				
-				// find multiline CREATE, ALTER statements
-				$create_sql = array();
-				$alter_sql = array();
-				if($objFile)
-				{
-					$create_table = '';
-					$alter_table = '';
-
-					while(!feof($objFile))
-					{
-						$line = fgets($objFile);
-
-						// CREATE
-						if(strpos($line, 'CREATE TABLE') !== false)
-						{
-							if(preg_match('/`(.*?)\`/', $line,$result))
-							{
-								$create_table = $result[1];
-							}
-						}
-						// ALTER
-						if(strpos($line, 'ALTER TABLE') !== false)
-						{
-							if(preg_match('/`(.*?)\`/', $line,$result))
-							{
-								$alter_table = $result[1];
-							}
-						}
-
-						if(strlen($create_table) > 0)
-						{
-							$create_sql[$create_table] .= trim($line);
-						}
-
-						if(strlen($alter_table) > 0)
-						{
-							$alter_sql[$alter_table] .= trim($line);
-						}
-
-						if(strpos($line, 'CHARSET=utf8') !== false && strlen($create_table) > 0)
-						{
-							$create_table = '';
-						}
-						if(strpos($line, ';') !== false && strlen($alter_table) > 0)
-						{
-							$alter_table = '';
-						}
-					}
-					fclose($objFile);
-					unset($create_table);
-					unset($alter_table);
-				}
-				
-				try
-				{
-					// DROP tables that will be created anyways
-					foreach(array_keys($create_sql) as $table)
-					{
-						if($objDatabase->tableExists($table,null,true) === true && !in_array($table, $skipTables))
-						{
-							$objDatabase->query('DROP TABLE '.$table);
-						}
-					}
-
-					// CREATE tables
-					foreach($create_sql as $table => $query)
-					{
-						if($objDatabase->tableExists($table,null,true) === false && !in_array($table, $skipTables))
-						{
-							$objDatabase->query($query);
-						}
-					}
-
-					// ALTER tables
-					foreach($alter_sql as $table => $query)
-					{
-						if($objDatabase->tableExists($table,null,true) === false || in_array($table, $skipTables))
-						{
-							continue;
-						}
-
-						foreach(array_filter(explode(';', $query)) as $q)
-						{
-							$objDatabase->query($q.';');
-						}
-					}
-					unset($create_sql);
-					unset($alter_sql);
-
-					// TRUNCATE and INSERT
-					$sql = preg_grep('/^INSERT /', file($strFileCC) );
-
-					// TRUNCATE and INSERT
-					$truncated = array();
-					foreach($sql as $query)
-					{
-						if(preg_match('/`(.*?)\`/', $query,$result))
-						{
-							if($objDatabase->tableExists( $result[1],null,true ) === true && !in_array($result[1], $truncated) && !in_array($result[1], $skipTables))
-							{
-								$objDatabase->query('TRUNCATE TABLE '.$result[1]);
-								$truncated[] = $result[1];
-							}
-
-							if($objDatabase->tableExists( $result[1],null,true ) === true && !in_array($result[1], $skipTables))
-							{
-								$objDatabase->query($query);
-							}
-						}
-					}
-				}
-				catch(\Exception $e)
-				{
-					$arrErrors[] = $e->getMessage();
-				}
-
-				unset($skipTables);
-				unset($objFile);
-				unset($sql);
-				unset($truncated);
-
-				// @author Leo Feyer
-				$objDatabase->query("SET AUTOCOMMIT = 1");
-
-				if(!empty($arrErrors))
-				{
-					System::log('Theme installation finished with errors: '.implode(', ', $arrErrors),__METHOD__,TL_ERROR);
-					
-					// track error				
-					$arrSession['errors'] = $arrErrors;
-					$objSession->set($this->strSession,$arrSession);
-					
-					$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
-				}
-
-				// mark as being completed
-				$_SESSION['pct_theme_updater']['completed'] = true;
-				$_SESSION['pct_theme_updater']['theme'] = $this->strTheme;
-				$_SESSION['pct_theme_updater']['sql'] = $strOrigTemplate;
-				$objSession->set('pct_theme_updater',$_SESSION['pct_theme_updater']);
-				
-				// log out
-				#$objUser = \BackendUser::getInstance();
-				#$objUser->logout();
-
-				// redirect to contao login if not from ajax
-				if(!Environment::get('isAjaxRequest'))
-				{
-					$url = StringUtil::decodeEntities( Environment::get('base').'contao?completed=1&theme='.$this->strTheme.'&sql='.$strOrigTemplate );
-					$this->redirect($url);
-				}
-
-				return;
-			}
-
-			if(Input::get('action') == 'run')
-			{
-				// mark as being completed
-				$_SESSION['pct_theme_updater']['completed'] = true;
-				$_SESSION['pct_theme_updater']['theme'] = $this->strTheme;
-				$_SESSION['pct_theme_updater']['sql'] = $strOrigTemplate;
-				$objSession->set('pct_theme_updater',$_SESSION['pct_theme_updater']);		
-				
-				$objContainer = System::getContainer();
-				$objInstall = $objContainer->get('contao.install_tool');
-				// let the install tool import the sql templates
-				$objInstall->importTemplate($strTemplate);
-				#$objInstall->persistConfig('exampleWebsite', time());
-				
-				if(!Environment::get('isAjaxRequest'))
-				{
-					$url = StringUtil::decodeEntities( Environment::get('base').'contao?completed=1&theme='.$this->strTheme.'&sql='.$strOrigTemplate );
-					$this->redirect($url);
-				}	
-			}
-
-			return;
-		}
 
 
 //! status: FILE_LOADED ... FILE_CREATED
@@ -841,50 +705,6 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 
-//! status: VALIDATION: Fetch the license information
-
-
-		if(Input::post('license') != '' && Input::post('email') != '' && Input::post('FORM_SUBMIT') == $strForm)
-		{
-			$this->Template->status = 'VALIDATION';
-
-			$arrParams = array
-			(
-				'key'   => trim(Input::post('license')),
-				'email'  => trim(Input::post('email')),
-				'domain' => Environment::get('url'),
-			);
-
-			if(Input::post('product') != '')
-			{
-				$arrParams['product'] = Input::post('product');
-			}
-
-			$strRequest = html_entity_decode(  $GLOBALS['pct_theme_updater']['api_url'].'/api.php?'.http_build_query($arrParams) );
-			
-			// validate the license
-			$curl = curl_init();
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($curl, CURLOPT_URL, $strRequest);
-			curl_setopt($curl, CURLOPT_HEADER, 0);
-			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-		
-			$strResponse = curl_exec($curl);
-			curl_close($curl);
-			unset($curl);
-
-			$objLicense = json_decode($strResponse);
-
-			// store the api response in the session
-			$arrSession['status'] = $objLicense->status;
-			$arrSession['license'] = $strResponse;
-			$objSession->set($this->strSession,$arrSession);
-			
-			// flush post and make session active
-			// redirect to the beginning
-			$this->redirect( Backend::addToUrl('status=ready',true) );
-		}
 
 
 //! status: CHOOSE_PRODUCT, waiting for user to choose the product
@@ -950,12 +770,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'LOADING';
 			$this->Template->license = $objLicense;
 			$arrErrors = array();
-
-			// write license file
-			$objFile = new File('var/pct_license');
-			$objFile->write($objLicense->key);
-			$objFile->close();
-		
+			
 			// coming from ajax request
 			if(Input::get('action') == 'run')
 			{
@@ -1017,7 +832,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			// log errors and redirect to error page
 			if(count($arrErrors) > 0)
 			{
-				System::log('Theme Installer: '.implode(', ', $arrErrors),__METHOD__,TL_ERROR);
+				System::log('Theme Updater: '.implode(', ', $arrErrors),__METHOD__,TL_ERROR);
 				
 				// track error				
 				$arrSession['errors'] = $arrErrors;
@@ -1029,6 +844,21 @@ class ThemeUpdater extends \Contao\BackendModule
 			return;
 		}
 
+
+//! status : SESSION_LOST
+
+
+		if( (empty($objLicense) || empty($objLicenseUpdater)) && !in_array(Input::get('status'),array('welcome','enter_updater_license','reset','error','version_conflict')))
+		{
+			$this->Template->status = 'SESSION_LOST';
+			$this->Template->content = $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['session_lost'];
+			$this->Template->breadcrumb = '';
+
+			// redirect to the beginning
+			$this->redirect( Backend::addToUrl('status=reset') );
+
+			return;
+		}
 	}
 
 
@@ -1139,5 +969,30 @@ class ThemeUpdater extends \Contao\BackendModule
 		$objTemplate->items = $arrItems;
 
 		return $objTemplate->parse();
+	}
+
+
+	/**
+	 * Send requests
+	 */
+	// ! send requests
+	protected function request($strUrl,$arrParams=array())
+	{
+		$strRequest = \html_entity_decode($strUrl.(count($arrParams) > 0 ? '?'.\http_build_query($arrParams) : '') );
+		// log
+		#System::log('Sending license request: '.$strRequest,__METHOD__,\TL_GENERAL);
+		// validate the license
+		$curl = \curl_init();
+		\curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		\curl_setopt($curl, CURLOPT_URL, $strRequest);
+		\curl_setopt($curl, CURLOPT_HEADER, 0);
+		\curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+		\curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+	
+		$strResponse = \curl_exec($curl);
+		\curl_close($curl);
+		unset($curl);
+
+		return $strResponse;
 	}
 }

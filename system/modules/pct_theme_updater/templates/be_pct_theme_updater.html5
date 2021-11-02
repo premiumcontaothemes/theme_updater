@@ -4,11 +4,11 @@ namespace Contao;
 $this->l_status = strtolower($this->status);
 $this->l_step = strtolower($this->step);
 $this->l_status_step = strtolower($this->status).($this->step ? '.'.strtolower($this->step) : '');
-$arrLang = $GLOBALS['TL_LANG']['PCT_THEME_INSTALLER'];
-$arrLangTpl = $GLOBALS['TL_LANG']['PCT_THEME_INSTALLER']['TEMPLATE'];
+$arrLang = $GLOBALS['TL_LANG']['PCT_THEME_UPDATER'];
+$arrLangTpl = $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE'];
 $strStatus = $arrLang['STATUS'][$this->l_status];
 $strStep = $arrLang['STATUS'][$this->l_status_step];
-$strTheme = $GLOBALS['PCT_THEME_INSTALLER']['THEMES'][$this->theme]['label'] ?: '';
+$strTheme = $GLOBALS['PCT_THEME_UPDATER']['THEMES'][$this->theme]['label'] ?: '';
 if(strlen($strStatus) < 1 && strlen($strStep) > 0)
 {
 	$strStatus = $strStep;
@@ -22,7 +22,6 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 <div id="pct_eclipse_installer" class="<?php if(version_compare(VERSION, '3.5','>')): ?>contao-ht35<?php endif; ?>">
 	<div class="tl_formbody">
 		<div id="tl_buttons">
-			<a class="shop_link" href="https://premium-contao-themes.com" target="_blank"><?= $arrLangTpl['button_buy']; ?></a>
 			<?php if($strStatus): ?>
 			<span class="status hidden"><?= sprintf($arrLangTpl['label_status'],$strStatus); ?></span>
 			<?php endif; ?>
@@ -31,8 +30,41 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		
 		<div class="backend_explanation"><?= sprintf($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step],$strTheme); ?></div>
 
+<!-- ! UPDATER_LICENSE, WELCOME screen -->
+<?php if($this->status == 'ENTER_UPDATER_LICENSE' || $this->status == 'WELCOME'): ?>
+		<div class="backend_explanation_additional">
+			<?= $arrLangTpl['enter_updater_license_info']; ?>
+		</div>
+		
+		<form action="<?php echo $this->action; ?>" class="tl_form" method="post">
+			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
+			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
+			
+			<div class="tl_formbody_top">
+				<div class="input_wrapper licence_check">
+					<div class="widget field w50 license">
+						<h3><?= $arrLangTpl['input_license'][0]; ?></h3>
+						<input type="text" name="license" value="<?= $this->test_license[0]; ?>" class="tl_text" placeholder="">
+						<p class="tl_help tl_tip"><?= $arrLangTpl['input_license'][1]; ?></p>
+					</div>
+				</div>
+			</div>
+			
+			<div class="tl_formbody_middle">
+				<?php if($this->breadcrumb): ?>
+					<?= $this->breadcrumb; ?>
+				<?php endif; ?>
+			</div>
+
+			<div class="tl_formbody_bottom tl_formbody_submit">
+				<div class="tl_submit_container">
+					<input type="submit" name="validate_updater_license" class="tl_submit" value="<?= $arrLangTpl['submit_license']; ?>">
+				</div>
+			</div>
+		</form>
+
 <!-- ! WELCOME screen -->
-<?php if($this->status == 'WELCOME'): ?>
+<?php elseif($this->status == 'ENTER_THEME_LICENSE'): ?>
 		<div class="backend_explanation_additional">
 			<?= $arrLangTpl['welcome_info']; ?>
 		</div>
@@ -111,7 +143,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			<div class="product file"><?= $this->license->file->name; ?></div>	
 		</div>
 		
-		<form id="form_pct_theme_installer" action="<?php echo $this->action; ?>" class="tl_form" method="post">
+		<form id="form_pct_theme_updater" action="<?php echo $this->action; ?>" class="tl_form" method="post">
 			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
 			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
 			<input type="hidden" name="license" value="<?= $this->license->key; ?>">
@@ -139,7 +171,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			 */
 			window.addEvent('domready', function() 
 			{
-				$$('#form_pct_theme_installer').addEvents(
+				$$('#form_pct_theme_updater').addEvents(
 				{
 					'change' : function(e) 
 					{
@@ -195,7 +227,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			<?php endif; ?>
 		</div>
 		
-		<form id="form_pct_theme_installer" action="<?php echo $this->action; ?>" class="tl_form" method="post">
+		<form id="form_pct_theme_updater" action="<?php echo $this->action; ?>" class="tl_form" method="post">
 			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
 			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
 			
@@ -378,8 +410,8 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		<?php 
 		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=unzip') );
 		?>
-		PCT_ThemeInstaller.ajax_infotext = '<?= sprintf($arrLang['AJAX_INFO']['loading'],$this->license->file->name); ?>';
-		PCT_ThemeInstaller.request({'action':'run','redirectTo':'<?= $url; ?>'});
+		PCT_ThemeUpdater.ajax_infotext = '<?= sprintf($arrLang['AJAX_INFO']['loading'],$this->license->file->name); ?>';
+		PCT_ThemeUpdater.request({'action':'run','redirectTo':'<?= $url; ?>'});
 		/* ]]> */
 		</script>
 		<?php endif; ?>
@@ -395,7 +427,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		
 		<?php 
 		$themes = array();
-		foreach($GLOBALS['PCT_THEME_INSTALLER']['THEMES'] as $data)
+		foreach($GLOBALS['PCT_THEME_UPDATER']['THEMES'] as $data)
 		{
 			$themes[] = $data['label'];
 		}	
