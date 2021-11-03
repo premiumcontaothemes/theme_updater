@@ -22,3 +22,4 @@ $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['sql_not_found'] 		= 'SQL-Instal
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['session_lost'] 		= 'Die Lizenz-Session ist abgelaufen. Bitte starten Sie die Installation erneut.';
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['version_conflict'] 	= 'Bitte nutzen Sie Contaos LTS Versionen: 4.9';
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['memory_limit']			= 'Memory Limit (memory_limit) zu gering (%s). Min.: 512M';
+$GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['changelog_not_found'] 	= 'Aktuelle Theme-Version konnte nicht ermittelt werden. (/templates/changelog.txt nicht gefunden)';		

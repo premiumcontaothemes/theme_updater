@@ -226,6 +226,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				(
 					'domain'	=> StringUtil::decodeEntities( Environment::get('host') ),
 					'key'		=> $strLicense,
+					'email'		=> 'theme_updater',
 				);
 			}
 
@@ -247,8 +248,8 @@ class ThemeUpdater extends \Contao\BackendModule
 			
 			
 			// request license
-			$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
-			
+			$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/api.php',$arrParams) );
+			\var_dump($objLicense);
 			// license is ok
 			if( $objLicense->status == 'OK' )
 			{
@@ -705,8 +706,6 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 
-
-
 //! status: CHOOSE_PRODUCT, waiting for user to choose the product
 
 
@@ -726,7 +725,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 
-//! status: READY, waiting for installation GO
+//! status: READY, waiting for GO
 
 
 		if(Input::get('status') == 'ready' && $objLicense->status == 'OK')
@@ -735,11 +734,12 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->license = $objLicense;
 
 			// min memory_limit
+			$arrErrors = array();
 			if( (int)ini_get('memory_limit') < 512 && (int)ini_get('memory_limit') > 0)
 			{
-				$this->Template->errors = array( \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['memory_limit'],ini_get('memory_limit')) ?: 'Min. required memory_limit is 512M');
+				$arrErrors[] = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['memory_limit'],ini_get('memory_limit')) ?: 'Min. required memory_limit is 512M';
 			}
-
+			
 			// registration error
 			if($objLicense->registration->hasError)
 			{
@@ -752,6 +752,20 @@ class ThemeUpdater extends \Contao\BackendModule
 				$this->redirect( Backend::addToUrl('status=choose_product',true) );
 			}
 
+			// show current theme version from changelog.txt
+			$objChangelog = new File('templates/changelog.txt');
+			if( $objChangelog->exists() )
+			{
+				$c = $objChangelog->getContent();
+				$version = \trim( \str_replace('###','',\substr($c,0,\strpos($c,"\n")) ) );
+				$this->Template->theme_version = $version;
+			}
+			else
+			{
+				$arrErrors[] = $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['changelog_not_found'];
+			}
+			$this->Template->errors = $arrErrors;
+			
 			if(Input::post('install') != '' && Input::post('FORM_SUBMIT') == $strForm)
 			{
 				$this->redirect( Backend::addToUrl('status=loading',true) );
@@ -887,6 +901,7 @@ class ThemeUpdater extends \Contao\BackendModule
 	/**
 	 * Generate a breadcrumb
 	 */
+//! Breadcrumb
 	public function getBreadcrumb($strStatus='',$strStep='')
 	{
 		$strCurrent = $strStatus.($strStep != '' ? '.'.$strStep : '');
@@ -903,7 +918,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			$arrSession['BREADCRUMB']['completed'] = array();
 		}
 
-		foreach($GLOBALS['pct_theme_updater']['breadcrumb_steps'] as $k => $data)
+		foreach($GLOBALS['PCT_THEME_UPDATER']['breadcrumb_steps'] as $k => $data)
 		{
 			$status = strtolower($k);
 
@@ -955,7 +970,7 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			$data['href'] = Controller::addToUrl($data['href'].'&rt='.REQUEST_TOKEN,true,array('step'));
 			$data['class'] = implode(' ', array_unique($class));
-
+			
 			$arrItems[ $k ] = $data;
 
 			$i++;

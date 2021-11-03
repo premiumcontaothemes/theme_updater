@@ -197,9 +197,13 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 
 <?php elseif($this->status == 'READY'): ?>
 <!-- ! READY  -->
+		<?php if( $this->theme_version ): ?>
+		<div class="backend_explanation_additional">
+			<?= sprintf($arrLangTpl['current_theme_version'], $this->theme_version); ?>
+		</div>
+		<?php endif; ?>
 		
 		<div class="license_information tl_formbody_middle">
-				
 			<?php if($this->errors): ?>
 			<div class="tl_message">
 				<p class="tl_error"><?= implode("\n", $this->errors); ?></p>

@@ -78,6 +78,13 @@ $GLOBALS['PCT_THEME_UPDATER']['breadcrumb_steps'] = array
 		'href'	=> 'status=welcome',
 		'protected'	=> true
 	),
+	'VALIDATION_UPDATER' => array
+	(
+		'label'	=> &$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['validation_updater'][0],
+		'description' => &$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['validation_updater'][1],
+		'href'	=> 'status=enter_theme_license',
+		'protected'	=> true
+	),
 	'VALIDATION' => array
 	(
 		'label'	=> &$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['validation'][0],
@@ -136,12 +143,13 @@ $GLOBALS['PCT_THEME_UPDATER']['breadcrumb_steps'] = array
 		'href'	=> 'status=installation&step=sql_template_wait',
 		'protected'	=> true
 	),
-	'INSTALLATION.SQL_TEMPLATE_IMPORT' => array
+	'MANUAL_ADJUSTMENT' => array
 	(
-	   'label'	=> &$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.sql_template_import'][0],
-	   'description' => &$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.sql_template_import'][1],
-	   'href'	=> 'status=installation&step=sql_template_import',
-	)
+		'label'	=> &$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['manual_adjustment'][0],
+		'description' => &$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['manual_adjustment'][1],
+		'href'	=> 'status=manual_adjustment',
+		'isLink'	=> true,
+	),
 );
 
 

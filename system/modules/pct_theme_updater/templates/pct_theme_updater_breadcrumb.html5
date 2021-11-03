@@ -18,7 +18,10 @@
 					<?php if($item['isActive']): ?>
 					<span><?= $item['label']; ?></span>
 					<?php else: ?>
-					<span href="<?= $item['href']; ?>" title="<?= $item['title']; ?>"><?= $item['label']; ?></span>
+					<?php 
+					$elem = $item['isLink'] ? 'a' : 'span';
+					?>
+					<<?= $elem; ?> href="<?= $item['href']; ?>" title="<?= $item['title']; ?>"><?= $item['label']; ?></<?= $elem; ?>>
 					<?php endif; ?>
 				</td>
 				<td><?= $item['description']; ?></td>

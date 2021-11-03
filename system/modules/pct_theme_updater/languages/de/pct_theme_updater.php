@@ -19,7 +19,7 @@
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['label_key'] 			= 'Lizenzschlüssel / Bestellnummer';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['label_email'] 			= 'Bestell-E-Mail-Adresse';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_license'] 		= 'Lizenz abfragen';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_install'] 		= 'Installation starten';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_install'] 		= 'Update starten';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_info'] 	= 'SQL-Template-Datei: %s';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_email'][0] 		= 'Bestell-E-Mail-Adresse';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_email'][1] 		= 'Geben Sie die E-Mail Adresse Ihres Kundenaccounts an.';
@@ -33,7 +33,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['domainRegistrationError'] 
 Die Lizenznehmerdomain weicht von der Installationsdomain ab.<br><br>Bitte updaten Sie Ihre Lizenznehmerdomain in Ihrem <a href="https://login.premium-contao-themes.com/" target="_blank" style="text-decoration:underline;">Kundenbereich</a>.<br>
 Die Lizenzbestimmungen, sowie Antworten auf häufig gestellte Fragen (FAQ) finden Sie <a href="https://www.premium-contao-themes.com/lizenzbestimmungen.html" target="_blank" style="text-decoration:underline;">hier</a>.<br><br>
 Mit dem Beginn der Installation "Installation starten" wird die Installationsanfrage von der Domain (%s) in unserem System gespeichert.';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['dataOverwriteMsg']					= 'Hinweis: Alle Daten werden überschrieben.';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['dataOverwriteMsg']					= 'Hinweis: Bitte sichern Sie Ihre angepassten Templates und Dateien gleicher Namensgebung.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_headline']				= 'Bereit zum Import der Demo-Webseite.'; // title
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_subheadline']			= 'Hinweis: Bestehende Daten gehen verloren. Ihr Benutzerprofil bleibt erhalten.'; // title
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_info']					= 'Der Import der Demo-Webseite (SQL-Template) '; // title
@@ -48,34 +48,35 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['errors'] 							= 'Fehler:
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['not_supported'] 					= 'Der Updater unterstützt die folgenden Produkte: %s';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_buy'] 						= 'Theme EclipseX kaufen';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['enter_updater_license_info'] 		= 'Tragen Sie Ihre Bestellnummer für den Theme-Updater ein.';		
-
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['current_theme_version'] 			= 'Ihre aktuelle Theme-Version ist: %s';		
 
 /**
  * Breadcrumb
  */
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['welcome'][0] 							= 'Start';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['welcome'][1] 							= 'Hier beginnt alles';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['validation'][0]						= 'Lizenzabfrage';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['validation'][0]							= 'Lizenzabfrage';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['validation'][1] 						= "Ihre Lizenz wird überprüft.";
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['accepted'][0] 						= 'Lizenz valide';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['accepted'][1] 						= 'Ihre Lizenz ist validiert.';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['not_accepted'][0] 					= 'Lizenz nicht valide';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['not_accepted'][1] 					= 'Ihre Lizenz konnte nicht validiert werden.';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['accepted'][0] 							= 'Lizenz valide';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['accepted'][1] 							= 'Ihre Lizenz ist validiert.';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['not_accepted'][0] 						= 'Lizenz nicht valide';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['not_accepted'][1] 						= 'Ihre Lizenz konnte nicht validiert werden.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['loading'][0] 							= 'Lade Daten';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['loading'][1] 							= 'Die Daten werden geladen';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.unzip'][0] 				= 'Daten entpacken';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.unzip'][1]				= 'Die Daten werden entpackt'; 
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.unzip'][1]					= 'Die Daten werden entpackt'; 
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.copy_files'][0] 			= 'Daten kopieren';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.copy_files'][1] 			= 'Die Daten werden an Ihre Zielverzeichnisse verteilt.';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.clear_cache'][0] 		= 'Internen Cache leeren';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.clear_cache'][1] 		= 'Contaos internen Cache leeren.';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.clear_cache'][0] 			= 'Internen Cache leeren';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.clear_cache'][1] 			= 'Contaos internen Cache leeren.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.db_update_modules'][0] 	= 'Datenbank-Update';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.db_update_modules'][1] 	= 'Die Datenbank wird mit den Modul-Informationen geupdated.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.sql_template_import'][0]	= 'Installations-Template Import ausführen...';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.sql_template_import'][1]	= 'Installation des SQL-Installations-Templates der Demo-Daten';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.sql_template_wait'][0] 	= 'Installations-Template importieren...';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.sql_template_wait'][1] 	= 'Installations-Template importieren...';
-
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['manual_adjustment'][0] 					= 'Manuelle Anpassungen';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['manual_adjustment'][1] 					= 'Leitfaden für manuelle Anpassungen.';
 
 /**
  * Status
@@ -92,7 +93,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.unzip'] = 'Date
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.copy_files'] = 'Daten kopieren';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.clear_cache'] = 'Internen Cache leeren';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.db_update_modules'] = 'Datenbank-Update';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.sql_template_import'] = 'Import Demo-Daten (SQL)';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['manual_adjustment'] = 'Manuelle Anpassungen';
 
 
 /**
@@ -111,7 +112,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['AJAX_INFO']['db_update_modules'] = 'Da
  * Backend descriptions
  */
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['welcome'] 							= 'Willkommen im Theme-Updater ('.\PCT_THEME_UPDATER.')';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['ready'] 								= 'Bereit zur Installation: <span class="italic">%s</span>';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['ready'] 								= 'Update: <span class="italic">%s</span>';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['loading'] 							= 'Ihre Lizenz ist bestätigt. Die Daten werden geladen...';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['choose_product'] 					= 'Ihre Lizenz beinhalte mehr als ein Produkt.<br>Bitte wählen sie das zu installierende Produkt aus.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['error'] 								= 'Während der Installation sind Fehler aufgetreten.';
