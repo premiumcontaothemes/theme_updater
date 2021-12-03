@@ -32,6 +32,8 @@ use Contao\File;
 use Contao\StringUtil;
 use Contao\Session;
 use Contao\BackendTemplate;
+use Contao\BackendUser;
+use Contao\Date;
 use stdClass;
 
 /**
@@ -79,18 +81,29 @@ class ThemeUpdater extends \Contao\BackendModule
 		
 		$objDatabase = Database::getInstance();
 		$arrErrors = array();
-		$arrParams = array();
-		$objLicense = $arrSession['license'];
-		if( \is_string($arrSession['license']) && empty($arrSession['license']) === false)
-		{
-			$objLicense = \json_decode($arrSession['license']);
-		}
+		$arrParams = array();		
 
+		// updater config
+		$objConfig = \json_decode($this->request($GLOBALS['PCT_THEME_UPDATER']['config_url']));
+		
+		//--
+
+		// updater license
 		$objUpdaterLicense = $arrSession['updater_license'];
 		if( \is_string($arrSession['updater_license']) && empty($arrSession['updater_license']) === false)
 		{
 			$objUpdaterLicense = \json_decode($arrSession['updater_license']);
 		}
+		//--
+
+		// theme license
+		$objLicense = $arrSession['license'];
+		if( \is_string($arrSession['license']) && empty($arrSession['license']) === false)
+		{
+			$objLicense = \json_decode($arrSession['license']);
+		}
+		//--
+
 
 		$strStatus = Input::get('status');
 		
@@ -132,6 +145,8 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->strTheme = basename($objLicense->file->name,'.zip');
 			$this->Template->theme = $this->strTheme;
 		}
+
+		
 
 
 //! status : VERSION_CONFLICT
@@ -358,6 +373,99 @@ class ThemeUpdater extends \Contao\BackendModule
 		if($objLicense->status == 'ACCESS_DENIED' || Input::get('status') == 'access_denied')
 		{
 			$this->Template->status = 'ACCESS_DENIED';
+			
+			return;
+		}
+
+
+//! status : MANUAL ADJUSTMENT
+
+
+		if( $strStatus == 'manual_adjustment' )
+		{
+			$this->Template->status = 'MANUAL_ADJUSTMENT';
+			// form id
+			$strForm = 'theme_updater_tasks';
+			$this->Template->formId = $strForm;
+			// @var object Theme related config object
+			$objUpdate = $objConfig->themes->{\strtolower($this->strTheme)};
+			// @var object The whole updater config object
+			$this->Template->Config = $objConfig;
+			$this->Template->ThemeConfig = $objUpdate;
+			// @var object The current backend user
+			$objUser = BackendUser::getInstance();
+			// @var the tasks to be done
+			$objTasks = $objUpdate->tasks;
+			// check if user has checked any tasks
+			foreach($objTasks as $i => $task)
+			{
+				if( $arrSession['toggle_tasks'][$task->id] == 'true' )
+				{
+					$task->checked = true;	
+				}
+			}
+			
+			// write commitment log
+			if( Input::post('FORM_SUBMIT') == $strForm && Input::post('commit') )
+			{
+				$intTime = time();
+				// @var object
+				$objFile = new File( $GLOBALS['PCT_THEME_UPDATER']['logFile'] );
+				
+				$arrLogs = array();
+				if( $objFile->exists() )
+				{
+					$arrLogs = \json_decode( $objFile->getContent(), true );
+				}
+
+				$strKey = Date::parse('Y-m-d h:i:s',$intTime); 
+				
+				// build log data
+				$arrData = array
+				(
+					'tstamp' 	=> $intTime,
+					'date' 		=> $strKey,
+					'user'	 	=> $objUser->id,
+				);
+			
+				foreach($objTasks as $i => $task)
+				{
+					// task not done yet
+					if( $arrSession['toggle_tasks'][$task->id] != 'true' || empty($arrSession['toggle_tasks'][$task->id]) )
+					{
+						continue;
+					}
+					
+					$tmp = array
+					(
+						'id' => $task->id,
+						'tstamp' => $intTime,
+						'user' => $objUser->id,
+					);
+					if( $arrSession['toggle_tasks'][$task->id] == 'true' )
+					{
+						$tmp['status'] = 'done';
+					}
+
+					$arrData['tasks'][$i] = $tmp;
+					unset($tmp);
+				}
+				// append new log data
+				$arrLogs[$strKey] = $arrData;
+
+				$objFile->write( \json_encode( $arrLogs, \JSON_NUMERIC_CHECK) );
+				$objFile->close();
+
+				unset($arrData);
+				unset($arrLogs);
+
+			}
+
+			#$objSession->remove('tasks');
+
+			$this->Template->tasks = $objTasks;
+			$this->Template->changelog_txt = $objUpdate->changelog;
+			$this->Template->live_version = $objUpdate->version;
 			
 			return;
 		}
@@ -733,13 +841,15 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'READY';
 			$this->Template->license = $objLicense;
 
+			$objUpdate = $objConfig->themes->{\strtolower($this->strTheme)};
+			
 			// min memory_limit
 			$arrErrors = array();
 			if( (int)ini_get('memory_limit') < 512 && (int)ini_get('memory_limit') > 0)
 			{
 				$arrErrors[] = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['memory_limit'],ini_get('memory_limit')) ?: 'Min. required memory_limit is 512M';
 			}
-			
+
 			// registration error
 			if($objLicense->registration->hasError)
 			{
@@ -753,12 +863,12 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 
 			// show current theme version from changelog.txt
+			$strLocalVersion = '???';
 			$objChangelog = new File('templates/changelog.txt');
 			if( $objChangelog->exists() )
 			{
 				$c = $objChangelog->getContent();
-				$version = \trim( \str_replace('###','',\substr($c,0,\strpos($c,"\n")) ) );
-				$this->Template->theme_version = $version;
+				$strLocalVersion = \trim( \str_replace('###','',\substr($c,0,\strpos($c,"\n")) ) );
 			}
 			else
 			{
@@ -766,6 +876,13 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 			$this->Template->errors = $arrErrors;
 			
+			$this->Template->local_version = $strLocalVersion ;
+			$this->Template->live_version = $objUpdate->version;
+			$this->Template->changelog_txt = $objUpdate->changelog;
+			
+			$objDate = new Date($objUpdate->release,'Y-m-d');
+			$this->Template->release_date = \Contao\Date::parse('d.m.Y',$objDate->tstamp);
+
 			if(Input::post('install') != '' && Input::post('FORM_SUBMIT') == $strForm)
 			{
 				$this->redirect( Backend::addToUrl('status=loading',true) );

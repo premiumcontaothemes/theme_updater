@@ -21,12 +21,15 @@ define('PCT_THEME_UPDATER_PATH','system/modules/pct_theme_updater');
  * Globals
  */
 $GLOBALS['PCT_THEME_UPDATER']['api_url'] = 'https://api.premium-contao-themes.com';
+$GLOBALS['PCT_THEME_UPDATER']['config_url'] = 'https://update.premium-contao-themes.com/updater.json';
 $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'] = 'system/tmp/pct_theme_updater';
+$GLOBALS['PCT_THEME_UPDATER']['logFile'] = 'var/pct_themeupdater_log.json';
 
 if(!isset($GLOBALS['PCT_THEME_UPDATER']['test_license']))
 {
 	$GLOBALS['PCT_THEME_UPDATER']['test_license'] = array();
 }
+
 
 $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX'] = array
 (
@@ -162,6 +165,7 @@ $GLOBALS['BE_MOD']['system']['pct_theme_updater'] = array
 	'callback'    	=> 'PCT\ThemeUpdater',
 	'icon'	 		=> PCT_THEME_INSTALLER_PATH.'/assets/img/icon.jpg',
 	'stylesheet' 	=> PCT_THEME_INSTALLER_PATH.'/assets/css/be_styles.css',
+	'tables'		=> array('tl_module'), // just for faking Contao in Ajax requests
 );
 
 /**
@@ -169,3 +173,4 @@ $GLOBALS['BE_MOD']['system']['pct_theme_updater'] = array
  */
 $GLOBALS['TL_HOOKS']['parseTemplate'][] = array('PCT\ThemeUpdater\SystemCallbacks','injectScripts');
 $GLOBALS['TL_HOOKS']['initializeSystem'][] = array('PCT\ThemeUpdater\SystemCallbacks','installationCompletedStatus');
+$GLOBALS['TL_HOOKS']['executePostActions'][] = array('PCT\ThemeUpdater\SystemCallbacks','executePostActionsCallback');

@@ -19,7 +19,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 }
 ?>
 
-<div id="pct_eclipse_installer" class="<?php if(version_compare(VERSION, '3.5','>')): ?>contao-ht35<?php endif; ?>">
+<div id="pct_eclipse_installer" class="<?= \strtolower($this->status); ?>">
 	<div class="tl_formbody">
 		<div id="tl_buttons">
 			<?php if($strStatus): ?>
@@ -197,11 +197,23 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 
 <?php elseif($this->status == 'READY'): ?>
 <!-- ! READY  -->
-		<?php if( $this->theme_version ): ?>
+		
 		<div class="backend_explanation_additional">
-			<?= sprintf($arrLangTpl['current_theme_version'], $this->theme_version); ?>
+		<table>
+			<tr class="tl_blue">
+				<td>Installierte Version:</td>
+				<td><?= $this->local_version; ?></td>
+			<tr>
+			<tr class="tl_green">
+				<td>Update für Version:</td>
+				<td><?= $this->live_version; ?>, Datum der Veröffentlichung: <?= $this->release_date; ?></td>
+			<tr>
+			<tr>
+				<td><a href="<?= $this->changelog_txt; ?>" title="Siehe Changelog.txt" target="_blank">Siehe Changelog.txt</a></td>
+			</tr>
+		</table>
+		
 		</div>
-		<?php endif; ?>
 		
 		<div class="license_information tl_formbody_middle">
 			<?php if($this->errors): ?>
@@ -245,7 +257,77 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			</div>
 			
 		</form>
+
+<?php elseif($this->status == 'MANUAL_ADJUSTMENT'): ?>
+<!-- ! MANUAL_ADJUSTMENT -->		
+
+		<div class="backend_explanation_additional">
+		<table>
+			<tr class="tl_green">
+				<td>Manuelle Update-Schritte für Version:</td>
+				<td><?= $this->live_version; ?></td>
+			<tr>
+			<tr>
+				<td><a href="<?= $this->changelog_txt; ?>" title="Siehe Changelog.txt" target="_blank">Siehe Changelog.txt</a></td>
+			</tr>
+		</table>
+		</div>
+
+		<form id="form_pct_theme_updater" action="<?= $this->action; ?>" class="tl_form" method="post">
+			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
+			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
+			<input type="hidden" name="action" value="toggle_tasks">
+		<div class="content">
+			<table>
+				<thead>
+					<tr class="row">
+						<th class="task"><?= $arrLangTpl['manual_table']['head']['task']; ?></th>
+						<th class="description"><?= $arrLangTpl['manual_table']['head']['description']; ?></th>
+						<th class="iframe"><?= $arrLangTpl['manual_table']['head']['iframe']; ?></th>
+						<th class="status"><?= $arrLangTpl['manual_table']['head']['status']; ?></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach($this->tasks as $i => $task): ?>
+				<?php 
+				$arrClass = array('row','task','row_'.$i);
+				if( $task->mandatory ) { $arrClass[] = 'mandatory'; }
+				($i%2 == 0 ? $arrClass[] = 'even' : $arrClass[] = 'odd');
+				($i == 0 ? $arrClass[] = 'first' : '');
+				($i == count($arrOptions) - 1 ? $arrClass[] = 'last' : '');
+				?>
+				<tr class="<?= \implode(' ',$arrClass); ?>">
+					<td class="title"><?= $task->title; ?></td>
+					<td class="description"><?= $task->description; ?></td>
+					<td class="iframe"><a href="<?= $task->iframe; ?>" title="Siehe Dokumentation <?= $task->title; ?>" target="_blank">Dokumentation...</a></td>
+					<td class="status"><input type="checkbox" name="tasks[<?= $i; ?>]" <?php if($task->checked): ?>checked<?php endif; ?> class="checkbox<?= ($task->mandatory ? ' mandatory' : ''); ?>" value="<?= $task->id; ?>"></td>
+				</tr>
+				<?php endforeach; ?>	
+				</tbody>
+			</table>
+			
+			<script type="text/javascript">
+			var objParams = {};
+			jQuery.each(jQuery('form#form_pct_theme_updater').serializeArray(),function(i,v)
+			{
+				objParams[v.name] = v.value;
+			});
+			jQuery('form#form_pct_theme_updater .task .checkbox').on('change',function(e)
+			{
+				objParams.task = this.value
+				objParams.checked = jQuery(this).prop('checked');
+				PCT_ThemeUpdater.request({'method':'post','data':jQuery.param(objParams)});
+			});
+			
+			</script>
+
+
+			<input type="submit" class="tl_submit" name="commit" value="Fertig">
+
+		</form>
 		
+		</div>
+
 <?php elseif($this->status == 'INSTALLATION' && $this->step == 'UNZIP'): ?>
 <!-- ! INSTALLATION : STEP UNZIP (1): Unzip -->		
 		
@@ -258,13 +340,11 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		<?php if(!$this->ajax_running): ?>
 		<!-- start the unzip command via ajax -->
 		<script type="text/javascript">
-		/* <![CDATA[ */
 		<?php 
 		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=copy_files') );
 		?>
-		PCT_ThemeInstaller.ajax_infotext = '<?= $arrLang['AJAX_INFO']['unzip']; ?>';
-		PCT_ThemeInstaller.request({'action':'run','redirectTo':'<?= $url; ?>'});
-		/* ]]> */
+		PCT_ThemeUpdater.ajax_infotext = '<?= $arrLang['AJAX_INFO']['unzip']; ?>';
+		PCT_ThemeUpdater.request({'action':'run','redirectTo':'<?= $url; ?>'});
 		</script>
 		<?php endif; ?>
 		
@@ -280,13 +360,11 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		<?php if(!$this->ajax_running): ?>
 		<!-- start the file coping via ajax -->
 		<script type="text/javascript">
-		/* <![CDATA[ */
 		<?php 
 		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=clear_cache') );
 		?>
-		PCT_ThemeInstaller.ajax_infotext = '<?= $arrLang['AJAX_INFO']['copy_files']; ?>';
-		PCT_ThemeInstaller.request({'action':'run','redirectTo':'<?= $url; ?>'});
-		/* ]]> */
+		PCT_ThemeUpdater.ajax_infotext = '<?= $arrLang['AJAX_INFO']['copy_files']; ?>';
+		PCT_ThemeUpdater.request({'action':'run','redirectTo':'<?= $url; ?>'});
 		</script>
 		<?php endif; ?>
 		
@@ -301,13 +379,11 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		
 		<?php if(!$this->ajax_running): ?>
 		<script type="text/javascript">
-		/* <![CDATA[ */
 		<?php 
 		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=db_update_modules') );
 		?>
-		PCT_ThemeInstaller.ajax_infotext = '<?= $arrLang['AJAX_INFO']['clear_cache']; ?>';
-		PCT_ThemeInstaller.request({'action':'run','redirectTo':'<?= $url; ?>'});
-		/* ]]> */
+		PCT_ThemeUpdater.ajax_infotext = '<?= $arrLang['AJAX_INFO']['clear_cache']; ?>';
+		PCT_ThemeUpdater.request({'action':'run','redirectTo':'<?= $url; ?>'});
 		</script>
 		<?php endif; ?>
 
@@ -321,13 +397,11 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		<p class="hidden">Datenbank ist up to date.</p>
 		
 		<script type="text/javascript">
-		/* <![CDATA[ */
 		<?php 
 		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=sql_template_wait') );
 		?>
-		PCT_ThemeInstaller.ajax_infotext = '<?= $arrLang['AJAX_INFO']['db_update_modules']; ?>';
-		PCT_ThemeInstaller.redirectTo('<?= $url; ?>',3000);
-		/* ]]> */
+		PCT_ThemeUpdater.ajax_infotext = '<?= $arrLang['AJAX_INFO']['db_update_modules']; ?>';
+		PCT_ThemeUpdater.redirectTo('<?= $url; ?>',3000);
 		</script>
 		
 		<?php endif; ?>
@@ -373,7 +447,6 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		<?php if(!$this->ajax_running): ?>
 		<!-- start the file coping via ajax -->
 		<script type="text/javascript">
-		/* <![CDATA[ */
 		<?php 
 		#$url = StringUtil::decodeEntities( \Backend::addToUrl('status=completed&theme='.$this->theme) );
 		$url = StringUtil::decodeEntities( Environment::get('base').'contao?completed=1&theme='.$this->theme.'&sql='.$this->sqlFile );
@@ -382,9 +455,8 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			$url = StringUtil::decodeEntities( Environment::get('base').'contao/login?completed=1&theme='.$this->theme.'&sql='.$this->sqlFile );
 		}
 		?>
-		PCT_ThemeInstaller.ajax_infotext = '<?= $arrLang['AJAX_INFO']['sql_template_import']; ?>';
-		PCT_ThemeInstaller.request({'action':'run','redirectTo':'<?= $url; ?>'});
-		/* ]]> */
+		PCT_ThemeUpdater.ajax_infotext = '<?= $arrLang['AJAX_INFO']['sql_template_import']; ?>';
+		PCT_ThemeUpdater.request({'action':'run','redirectTo':'<?= $url; ?>'});
 		</script>
 		<?php endif; ?>
 
@@ -440,7 +512,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		<p class="backend_explanation_additional error"><?= sprintf($arrLangTpl['not_supported'], implode(', ', $themes)); ?></p>
 		<p class="tl_message header_back"><a class="reset" href="<?= Backend::addToUrl('status=reset',true,array('status','step')); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
 						
-<?php endif; ?>
+		<?php endif; ?>
 
 
 	</div>

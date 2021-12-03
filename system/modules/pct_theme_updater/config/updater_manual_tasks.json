@@ -1,0 +1,41 @@
+{
+	"name": "Theme Updater",
+	"min_client_version":"1.0.0",
+	"themes":
+	[
+		{
+			"eclipsex": 
+			[
+				{
+					"name": "EclipseX",
+					"version": "3.0.9",
+					"release": "5.11.2021",
+					"contao": "4.9.22",
+					"doc": "https://help.premium-contao-themes.com/contao-installieren-contao-installer.html",
+					"forum": "https://forum.premium-contao-themes.com/forum/themes/eclipse-x/16830-updates-eclipse-x-liste-aller-updates?p=23734#post23734",
+					"tasks": 
+					[
+						{
+							"id": "task_1",
+							"title": "Aufgabe 1",
+							"description": "Beschreibung der Aufgabe 1",
+							"link": "https://forum.premium-contao-themes.com/forum/themes/eclipse-x/16830-updates-eclipse-x-liste-aller-updates?p=23734#post23734",
+							"iframe": "https://update.premium-contao-themes.com/eclipsex/aufgabe1.html",
+							"mandatory": true
+						},
+						{
+							"id": "task_1",
+							"title": "Aufgabe 2",
+							"description": "Beschreibung der Aufgabe 2",
+							"link": "https://forum.premium-contao-themes.com/forum/themes/eclipse-x/16830-updates-eclipse-x-liste-aller-updates?p=23734#post23734",
+							"iframe": "https://update.premium-contao-themes.com/eclipsex/aufgabe2.html",
+							"mandatory": false
+						}
+					]
+				}
+			]
+		}
+	]
+
+
+}

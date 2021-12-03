@@ -48,7 +48,10 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['errors'] 							= 'Fehler:
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['not_supported'] 					= 'Der Updater unterstützt die folgenden Produkte: %s';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_buy'] 						= 'Theme EclipseX kaufen';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['enter_updater_license_info'] 		= 'Tragen Sie Ihre Bestellnummer für den Theme-Updater ein.';		
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['current_theme_version'] 			= 'Ihre aktuelle Theme-Version ist: %s';		
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['task']		= 'Aufgabe';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['description'] = 'Beschreibung';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['status']		= 'Erledigt';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['iframe']		= 'Dokumentation';
 
 /**
  * Breadcrumb
@@ -127,4 +130,5 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.db
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sql_template_wait'] 	= 'Die Demo-Webseite (Installations-Template) ist bereit installiert zu werden.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sql_template_import'] 	= 'Das Installations-Template wird importiert.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['version_conflict'] 					= 'Versionskonflikt';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['manual_adjustment'] 					= 'Manuelle Anpassungen';
 

@@ -27,6 +27,8 @@ use Contao\Controller;
 use Contao\Message;
 use Contao\Files;
 use Contao\Session;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
  * Class file
@@ -150,8 +152,32 @@ class SystemCallbacks extends System
 	{
 		if(TL_MODE == 'BE' && $objTemplate->getName() == 'be_main')
 		{
-			$objScripts = new \Contao\BackendTemplate('be_js_pct_theme_installer');
+			$objScripts = new \Contao\BackendTemplate('be_js_pct_theme_updater');
 			$objTemplate->javascripts .= $objScripts->parse();
+		}
+	}
+
+
+	/**
+	 * Handle backend POST ajax requests
+	 * @param mixed $strAction 
+	 * @param mixed $dc 
+	 * 
+	 * called from executePostActions Calback
+	 */
+	public function executePostActionsCallback($strAction)
+	{
+		// store the checked tasks in the session
+		if( $strAction == 'toggle_tasks' )
+		{
+			$objSession = System::getContainer()->get('session');
+			$arrSession = $objSession->get('pct_theme_updater');
+			$arrSession[$strAction][Input::post('task')] = Input::post('checked');
+			if( Input::post('checked') == 'false' )
+			{
+				unset($arrSession[$strAction][Input::post('task')]);
+			}
+			$objSession->set('pct_theme_updater',$arrSession);
 		}
 	}
 }

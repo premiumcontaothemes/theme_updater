@@ -43,6 +43,10 @@ var PCT_ThemeUpdater =
 		}
 		
 		var strMethod = 'get';
+		if( objData.method != undefined )
+		{
+			strMethod = objData.method;
+		}
 		
 		if(objData.REQUEST_TOKEN == undefined && strMethod == 'post')
 		{
@@ -66,11 +70,10 @@ var PCT_ThemeUpdater =
 			url:window.location.href,
 			followRedirects:false,
 			method: strMethod,
+			data: objData.data,
 			// start
 			onRequest: function()
 			{
-		    	//console.log('Start loading: <?= $this->license->file->name; ?>');
-		    	//console.log('Please wait...');
 		    	// show Contaos loading box
 		    	PCT_ThemeUpdater.showAjaxInfobox( PCT_ThemeUpdater.ajax_infotext );
 		    },
@@ -99,20 +102,19 @@ var PCT_ThemeUpdater =
 				// reload on success
 				if(blnReload)
 				{
-					//console.log('File successfully created in: <?= $this->file_target_directory; ?>. You will be redirected...');
 					// reload page
 					location.reload();
 				}
 				else
 				{
-					console.log(response);
+				//	console.log(response);
 				}
 				
 				// hide Contaos loading box
 				AjaxRequest.hideBox();
 			},
 		});
-		objRequest.get(objData);
+		objRequest.send(objData.data);	
 	},
 	
 	
