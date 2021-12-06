@@ -397,11 +397,30 @@ class ThemeUpdater extends \Contao\BackendModule
 			// @var the tasks to be done
 			$objTasks = $objUpdate->tasks;
 			// check if user has checked any tasks
+			$objLogFile = new File( $GLOBALS['PCT_THEME_UPDATER']['logFile'] );
+			$arrLogs = array();
+			if( $objLogFile->exists() )
+			{
+				$arrLogs = \json_decode( $objLogFile->getContent(), true );
+			}
+
+			// get the task status from the log file
+			foreach($arrLogs as $log)
+			{
+				foreach($log['tasks'] as $task)
+				{
+					if( $task['status'] == 'done' && empty($arrSession['toggle_tasks']) === true )
+					{
+						$arrSession['toggle_tasks'][ $task['id'] ] = 'true';
+					}
+				}
+			}
+
 			foreach($objTasks as $i => $task)
 			{
 				if( $arrSession['toggle_tasks'][$task->id] == 'true' )
 				{
-					$task->checked = true;	
+					$task->checked = true;
 				}
 			}
 			
@@ -409,15 +428,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			if( Input::post('FORM_SUBMIT') == $strForm && Input::post('commit') )
 			{
 				$intTime = time();
-				// @var object
-				$objFile = new File( $GLOBALS['PCT_THEME_UPDATER']['logFile'] );
 				
-				$arrLogs = array();
-				if( $objFile->exists() )
-				{
-					$arrLogs = \json_decode( $objFile->getContent(), true );
-				}
-
 				$strKey = Date::parse('Y-m-d h:i:s',$intTime); 
 				
 				// build log data
@@ -453,15 +464,13 @@ class ThemeUpdater extends \Contao\BackendModule
 				// append new log data
 				$arrLogs[$strKey] = $arrData;
 
-				$objFile->write( \json_encode( $arrLogs, \JSON_NUMERIC_CHECK) );
-				$objFile->close();
+				$objLogFile->write( \json_encode( $arrLogs, \JSON_NUMERIC_CHECK) );
+				$objLogFile->close();
 
 				unset($arrData);
 				unset($arrLogs);
 
 			}
-
-			#$objSession->remove('tasks');
 
 			$this->Template->tasks = $objTasks;
 			$this->Template->changelog_txt = $objUpdate->changelog;

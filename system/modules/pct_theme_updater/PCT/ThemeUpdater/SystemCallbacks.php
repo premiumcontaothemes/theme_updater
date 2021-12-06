@@ -173,10 +173,6 @@ class SystemCallbacks extends System
 			$objSession = System::getContainer()->get('session');
 			$arrSession = $objSession->get('pct_theme_updater');
 			$arrSession[$strAction][Input::post('task')] = Input::post('checked');
-			if( Input::post('checked') == 'false' )
-			{
-				unset($arrSession[$strAction][Input::post('task')]);
-			}
 			$objSession->set('pct_theme_updater',$arrSession);
 		}
 	}
