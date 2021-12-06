@@ -398,29 +398,40 @@ class ThemeUpdater extends \Contao\BackendModule
 			$objTasks = $objUpdate->tasks;
 			// check if user has checked any tasks
 			$objLogFile = new File( $GLOBALS['PCT_THEME_UPDATER']['logFile'] );
+			
 			$arrLogs = array();
 			if( $objLogFile->exists() )
 			{
-				$arrLogs = \json_decode( $objLogFile->getContent(), true );
+				$arrLogs = \json_decode( $objLogFile->getContent(), true );		
+				// get last log
+				$arrLogs = array( end($arrLogs) );
 			}
 
 			// get the task status from the log file
+			$arrTaskLog = array();
 			foreach($arrLogs as $log)
 			{
+				if( \is_array($log['tasks']) === false )
+				{
+					continue;
+				}
 				foreach($log['tasks'] as $task)
 				{
+					$arrTaskLog[ $task['id'] ] = $task;
 					if( $task['status'] == 'done' && empty($arrSession['toggle_tasks']) === true )
 					{
 						$arrSession['toggle_tasks'][ $task['id'] ] = 'true';
 					}
 				}
 			}
-
+			
 			foreach($objTasks as $i => $task)
 			{
 				if( $arrSession['toggle_tasks'][$task->id] == 'true' )
 				{
 					$task->checked = true;
+					$task->user = $arrTaskLog[ $task->id ]['user'];
+					$task->tstamp = $arrTaskLog[ $task->id ]['tstamp'];
 				}
 			}
 			
@@ -463,13 +474,12 @@ class ThemeUpdater extends \Contao\BackendModule
 				}
 				// append new log data
 				$arrLogs[$strKey] = $arrData;
-
+				// write log file
 				$objLogFile->write( \json_encode( $arrLogs, \JSON_NUMERIC_CHECK) );
 				$objLogFile->close();
 
 				unset($arrData);
 				unset($arrLogs);
-
 			}
 
 			$this->Template->tasks = $objTasks;

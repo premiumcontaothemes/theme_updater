@@ -300,8 +300,15 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 					<td class="title"><?= $task->title; ?></td>
 					<td class="description"><?= $task->description; ?></td>
 					<td class="iframe"><a href="<?= $task->iframe; ?>" title="Siehe Dokumentation <?= $task->title; ?>" target="_blank">Dokumentation...</a></td>
-					<td class="status"><input type="checkbox" name="tasks[<?= $i; ?>]" <?php if($task->checked): ?>checked<?php endif; ?> class="checkbox<?= ($task->mandatory ? ' mandatory' : ''); ?>" value="<?= $task->id; ?>"></td>
-				</tr>
+					<td class="status"><input type="checkbox" name="tasks[<?= $i; ?>]" <?php if($task->checked): ?>checked<?php endif; ?> class="checkbox<?= ($task->mandatory ? ' mandatory' : ''); ?>" value="<?= $task->id; ?>">
+					<?php if($task->checked && $task->user): ?>
+					<ul>
+						<li>Eingereicht von: <?= UserModel::findByPk($task->user)->username; ?></li>
+						<li>Datum: <?= Date::parse('d.m.Y h:i',$task->tstamp); ?></li>
+					</ul>
+					<?php endif; ?>
+					</td>		
+					</tr>
 				<?php endforeach; ?>	
 				</tbody>
 			</table>
