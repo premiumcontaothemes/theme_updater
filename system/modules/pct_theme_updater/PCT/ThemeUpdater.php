@@ -427,6 +427,12 @@ class ThemeUpdater extends \Contao\BackendModule
 			
 			foreach($objTasks as $i => $task)
 			{
+				// skip tasked when current theme version is higher than task version
+				if( isset($task->version) && empty($task->version) === false && \version_compare($task->version, $objUpdate->version,'<=') )
+				{
+					unset($objTasks{$i});
+				}
+					
 				if( $arrSession['toggle_tasks'][$task->id] == 'true' )
 				{
 					$task->checked = true;
@@ -434,7 +440,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					$task->tstamp = $arrTaskLog[ $task->id ]['tstamp'];
 				}
 			}
-			
+
 			// write commitment log
 			if( Input::post('FORM_SUBMIT') == $strForm && Input::post('commit') )
 			{
@@ -482,6 +488,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				unset($arrLogs);
 			}
 
+			
 			$this->Template->tasks = $objTasks;
 			$this->Template->changelog_txt = $objUpdate->changelog;
 			$this->Template->live_version = $objUpdate->version;
