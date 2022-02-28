@@ -279,45 +279,53 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			<input type="hidden" name="action" value="toggle_tasks">
 		<div class="content">
 		<?php foreach($this->tasks as $k => $category): ?>
-		<div id="categorory_<?= $k; ?>">	
-		<p class="title"><?= $category->title; ?></p>
-			<table>
-				<thead>
-					<tr class="row">
-						<th class="task"><?= $arrLangTpl['manual_table']['head']['task']; ?></th>
-						<th class="description"><?= $arrLangTpl['manual_table']['head']['description']; ?></th>
-						<th class="iframe"><?= $arrLangTpl['manual_table']['head']['iframe']; ?></th>
-						<th class="status"><?= $arrLangTpl['manual_table']['head']['status']; ?></th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach($category->tasks as $i => $task): ?>	
-					<?php 
-					$arrClass = array('row','task','row_'.$i);
-					if( $task->mandatory ) { $arrClass[] = 'mandatory'; }
-					($i%2 == 0 ? $arrClass[] = 'even' : $arrClass[] = 'odd');
-					($i == 0 ? $arrClass[] = 'first' : '');
-					($i == count($category->tasks) - 1 ? $arrClass[] = 'last' : '');
-					?>
-					<tr class="<?= \implode(' ',$arrClass); ?>">
-						<td class="title"><?= $task->title; ?></td>
-						<td class="description"><?= $task->description; ?></td>
-						<td class="documentation"><?= $task->documentation; ?></td>
-						<!-- <td class="iframe"><a href="<?= $task->iframe; ?>" title="Siehe Dokumentation <?= $task->title; ?>" target="_blank">Dokumentation...</a></td>-->
-						<td class="status"><input type="checkbox" name="tasks[<?= $i; ?>]" <?php if($task->checked): ?>checked<?php endif; ?> class="checkbox<?= ($task->mandatory ? ' mandatory' : ''); ?>" value="<?= $task->id; ?>">
-						<?php if($task->checked && $task->user): ?>
-						<ul>
-							<li>Eingereicht von: <?= UserModel::findByPk($task->user)->username; ?></li>
-							<li>Datum: <?= Date::parse('d.m.Y h:i',$task->tstamp); ?></li>
-						</ul>
-						<?php endif; ?>
-						</td>		
-						</tr>
-					<?php endforeach; ?>	
-				</tbody>
-			</table>
+		<div id="categorory_<?= $k; ?>" class="category_container">	
+			<div class="toggler">
+				<p class="title"><?= $category->title; ?></p>
 			</div>
-			<?php endforeach; ?>
+			<div class="tasks_container">
+				<?php foreach($category->tasks as $i => $task): ?>	
+				<?php 
+				$arrClass = array('row','row_'.$i);
+				if( $task->mandatory ) { $arrClass[] = 'mandatory'; }
+				($i%2 == 0 ? $arrClass[] = 'even' : $arrClass[] = 'odd');
+				($i == 0 ? $arrClass[] = 'first' : '');
+				($i == count($category->tasks) - 1 ? $arrClass[] = 'last' : '');
+				?>
+				<div class="task <?= implode(' ', $arrClass); ?>">
+					<div class="thead">
+					<table>
+						<thead>
+							<tr class="row">
+								<th class="task"><?= $arrLangTpl['manual_table']['head']['task']; ?></th>
+								<th class="description"><?= $arrLangTpl['manual_table']['head']['description']; ?></th>
+								<th class="status"><?= $arrLangTpl['manual_table']['head']['status']; ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="title"><?= $task->title; ?></td>
+								<td class="description"><?= $task->description; ?></td>
+								<td class="status"><input type="checkbox" name="tasks[<?= $i; ?>]" <?php if($task->checked): ?>checked<?php endif; ?> class="checkbox<?= ($task->mandatory ? ' mandatory' : ''); ?>" value="<?= $task->id; ?>">
+								<?php if($task->checked && $task->user): ?>
+								<ul>
+									<li>Eingereicht von: <?= UserModel::findByPk($task->user)->username; ?></li>
+									<li>Datum: <?= Date::parse('d.m.Y h:i',$task->tstamp); ?></li>
+								</ul>
+								<?php endif; ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+					<div class="tbody">
+					<div class="documentation"><?= $task->documentation; ?></div>
+					</div>
+				</div>
+				<?php endforeach; ?>	
+			</div>				
+		</div>
+		<?php endforeach; ?>
 			
 			<script type="text/javascript">
 			var objParams = {};
@@ -331,6 +339,8 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				objParams.checked = jQuery(this).prop('checked');
 				PCT_ThemeUpdater.request({'method':'post','data':jQuery.param(objParams)});
 			});
+
+			// toggle palettes and tasks
 			
 			</script>
 
