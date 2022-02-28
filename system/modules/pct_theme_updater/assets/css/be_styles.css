@@ -100,4 +100,5 @@
 #categorory_fe_modules {margin-bottom: 35px;}
 
 
-#pct_theme_updater .category_container:not(.open) .tasks_container {display: none;}
+#pct_theme_updater .category.container:not(.open) .tasks_container {display: none;}
+#pct_theme_updater .task.container:not(.open) .tbody {display: none;}
