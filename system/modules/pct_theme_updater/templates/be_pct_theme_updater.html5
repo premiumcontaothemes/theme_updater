@@ -19,7 +19,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 }
 ?>
 
-<div id="pct_eclipse_updater" class="<?= \strtolower($this->status); ?>">
+<div id="pct_theme_updater" class="<?= \strtolower($this->status); ?>">
 	<div class="tl_formbody">
 		<div id="tl_buttons">
 			<?php if($strStatus): ?>
