@@ -99,4 +99,19 @@
 
 #categorory_fe_modules {margin-bottom: 35px;}
 
+#pct_theme_updater .task_columns,
+#pct_theme_updater .task .thead {display: flex;}
+#pct_theme_updater .task_columns .task,
+#pct_theme_updater .task .thead .title {flex: 0 0 10%; padding: 8px 0;}
+#pct_theme_updater .task_columns .description,
+#pct_theme_updater .task .thead .description {flex: 0 0 60%; padding: 8px 0;}
+#pct_theme_updater .task_columns .status,
+#pct_theme_updater .task .thead .status {flex: 0 0 30%; text-align: right; padding: 8px 0;}
+
+#pct_theme_updater .task_columns {font-weight: bold;}
+
+#pct_theme_updater .task .thead {border-top: 1px solid #e9e9e9; border-bottom: 1px solid #e9e9e9;}
+
+#pct_theme_updater .documentation {padding: 45px;}
+
 	
