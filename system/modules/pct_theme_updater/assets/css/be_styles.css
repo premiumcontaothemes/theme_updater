@@ -79,7 +79,7 @@
 #pct_theme_updater .desc_content,
 #pct_theme_updater table.documentation_inside tr td,
 #pct_theme_updater table.documentation_inside tr th {font-size: 12px;}
-#pct_theme_updater table.documentation_inside tr td code {font-size: 10px;}
+#pct_theme_updater table.documentation_inside tr td pre {font-size: 10px;}
 #pct_theme_updater table.documentation_inside.table_third td {width: 33.33%;}
 
 #pct_theme_updater .label_orange {color: #fff; background: #f47c00; border-radius: 3px; padding: 3px 5px; display: inline-block;}
@@ -98,3 +98,5 @@
 #pct_theme_updater p.title {font-size: 1rem; font-weight: bold; background-color: #f6f6f8; padding: 10px;}
 
 #categorory_fe_modules {margin-bottom: 35px;}
+
+	
