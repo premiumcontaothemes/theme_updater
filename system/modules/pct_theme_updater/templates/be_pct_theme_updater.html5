@@ -297,7 +297,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 					if( $task->mandatory ) { $arrClass[] = 'mandatory'; }
 					($i%2 == 0 ? $arrClass[] = 'even' : $arrClass[] = 'odd');
 					($i == 0 ? $arrClass[] = 'first' : '');
-					($i == count($arrOptions) - 1 ? $arrClass[] = 'last' : '');
+					($i == count($category->tasks) - 1 ? $arrClass[] = 'last' : '');
 					?>
 					<tr class="<?= \implode(' ',$arrClass); ?>">
 						<td class="title"><?= $task->title; ?></td>

@@ -436,7 +436,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					// skip tasked when current theme version is higher than task version
 					if( isset($task->version) && empty($task->version) === false && \version_compare($task->version, $objUpdate->version,'<=') )
 					{
-						unset($objSubTasks{$i});
+						unset($objSubTasks[$i]);
 					}
 						
 					if( $arrSession['toggle_tasks'][$task->id] == 'true' )
@@ -458,7 +458,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 
 			// write commitment log
-			if( Input::post('FORM_SUBMIT') == $strForm && Input::post('commit') )
+			if( Input::post('FORM_SUBMIT') == $strForm && Input::post('commit') !== null )
 			{
 				$intTime = time();
 				
@@ -1090,7 +1090,7 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			($i%2 == 0 ? $class[] = 'even' : $class[] = 'odd');
 			($i == 0 ? $class[] = 'first' : '');
-			($i == count($GLOBALS['pct_theme_updater']['breadcrumb_steps']) - 1 ? $class[] = 'last' : '');
+			($i == count($GLOBALS['pct_theme_updater']['breadcrumb_steps'] ?? array() ) - 1 ? $class[] = 'last' : '');
 
 			if(!$data['label'])
 			{
