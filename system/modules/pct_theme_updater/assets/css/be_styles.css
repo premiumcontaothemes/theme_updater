@@ -98,3 +98,6 @@
 #pct_theme_updater p.title {font-size: 1rem; font-weight: bold; background-color: #f6f6f8; padding: 10px;}
 
 #categorory_fe_modules {margin-bottom: 35px;}
+
+
+#pct_theme_updater .category_container:not(.open) .tasks_container {display: none;}
