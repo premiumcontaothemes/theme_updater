@@ -284,6 +284,12 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				<p class="title"><?= $category->title; ?></p>
 			</div>
 			<div class="tasks_container">
+				<div class="task_columns">
+					<div class="task"><?= $arrLangTpl['manual_table']['head']['task']; ?></div>
+					<div class="description"><?= $arrLangTpl['manual_table']['head']['description']; ?></div>
+					<div class="status"><?= $arrLangTpl['manual_table']['head']['status']; ?></div>
+				</div>
+				<div class="task_container">
 				<?php foreach($category->tasks as $i => $task): ?>	
 				<?php 
 				$arrClass = array('row','row_'.$i);
@@ -294,35 +300,23 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				?>
 				<div class="task <?= implode(' ', $arrClass); ?>">
 					<div class="thead">
-					<table>
-						<thead>
-							<tr class="row">
-								<th class="task"><?= $arrLangTpl['manual_table']['head']['task']; ?></th>
-								<th class="description"><?= $arrLangTpl['manual_table']['head']['description']; ?></th>
-								<th class="status"><?= $arrLangTpl['manual_table']['head']['status']; ?></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="title"><?= $task->title; ?></td>
-								<td class="description"><?= $task->description; ?></td>
-								<td class="status"><input type="checkbox" name="tasks[<?= $i; ?>]" <?php if($task->checked): ?>checked<?php endif; ?> class="checkbox<?= ($task->mandatory ? ' mandatory' : ''); ?>" value="<?= $task->id; ?>">
-								<?php if($task->checked && $task->user): ?>
-								<ul>
-									<li>Eingereicht von: <?= UserModel::findByPk($task->user)->username; ?></li>
-									<li>Datum: <?= Date::parse('d.m.Y h:i',$task->tstamp); ?></li>
-								</ul>
-								<?php endif; ?>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+						<div class="title"><?= $task->title; ?></div>
+						<div class="description"><?= $task->description; ?></div>
+						<div class="status"><input type="checkbox" name="tasks[<?= $i; ?>]" <?php if($task->checked): ?>checked<?php endif; ?> class="checkbox<?= ($task->mandatory ? ' mandatory' : ''); ?>" value="<?= $task->id; ?>">
+						<?php if($task->checked && $task->user): ?>
+						<ul>
+							<li>Eingereicht von: <?= UserModel::findByPk($task->user)->username; ?></li>
+							<li>Datum: <?= Date::parse('d.m.Y h:i',$task->tstamp); ?></li>
+						</ul>
+						<?php endif; ?>
+						</div>
 					</div>
 					<div class="tbody">
-					<div class="documentation"><?= $task->documentation; ?></div>
+						<div class="documentation"><?= $task->documentation; ?></div>
 					</div>
 				</div>
-				<?php endforeach; ?>	
+				<?php endforeach; ?>
+				</div>	
 			</div>				
 		</div>
 		<?php endforeach; ?>
@@ -340,8 +334,16 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				PCT_ThemeUpdater.request({'method':'post','data':jQuery.param(objParams)});
 			});
 
-			// toggle palettes and tasks
-			
+			jQuery('#form_pct_theme_updater .category_container:first-child').addClass('open');
+
+			// toggle category palettes
+			jQuery('#form_pct_theme_updater .toggler').click(function()
+			{
+				jQuery(this).toggleClass('open');
+				jQuery(this).parent('.category_container').toggleClass('open');
+			});
+
+
 			</script>
 
 			<div class="tl_formbody_submit">
