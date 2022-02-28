@@ -166,7 +166,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		if(Input::get('status') == 'version_conflict')
 		{
 			$this->Template->status = 'VERSION_CONFLICT';
-			$this->Template->errors = array($GLOBALS['TL_LANG']['XPT']['pct_theme_installer']['version_conflict'] ?: 'Please use the LTS version 4.9');
+			$this->Template->errors = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['version_conflict'] ?: 'Please use the LTS version 4.9');
 			return;
 		}
 
