@@ -147,7 +147,6 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 		
-
 //! status : VERSION_CONFLICT
 
 

@@ -164,8 +164,8 @@ $GLOBALS['PCT_THEME_UPDATER']['breadcrumb_steps'] = array
 $GLOBALS['BE_MOD']['system']['pct_theme_updater'] = array
 (
 	'callback'    	=> 'PCT\ThemeUpdater',
-	'icon'	 		=> PCT_THEME_INSTALLER_PATH.'/assets/img/icon.jpg',
-	'stylesheet' 	=> PCT_THEME_INSTALLER_PATH.'/assets/css/be_styles.css',
+	'icon'	 		=> PCT_THEME_UPDATER_PATH.'/assets/img/icon.jpg',
+	'stylesheet' 	=> PCT_THEME_UPDATER_PATH.'/assets/css/be_styles.css',
 	'tables'		=> array('tl_module'), // just for faking Contao in Ajax requests
 );
 
