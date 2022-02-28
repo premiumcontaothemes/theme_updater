@@ -280,7 +280,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		<div class="content">
 		<?php foreach($this->tasks as $k => $category): ?>
 		<div id="categorory_<?= $k; ?>" class="category container">	
-			<div class="toggler">
+			<div class="thead row toggler">
 				<p class="title"><?= $category->title; ?></p>
 			</div>
 			<div class="tasks_container">
@@ -299,7 +299,8 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				($i == count($category->tasks) - 1 ? $arrClass[] = 'last' : '');
 				?>
 				<div class="task <?= implode(' ', $arrClass); ?> container">
-					<div class="thead toggler">
+					<div class="thead row">
+						<div class="toggler">Klick mich</div>
 						<div class="title"><?= $task->title; ?></div>
 						<div class="description"><?= $task->description; ?></div>
 						<div class="status"><input type="checkbox" name="tasks[<?= $i; ?>]" <?php if($task->checked): ?>checked<?php endif; ?> class="checkbox<?= ($task->mandatory ? ' mandatory' : ''); ?>" value="<?= $task->id; ?>">
@@ -311,7 +312,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 						<?php endif; ?>
 						</div>
 					</div>
-					<div class="tbody">
+					<div class="tbody row">
 						<div class="documentation"><?= $task->documentation; ?></div>
 					</div>
 				</div>
@@ -337,11 +338,21 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			jQuery('#form_pct_theme_updater .category.container:first-child').addClass('open');
 
 			// toggle category palettes
-			jQuery('#form_pct_theme_updater .toggler').click(function()
+			jQuery('#form_pct_theme_updater .category > .toggler').click(function(e)
 			{
+				e.preventDefault();
 				jQuery(this).toggleClass('open');
 				jQuery(this).parent('.container').toggleClass('open');
 			});
+
+			// toggle tasks
+			jQuery('#form_pct_theme_updater .task .toggler').click(function(e)
+			{
+				e.preventDefault();
+				jQuery(this).toggleClass('open');
+				jQuery(this).parent().parent('.container').toggleClass('open');
+			});
+			
 			</script>
 
 			<div class="tl_formbody_submit">
