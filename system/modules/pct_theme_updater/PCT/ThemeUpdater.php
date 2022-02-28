@@ -425,7 +425,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				}
 			}
 			
-
+			// tasks
 			foreach($objTasks as $k => $category)
 			{
 				$category->title = $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['CATEGORIES'][$k] ?? $k;
@@ -453,6 +453,8 @@ class ThemeUpdater extends \Contao\BackendModule
 						$task->documentation = $strTemplate;
 					}
 				}
+				// update the tasks of the category
+				$category->tasks = $objSubTasks;
 			}
 
 			// write commitment log
