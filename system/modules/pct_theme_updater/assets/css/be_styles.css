@@ -109,9 +109,9 @@
 #pct_theme_updater .task .thead .status {flex: 0 0 30%; text-align: right; padding: 8px 0;}
 
 #pct_theme_updater .task_columns {font-weight: bold;}
-
-#pct_theme_updater .task .thead {border-top: 1px solid #e9e9e9; border-bottom: 1px solid #e9e9e9;}
-
+#pct_theme_updater .task .thead {border-top: 1px solid #e9e9e9; border-bottom: 1px solid #e9e9e9; cursor: pointer;}
+#pct_theme_updater .task .thead.open {background: #f8f8f8; color: #589b0e; padding: 0 10px;}
+#pct_theme_updater .task.open .documentation {border-bottom: 2px solid #ddd;}
 #pct_theme_updater .documentation {padding: 45px;}
 
 #pct_theme_updater .category.container:not(.open) .tasks_container {display: none;}
