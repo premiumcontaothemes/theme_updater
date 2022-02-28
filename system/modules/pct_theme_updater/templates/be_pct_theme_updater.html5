@@ -279,7 +279,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			<input type="hidden" name="action" value="toggle_tasks">
 		<div class="content">
 		<?php foreach($this->tasks as $k => $category): ?>
-		<div id="categorory_<?= $k; ?>" class="category_container">	
+		<div id="categorory_<?= $k; ?>" class="category container">	
 			<div class="toggler">
 				<p class="title"><?= $category->title; ?></p>
 			</div>
@@ -298,8 +298,8 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				($i == 0 ? $arrClass[] = 'first' : '');
 				($i == count($category->tasks) - 1 ? $arrClass[] = 'last' : '');
 				?>
-				<div class="task <?= implode(' ', $arrClass); ?>">
-					<div class="thead">
+				<div class="task <?= implode(' ', $arrClass); ?> container">
+					<div class="thead toggler">
 						<div class="title"><?= $task->title; ?></div>
 						<div class="description"><?= $task->description; ?></div>
 						<div class="status"><input type="checkbox" name="tasks[<?= $i; ?>]" <?php if($task->checked): ?>checked<?php endif; ?> class="checkbox<?= ($task->mandatory ? ' mandatory' : ''); ?>" value="<?= $task->id; ?>">
@@ -334,16 +334,14 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				PCT_ThemeUpdater.request({'method':'post','data':jQuery.param(objParams)});
 			});
 
-			jQuery('#form_pct_theme_updater .category_container:first-child').addClass('open');
+			jQuery('#form_pct_theme_updater .category.container:first-child').addClass('open');
 
 			// toggle category palettes
 			jQuery('#form_pct_theme_updater .toggler').click(function()
 			{
 				jQuery(this).toggleClass('open');
-				jQuery(this).parent('.category_container').toggleClass('open');
+				jQuery(this).parent('.container').toggleClass('open');
 			});
-
-
 			</script>
 
 			<div class="tl_formbody_submit">
