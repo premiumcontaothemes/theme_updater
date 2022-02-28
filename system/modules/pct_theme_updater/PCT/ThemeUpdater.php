@@ -148,20 +148,25 @@ class ThemeUpdater extends \Contao\BackendModule
 
 		
 
-
 //! status : VERSION_CONFLICT
 
 
-		// support current LTS 4.9
-		if(Input::get('status') != 'version_conflict' && (version_compare(VERSION, '4.4','<=') || (version_compare(VERSION, '4.5','>=') && version_compare(VERSION, '4.8','<=')) || version_compare(VERSION, '4.9','>')) )
+		$blnAllowed = false;
+		if( \version_compare(VERSION, '4.9','==') || \version_compare(VERSION, '4.13','==') )
+		{
+			$blnAllowed = true;
+		}
+
+		// not supported
+		if(Input::get('status') != 'version_conflict' && $blnAllowed === false)
 		{
 			$this->redirect( Backend::addToUrl('status=version_conflict',true,array('step','action')) );
 		}
-		
+
 		if(Input::get('status') == 'version_conflict')
 		{
 			$this->Template->status = 'VERSION_CONFLICT';
-			$this->Template->errors = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['version_conflict'] ?: 'Please use the LTS version 4.9');
+			$this->Template->errors = array($GLOBALS['TL_LANG']['XPT']['pct_theme_installer']['version_conflict'] ?: 'Please use the LTS version 4.9');
 			return;
 		}
 
