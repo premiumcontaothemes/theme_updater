@@ -425,19 +425,33 @@ class ThemeUpdater extends \Contao\BackendModule
 				}
 			}
 			
-			foreach($objTasks as $i => $task)
+
+			foreach($objTasks as $k => $category)
 			{
-				// skip tasked when current theme version is higher than task version
-				if( isset($task->version) && empty($task->version) === false && \version_compare($task->version, $objUpdate->version,'<=') )
+				$category->title = $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['CATEGORIES'][$k] ?? $k;
+				
+				$objSubTasks = $category->tasks ?? array();
+				foreach($objSubTasks as $i => $task)
 				{
-					unset($objTasks{$i});
-				}
-					
-				if( $arrSession['toggle_tasks'][$task->id] == 'true' )
-				{
-					$task->checked = true;
-					$task->user = $arrTaskLog[ $task->id ]['user'];
-					$task->tstamp = $arrTaskLog[ $task->id ]['tstamp'];
+					// skip tasked when current theme version is higher than task version
+					if( isset($task->version) && empty($task->version) === false && \version_compare($task->version, $objUpdate->version,'<=') )
+					{
+						unset($objSubTasks{$i});
+					}
+						
+					if( $arrSession['toggle_tasks'][$task->id] == 'true' )
+					{
+						$task->checked = true;
+						$task->user = $arrTaskLog[ $task->id ]['user'];
+						$task->tstamp = $arrTaskLog[ $task->id ]['tstamp'];
+					}
+
+					// fetch documentation template
+					if( isset($task->template) && empty($task->template) === false )
+					{
+						$strTemplate = $this->request( $GLOBALS['PCT_THEME_UPDATER']['updater_api_url'], array('template'=>$task->template,'key'=>$objUpdaterLicense->key) );
+						$task->documentation = $strTemplate;
+					}
 				}
 			}
 

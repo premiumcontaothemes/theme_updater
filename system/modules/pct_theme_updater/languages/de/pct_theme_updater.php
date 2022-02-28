@@ -132,3 +132,8 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sq
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['version_conflict'] 					= 'Versionskonflikt';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['manual_adjustment'] 					= 'Manuelle Anpassungen';
 
+/**
+ * Categories
+ */
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['CATEGORIES']['fe_modules'] = 'Frontend-Module';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['CATEGORIES']['layout'] = 'Seitenlayouts';
