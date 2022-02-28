@@ -69,5 +69,32 @@
 	#pct_theme_updater .item.block {width: 100%;}
 }
 
+#pct_theme_updater .content table {width: 100%;}
+#pct_theme_updater .content table tr td {vertical-align: top; padding: 15px 0 15px 0;}
+#pct_theme_updater table.documentation_inside tr td {padding: 7px 0 5px 0;}
 #pct_theme_updater .content table tr:nth-child(even) td {background: #fcfcfe;}
 #pct_theme_updater .content table tr td {border-bottom: 1px solid #e9e9e9;}
+#pct_theme_updater .content table tr td.status,
+#pct_theme_updater .content table tr th.status {text-align: center;}
+#pct_theme_updater .desc_content,
+#pct_theme_updater table.documentation_inside tr td,
+#pct_theme_updater table.documentation_inside tr th {font-size: 12px;}
+#pct_theme_updater table.documentation_inside tr td code {font-size: 10px;}
+#pct_theme_updater table.documentation_inside.table_third td {width: 33.33%;}
+
+#pct_theme_updater .label_orange {color: #fff; background: #f47c00; border-radius: 3px; padding: 3px 5px; display: inline-block;}
+#pct_theme_updater .label_green {background-color: #589b0e; padding: 3px 5px; color: #fff;}
+#pct_theme_updater .label_gray {background-color: #d6d6d6; padding: 3px 5px;}
+#pct_theme_updater .info {background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgZGF0YS1uYW1lPSJMYXllciAxIiBpZD0iTGF5ZXJfMSIgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojN2RjY2ZjO308L3N0eWxlPjwvZGVmcz48dGl0bGUvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTE2LDFBMTUsMTUsMCwxLDAsMzEsMTYsMTUsMTUsMCwwLDAsMTYsMVptMiwyMmEyLDIsMCwwLDEtNCwwVjE2YTIsMiwwLDAsMSw0LDBaTTE2LDEyLjE5QTIuMTksMi4xOSwwLDEsMSwxOC4xOSwxMCwyLjE5LDIuMTksMCwwLDEsMTYsMTIuMTlaIi8+PC9zdmc+")}
+#pct_theme_updater .info {background-repeat: no-repeat; padding-left: 25px; background-size: 16px;}
+#pct_theme_updater p {line-height: 1.5;}
+
+#pct_theme_updater .content table tr td.title {width: 10%;}
+#pct_theme_updater .content table tr td.description {width: 20%; padding-right: 20px;}
+#pct_theme_updater .content table tr td.documentation {width: 70%;}
+
+#pct_theme_updater .content table tr td.documentation > div {padding: 20px; border: 1px solid #ddd;}
+
+#pct_theme_updater p.title {font-size: 1rem; font-weight: bold; background-color: #f6f6f8; padding: 10px;}
+
+#categorory_fe_modules {margin-bottom: 35px;}
