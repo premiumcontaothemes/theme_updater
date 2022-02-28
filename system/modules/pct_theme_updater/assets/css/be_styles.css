@@ -114,4 +114,6 @@
 
 #pct_theme_updater .documentation {padding: 45px;}
 
+#pct_theme_updater .category.container:not(.open) .tasks_container {display: none;}
+#pct_theme_updater .task.container:not(.open) .tbody {display: none;}
 	
