@@ -342,8 +342,6 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				jQuery(this).toggleClass('open');
 				jQuery(this).parent('.container').toggleClass('open');
 			});
-
-
 			</script>
 
 			<div class="tl_formbody_submit">
