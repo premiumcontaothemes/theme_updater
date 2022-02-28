@@ -284,6 +284,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				<p class="title"><?= $category->title; ?></p>
 			</div>
 			<div class="tasks_container">
+				<p class="description"><?= $category->description; ?></p>
 				<div class="task_columns">
 					<div class="task"><?= $arrLangTpl['manual_table']['head']['task']; ?></div>
 					<div class="description"><?= $arrLangTpl['manual_table']['head']['description']; ?></div>
@@ -300,8 +301,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				?>
 				<div class="task <?= implode(' ', $arrClass); ?> container">
 					<div class="thead row">
-						<div class="toggler">Klick mich</div>
-						<div class="title"><?= $task->title; ?></div>
+						<div class="title toggler"><?= $task->title; ?></div>
 						<div class="description"><?= $task->description; ?></div>
 						<div class="status"><input type="checkbox" name="tasks[<?= $i; ?>]" <?php if($task->checked): ?>checked<?php endif; ?> class="checkbox<?= ($task->mandatory ? ' mandatory' : ''); ?>" value="<?= $task->id; ?>">
 						<?php if($task->checked && $task->user): ?>
