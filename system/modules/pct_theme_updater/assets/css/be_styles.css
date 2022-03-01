@@ -71,7 +71,7 @@
 
 #pct_theme_updater .content table {width: 100%;}
 #pct_theme_updater .content table tr td {vertical-align: top; padding: 15px 0 15px 0;}
-#pct_theme_updater table.documentation_inside tr td {padding: 7px 0 5px 0;}
+#pct_theme_updater table.documentation_inside tr td {padding: 7px 5px 5px 0;}
 #pct_theme_updater .content table tr:nth-child(even) td {background: #fcfcfe;}
 #pct_theme_updater .content table tr td {border-bottom: 1px solid #e9e9e9;}
 #pct_theme_updater .content table tr td.status,
@@ -80,7 +80,9 @@
 #pct_theme_updater table.documentation_inside tr td,
 #pct_theme_updater table.documentation_inside tr th {font-size: 12px;}
 #pct_theme_updater table.documentation_inside tr td pre {font-size: 10px;}
-#pct_theme_updater table.documentation_inside.table_third td {width: 33.33%;}
+#pct_theme_updater table.documentation_inside th.t_col1 {width: 25%;}
+#pct_theme_updater table.documentation_inside th.t_col2 {width: 25%;}
+#pct_theme_updater table.documentation_inside th.t_col3 {width: 50%;}
 
 #pct_theme_updater .label_orange {color: #fff; background: #f47c00; border-radius: 3px; padding: 3px 5px; display: inline-block;}
 #pct_theme_updater .label_green {background-color: #589b0e; padding: 3px 5px; color: #fff;}
