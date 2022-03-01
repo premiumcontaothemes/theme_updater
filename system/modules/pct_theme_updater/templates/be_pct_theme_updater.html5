@@ -337,12 +337,14 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			});
 
 			//-- Togglers
-			jQuery('#form_pct_theme_updater .category.container:first-child').addClass('open');
-
+		
 			var togglers = JSON.parse( localStorage.getItem('theme_updater_toggler') );
+			
 			if( togglers == null )
 			{
 				togglers = [];
+				// open first category
+				jQuery('#form_pct_theme_updater .category.container:first-child').addClass('open');
 			}
 			
 			// reopen togglers
