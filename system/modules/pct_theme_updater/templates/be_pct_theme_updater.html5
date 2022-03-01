@@ -323,6 +323,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		<?php endforeach; ?>
 			
 			<script type="text/javascript">
+			// -- Checkboxes
 			var objParams = {};
 			jQuery.each(jQuery('form#form_pct_theme_updater').serializeArray(),function(i,v)
 			{
@@ -335,10 +336,10 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				PCT_ThemeUpdater.request({'method':'post','data':jQuery.param(objParams)});
 			});
 
+			//-- Togglers
 			jQuery('#form_pct_theme_updater .category.container:first-child').addClass('open');
 
 			var togglers = JSON.parse( localStorage.getItem('theme_updater_toggler') );
-			
 			if( togglers == null )
 			{
 				togglers = [];
@@ -347,18 +348,17 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			// reopen togglers
 			jQuery.each(togglers, function(i,k)
 			{
+				var toggler = jQuery('[data-toggler="'+k+'"]');
+				toggler.addClass('open');
+						
 				// task_
-				if( k.indexOf('task_') !== false )
+				if( k.indexOf('task_') == 0 )
 				{
-					var toggler = jQuery('[data-toggler="'+k+'"]');
-					toggler.addClass('open');
 					toggler.parent().parent('.container').addClass('open');
 				}
 				// cat_
-				if( k.indexOf('cat_') !== false )
+				if( k.indexOf('cat_') == 0 )
 				{
-					var toggler = jQuery('[data-toggler="'+k+'"]');
-					toggler.addClass('open');
 					toggler.parent('.container').addClass('open');
 				}
 			});
