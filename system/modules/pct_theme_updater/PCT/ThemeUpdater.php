@@ -408,11 +408,16 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$arrLogs = \json_decode( $objLogFile->getContent(), true );		
 				// get last log
-				$arrLogs = array( end($arrLogs) );
+				if( count($arrLogs) > 1 )
+				{
+					$arrLogs = array( end($arrLogs) );
+				}
 			}
 
 			// get the task status from the log file
 			$arrTaskLog = array();
+			
+			$arrTasksDone = array();
 			foreach($arrLogs as $log)
 			{
 				if( \is_array($log['tasks']) === false )
@@ -422,9 +427,9 @@ class ThemeUpdater extends \Contao\BackendModule
 				foreach($log['tasks'] as $task)
 				{
 					$arrTaskLog[ $task['id'] ] = $task;
-					if( $task['status'] == 'done' && empty($arrSession['toggle_tasks']) === true )
+					if( $task['status'] == 'done')
 					{
-						$arrSession['toggle_tasks'][ $task['id'] ] = 'true';
+						$arrTasksDone[] = $task['id'];
 					}
 				}
 			}
@@ -443,7 +448,7 @@ class ThemeUpdater extends \Contao\BackendModule
 						unset($objSubTasks[$i]);
 					}
 						
-					if( $arrSession['toggle_tasks'][$task->id] == 'true' )
+					if( \in_array($task->id, $arrTasksDone) )
 					{
 						$task->checked = true;
 						$task->user = $arrTaskLog[ $task->id ]['user'];
@@ -475,29 +480,30 @@ class ThemeUpdater extends \Contao\BackendModule
 					'date' 		=> $strKey,
 					'user'	 	=> $objUser->id,
 				);
-			
-				foreach($objTasks as $i => $task)
-				{
-					// task not done yet
-					if( $arrSession['toggle_tasks'][$task->id] != 'true' || empty($arrSession['toggle_tasks'][$task->id]) )
-					{
-						continue;
-					}
-					
-					$tmp = array
-					(
-						'id' => $task->id,
-						'tstamp' => $intTime,
-						'user' => $objUser->id,
-					);
-					if( $arrSession['toggle_tasks'][$task->id] == 'true' )
-					{
-						$tmp['status'] = 'done';
-					}
 
-					$arrData['tasks'][$i] = $tmp;
-					unset($tmp);
+				$arrTasks = Input::post('tasks');
+				
+				foreach($objTasks as $k => $category)
+				{
+					$objSubTasks = $category->tasks ?? array();
+					foreach($objSubTasks as $i => $task)
+					{
+						$tmp = array
+						(
+							'id' => $task->id,
+							'tstamp' => $intTime,
+							'user' => $objUser->id,
+						);
+						if( isset($arrTasks[$task->id]) && empty($arrTasks[$task->id]) === false )
+						{
+							$tmp['status'] = 'done';
+						}
+
+						$arrData['tasks'][$i] = $tmp;
+						unset($tmp);
+					}
 				}
+
 				// append new log data
 				$arrLogs[$strKey] = $arrData;
 				// write log file

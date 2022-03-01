@@ -303,7 +303,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 					<div class="thead row">
 						<div class="title toggler" data-toggler="task_<?= $task->id; ?>"><?= $task->title; ?></div>
 						<div class="description"><?= $task->description; ?></div>
-						<div class="status"><input type="checkbox" name="tasks[<?= $i; ?>]" <?php if($task->checked): ?>checked<?php endif; ?> class="checkbox<?= ($task->mandatory ? ' mandatory' : ''); ?>" value="<?= $task->id; ?>">
+						<div class="status"><input type="checkbox" name="tasks[<?= $task->id; ?>]" <?php if($task->checked): ?>checked<?php endif; ?> class="checkbox<?= ($task->mandatory ? ' mandatory' : ''); ?>" value="<?= $task->id; ?>">
 						<?php if($task->checked && $task->user): ?>
 						<ul>
 							<li>Eingereicht von: <?= UserModel::findByPk($task->user)->username; ?></li>
@@ -329,17 +329,37 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			{
 				objParams[v.name] = v.value;
 			});
+			
+			var checkboxes = [];
+			if( localStorage.getItem('THEME_UPDATER_CHECKED') != null )
+			{
+				checkboxes = JSON.parse(  localStorage.getItem('THEME_UPDATER_CHECKED') );
+				
+				jQuery.each(checkboxes,function(i,k)
+				{
+					jQuery('form#form_pct_theme_updater input[name="'+k+'"]').prop('checked',true);
+				});
+			}
+			
 			jQuery('form#form_pct_theme_updater .task .checkbox').on('change',function(e)
 			{
 				objParams.task = this.value
 				objParams.checked = jQuery(this).prop('checked');
-				PCT_ThemeUpdater.request({'method':'post','data':jQuery.param(objParams)});
+				
+				var id = jQuery(this).attr('name');
+				if( jQuery(this).prop('checked') )
+				{
+					checkboxes.push( id )
+				}
+				else
+				{
+					checkboxes.splice( checkboxes.indexOf(id), 1 );
+				}
+				localStorage.setItem('THEME_UPDATER_CHECKED', JSON.stringify(checkboxes));
 			});
 
 			//-- Togglers
-		
-			var togglers = JSON.parse( localStorage.getItem('theme_updater_toggler') );
-			
+			var togglers = JSON.parse( localStorage.getItem('theme_updater_toggler') );			
 			if( togglers == null )
 			{
 				togglers = [];
