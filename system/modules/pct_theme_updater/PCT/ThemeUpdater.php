@@ -497,6 +497,11 @@ class ThemeUpdater extends \Contao\BackendModule
 						unset($tmp);
 					}
 				}
+				// flag final
+				if( Input::post('done') !== null )
+				{
+					$arData['final'] = 'true';
+				}
 
 				// append new log data
 				$arrLogs[$strKey] = $arrData;
