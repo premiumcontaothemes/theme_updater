@@ -121,7 +121,7 @@
 #pct_theme_updater .category.container:not(.open) .tasks_container {display: none;}
 #pct_theme_updater .task.container:not(.open) .tbody {display: none;}
 
-#pct_theme_updater  .category p.description {color: #fff; background: #f47c00; border-radius: 3px; padding: 3px 5px; display: inline-block; font-size: 0.8rem;}
+#pct_theme_updater .category p.description {color: #fff; background: #f47c00; border-radius: 3px; padding: 3px 5px; display: inline-block; font-size: 0.8rem; margin-left: 25px;}
 
 #pct_theme_updater .task .thead .title {cursor: pointer;}
 #pct_theme_updater .task .thead .title:hover {opacity: 0.8;}
