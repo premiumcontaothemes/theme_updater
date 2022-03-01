@@ -6,6 +6,7 @@ $this->l_step = strtolower($this->step);
 $this->l_status_step = strtolower($this->status).($this->step ? '.'.strtolower($this->step) : '');
 $arrLang = $GLOBALS['TL_LANG']['PCT_THEME_UPDATER'];
 $arrLangTpl = $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE'];
+
 $strStatus = $arrLang['STATUS'][$this->l_status];
 $strStep = $arrLang['STATUS'][$this->l_status_step];
 $strTheme = $GLOBALS['PCT_THEME_UPDATER']['THEMES'][$this->theme]['label'] ?: '';
@@ -112,6 +113,21 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 	
 	<p class="tl_message"><a href="<?= StringUtil::decodeEntities( Controller::addToUrl('do=log',true,array('step','status')) ); ?>" title="<?= $arrLangTpl['button_systemlog'][0]; ?>"><?= $arrLangTpl['button_systemlog'][0]; ?></a></p>
 	<p class="tl_message header_back"><a class="reset" href="<?= StringUtil::decodeEntities( Controller::addToUrl('status=reset',true) ); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
+	</div>
+<?php elseif($this->status == 'DONE'): ?>
+<!-- ! DONE, COMPLETED screen -->
+	
+	<div class="tl_formbody_middle">
+	
+	<script>
+	jQuery(document).ready(function() 
+	{
+		localStorage.removeItem('ThemeUpdater.toggler');
+		localStorage.removeItem('ThemeUpdater.checked');
+	});
+	</script>
+	
+
 	</div>
 
 <?php elseif( in_array($this->status, array('VERSION_CONFLICT', 'MIN_REQUIREMENT')) ): ?>
@@ -330,16 +346,26 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				objParams[v.name] = v.value;
 			});
 			
+			var numberOfTasks = <?= $this->numberOfTasks; ?>;
 			var checkboxes = [];
-			if( localStorage.getItem('THEME_UPDATER_CHECKED') != null )
-			{
-				checkboxes = JSON.parse(  localStorage.getItem('THEME_UPDATER_CHECKED') );
-				
-				jQuery.each(checkboxes,function(i,k)
+			jQuery(document).ready(function() 
+			{	
+				if( localStorage.getItem('ThemeUpdater.checked') != null )
 				{
-					jQuery('form#form_pct_theme_updater input[name="'+k+'"]').prop('checked',true);
-				});
-			}
+					checkboxes = JSON.parse(  localStorage.getItem('ThemeUpdater.checked') );
+					
+					jQuery.each(checkboxes,function(i,k)
+					{
+						jQuery('form#form_pct_theme_updater input[name="'+k+'"]').prop('checked',true);
+					});
+				}
+				
+				// set button to disabled or not
+				if( checkboxes.length >= numberOfTasks )
+				{
+					jQuery('form#form_pct_theme_updater button[name="done"]').prop('disabled',false);
+				}
+			});
 			
 			jQuery('form#form_pct_theme_updater .task .checkbox').on('change',function(e)
 			{
@@ -355,11 +381,21 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				{
 					checkboxes.splice( checkboxes.indexOf(id), 1 );
 				}
-				localStorage.setItem('THEME_UPDATER_CHECKED', JSON.stringify(checkboxes));
-			});
+				localStorage.setItem('ThemeUpdater.checked', JSON.stringify(checkboxes));
 
+				// set button to disabled or not
+				if( checkboxes.length >= numberOfTasks )
+				{
+					jQuery('form#form_pct_theme_updater button[name="done"]').prop('disabled',false);
+				}
+				else
+				{
+					jQuery('form#form_pct_theme_updater button[name="done"]').prop('disabled',true);
+				}
+			});
+			
 			//-- Togglers
-			var togglers = JSON.parse( localStorage.getItem('theme_updater_toggler') );			
+			var togglers = JSON.parse( localStorage.getItem('ThemeUpdater.togglers') );			
 			if( togglers == null )
 			{
 				togglers = [];
@@ -392,7 +428,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				jQuery(this).toggleClass('open');
 				jQuery(this).parent('.container').toggleClass('open');
 
-				jQuery(document).trigger('THEME_UPDATER_TOGGLER',{'toggler':jQuery(this).attr('data-toggler')});
+				jQuery(document).trigger('ThemeUpdater.onToggler',{'toggler':jQuery(this).attr('data-toggler')});
 			});
 
 			// toggle tasks
@@ -402,10 +438,10 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				jQuery(this).toggleClass('open');
 				jQuery(this).parent().parent('.container').toggleClass('open');
 
-				jQuery(document).trigger('THEME_UPDATER_TOGGLER',{'toggler':jQuery(this).attr('data-toggler')});
+				jQuery(document).trigger('ThemeUpdater.onToggler',{'toggler':jQuery(this).attr('data-toggler')});
 			});
 
-			jQuery(document).on('THEME_UPDATER_TOGGLER',function(e,params) 
+			jQuery(document).on('ThemeUpdater.onToggler',function(e,params) 
 			{
 				var id = params.toggler;
 				if( jQuery('[data-toggler="'+id+'"]').hasClass('open') )
@@ -416,14 +452,15 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				{
 					togglers.splice( togglers.indexOf(id), 1 );
 				}
-				localStorage.setItem('theme_updater_toggler', JSON.stringify(togglers) );
+				localStorage.setItem('ThemeUpdater.togglers', JSON.stringify(togglers) );
 			});
 			
 			</script>
 
 			<div class="tl_formbody_submit">
 				<div class="tl_submit_container">
-					<input type="submit" class="tl_submit" name="commit" value="Fertig">
+					<button type="submit" class="tl_submit" name="commit"><?= $arrLangTpl['submit_commit']; ?></button>
+					<button type="submit" class="tl_submit" name="done" disabled><?= $arrLangTpl['submit_done']; ?></button>
 				</div>
 			</div>
 		</form>

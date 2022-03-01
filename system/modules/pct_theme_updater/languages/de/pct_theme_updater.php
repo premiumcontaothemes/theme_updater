@@ -52,6 +52,8 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['ta
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['description'] = 'Beschreibung';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['status']		= 'Erledigt';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['iframe']		= 'Dokumentation';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_commit']						= 'Zwischenstand speichern';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_done']							= 'Update abschließen';
 
 /**
  * Breadcrumb

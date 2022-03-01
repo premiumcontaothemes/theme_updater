@@ -285,23 +285,13 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 	
-//! status : COMPLETED
+//! status : DONE COMPLETED
 
 
-		if(Input::get('status') == 'completed')
+		if(Input::get('status') == 'done')
 		{
-			#$_SESSION['pct_theme_updater']['completed'] = true;
-			#$_SESSION['pct_theme_updater']['license']['name'] = $objLicense->name;
-			#$_SESSION['pct_theme_updater']['sql'] = $strOrigTemplate;
-			// redirect to contao login
-			$url = StringUtil::decodeEntities( Environment::get('base').'contao?installation_completed=1&theme='.Input::get('theme').'&sql='.$_SESSION['pct_theme_updater']['sql']);
-			
-			if( \version_compare(VERSION,'4.9','>=') )
-			{
-				$url = StringUtil::decodeEntities( Environment::get('base').'contao/login?installation_completed=1&theme='.Input::get('theme').'&sql='.$_SESSION['pct_theme_updater']['sql']);
-			}
-			
-			$this->redirect($url);
+			$this->Template->status = 'DONE';
+			$this->Template->breadcrumb = '';
 
 			return;
 		}
@@ -435,6 +425,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 			
 			// tasks
+			$intTasks = 0;
 			foreach($objTasks as $k => $category)
 			{
 				$category->title = $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['CATEGORIES'][$k] ?? $k;
@@ -464,10 +455,13 @@ class ThemeUpdater extends \Contao\BackendModule
 				}
 				// update the tasks of the category
 				$category->tasks = $objSubTasks;
+
+				// count number of tasks
+				$intTasks += count($objSubTasks);			
 			}
 
-			// write commitment log
-			if( Input::post('FORM_SUBMIT') == $strForm && Input::post('commit') !== null )
+			// write log when checking in or when done
+			if( Input::post('FORM_SUBMIT') == $strForm && (Input::post('commit') !== null || Input::post('done') !== null) )
 			{
 				$intTime = time();
 				
@@ -512,10 +506,18 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				unset($arrData);
 				unset($arrLogs);
+
+				// redirect on done
+				if( Input::post('done') !== null )
+				{
+					$this->redirect( Backend::addToUrl('status=done',true,array('step')) );
+				}
+
 			}
 
 			
 			$this->Template->tasks = $objTasks;
+			$this->Template->numberOfTasks = $intTasks;
 			$this->Template->changelog_txt = $objUpdate->changelog;
 			$this->Template->live_version = $objUpdate->version;
 			
