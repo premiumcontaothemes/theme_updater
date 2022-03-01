@@ -280,7 +280,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		<div class="content">
 		<?php foreach($this->tasks as $k => $category): ?>
 		<div id="categorory_<?= $k; ?>" class="category container">	
-			<div class="thead row toggler">
+			<div class="thead row toggler" data-toggler="cat_<?= $k; ?>">
 				<p class="title"><?= $category->title; ?></p>
 			</div>
 			<div class="tasks_container">
@@ -301,7 +301,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				?>
 				<div class="task <?= implode(' ', $arrClass); ?> container">
 					<div class="thead row">
-						<div class="title toggler"><?= $task->title; ?></div>
+						<div class="title toggler" data-toggler="task_<?= $task->id; ?>"><?= $task->title; ?></div>
 						<div class="description"><?= $task->description; ?></div>
 						<div class="status"><input type="checkbox" name="tasks[<?= $i; ?>]" <?php if($task->checked): ?>checked<?php endif; ?> class="checkbox<?= ($task->mandatory ? ' mandatory' : ''); ?>" value="<?= $task->id; ?>">
 						<?php if($task->checked && $task->user): ?>
@@ -337,12 +337,40 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 
 			jQuery('#form_pct_theme_updater .category.container:first-child').addClass('open');
 
+			var togglers = JSON.parse( localStorage.getItem('theme_updater_toggler') );
+			
+			if( togglers == null )
+			{
+				togglers = [];
+			}
+			
+			// reopen togglers
+			jQuery.each(togglers, function(i,k)
+			{
+				// task_
+				if( k.indexOf('task_') !== false )
+				{
+					var toggler = jQuery('[data-toggler="'+k+'"]');
+					toggler.addClass('open');
+					toggler.parent().parent('.container').addClass('open');
+				}
+				// cat_
+				if( k.indexOf('cat_') !== false )
+				{
+					var toggler = jQuery('[data-toggler="'+k+'"]');
+					toggler.addClass('open');
+					toggler.parent('.container').addClass('open');
+				}
+			});
+			
 			// toggle category palettes
 			jQuery('#form_pct_theme_updater .category > .toggler').click(function(e)
 			{
 				e.preventDefault();
 				jQuery(this).toggleClass('open');
 				jQuery(this).parent('.container').toggleClass('open');
+
+				jQuery(document).trigger('THEME_UPDATER_TOGGLER',{'toggler':jQuery(this).attr('data-toggler')});
 			});
 
 			// toggle tasks
@@ -351,6 +379,22 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				e.preventDefault();
 				jQuery(this).toggleClass('open');
 				jQuery(this).parent().parent('.container').toggleClass('open');
+
+				jQuery(document).trigger('THEME_UPDATER_TOGGLER',{'toggler':jQuery(this).attr('data-toggler')});
+			});
+
+			jQuery(document).on('THEME_UPDATER_TOGGLER',function(e,params) 
+			{
+				var id = params.toggler;
+				if( jQuery('[data-toggler="'+id+'"]').hasClass('open') )
+				{
+					togglers.push( id );
+				}
+				else
+				{
+					togglers.splice( togglers.indexOf(id), 1 );
+				}
+				localStorage.setItem('theme_updater_toggler', JSON.stringify(togglers) );
 			});
 			
 			</script>
