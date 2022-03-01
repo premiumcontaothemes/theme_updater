@@ -293,6 +293,10 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'DONE';
 			$this->Template->breadcrumb = '';
 
+			// remove version file
+			$objVersionFile = new File('var/pct_theme_version');
+			$objVersionFile->delete();
+
 			return;
 		}
 
@@ -921,15 +925,10 @@ class ThemeUpdater extends \Contao\BackendModule
 				$this->redirect( Backend::addToUrl('status=choose_product',true) );
 			}
 
-			// show current theme version from changelog.txt
-			$strLocalVersion = '???';
-			$objChangelog = new File('templates/changelog.txt');
-			if( $objChangelog->exists() )
-			{
-				$c = $objChangelog->getContent();
-				$strLocalVersion = \trim( \str_replace('###','',\substr($c,0,\strpos($c,"\n")) ) );
-			}
-			else
+			// get the installed theme version from version file or changelog.txt
+			$strLocalVersion = $this->getThemeVersion();
+			
+			if( empty($strLocalVersion) )
 			{
 				$arrErrors[] = $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['changelog_not_found'];
 			}
@@ -1161,6 +1160,38 @@ class ThemeUpdater extends \Contao\BackendModule
 
 		return $objTemplate->parse();
 	}
+
+
+	/**
+	 * Return the installed theme version from pct_theme_version file or changelog.txt
+	 * @return string
+	 */
+	// ! theme version
+	public function getThemeVersion()
+	{
+		$objVersionFile = new File('var/pct_theme_version');
+		if( $objVersionFile->exists() )
+		{
+			return $objVersionFile->getContent();
+		}
+		
+		$objChangelog = new File('templates/changelog.txt');
+		if( $objChangelog->exists() )
+		{
+			$c = $objChangelog->getContent();
+			$strLocalVersion = \trim( \str_replace('###','',\substr($c,0,\strpos($c,"\n")) ) );
+
+			// store version in a file
+			$objVersionFile = new File('var/pct_theme_version');
+			$objVersionFile->write($strLocalVersion);
+			$objVersionFile->close();
+
+			return $strLocalVersion;
+		}
+
+		return '';
+	}
+
 
 
 	/**
