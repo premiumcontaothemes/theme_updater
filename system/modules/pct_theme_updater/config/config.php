@@ -3,9 +3,9 @@
 /**
  * Contao Open Source CMS
  * 
- * Copyright (C) 2005-2013 Leo Feyer
+ * Copyright (C) 2005-2022 Leo Feyer
  * 
- * @copyright	Tim Gatzky 2021, Premium Contao Themes
+ * @copyright	Tim Gatzky 2022, Premium Contao Themes
  * @author		Tim Gatzky <info@tim-gatzky.de>
  * @package		pct_theme_updater
  */
@@ -26,24 +26,18 @@ $GLOBALS['PCT_THEME_UPDATER']['updater_api_url'] = 'https://update.premium-conta
 $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'] = 'system/tmp/pct_theme_updater';
 $GLOBALS['PCT_THEME_UPDATER']['logFile'] = 'var/pct_themeupdater_log.json';
 
-if(!isset($GLOBALS['PCT_THEME_UPDATER']['test_license']))
-{
-	$GLOBALS['PCT_THEME_UPDATER']['test_license'] = array();
-}
-
-
-$GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX'] = array
+$GLOBALS['PCT_THEME_INSTALLER']['THEMES']['eclipseX'] = array
 (
 	'label'	=> 'EclipseX',
 	'zip_folder' => 'eclipseX_zip',
 	'mandatory' => array('upload'), // mandatory zip content on first level
 	'sql_templates' => array
 	(
-		'4.4' => 'eclipsex_contao_4_4.sql',
-		'4.9' => 'eclipsex_contao_4_9.sql'
+		'4.9' => 'eclipsex_contao_4_9.sql',
+		'4.13' => 'eclipsex_contao_4_13.sql'
 	),
 );
-$GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc'] = array
+$GLOBALS['PCT_THEME_INSTALLER']['THEMES']['eclipseX_cc'] = array
 (
 	'label'	=> 'EclipseX + CustomCatalog Pro',
 	'isCustomCatalog' => true,
@@ -51,8 +45,8 @@ $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc'] = array
 	'mandatory' => array('upload'), // mandatory zip content on first level
 	'sql_templates' => array
 	(
-		'4.4' => 'eclipsex_cc_contao_4_4.sql',
 		'4.9' => 'eclipsex_cc_contao_4_9.sql',
+		'4.13' => 'eclipsex_cc_contao_4_13.sql',
 	),
 );
 
