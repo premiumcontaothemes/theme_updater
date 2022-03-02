@@ -46,7 +46,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_import_info']
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['access_denied'] 					= 'Meldung: %s';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['errors'] 							= 'Fehler: %s';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['not_supported'] 					= 'Der Updater unterstützt die folgenden Produkte: %s';		
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_buy'] 						= 'Theme EclipseX kaufen';		
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_installer_buy'] 			= 'Contao Installer';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['enter_updater_license_info'] 		= 'Tragen Sie Ihre Bestellnummer für den Theme-Updater ein.';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['task']		= 'Aufgabe';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['description'] = 'Beschreibung';
