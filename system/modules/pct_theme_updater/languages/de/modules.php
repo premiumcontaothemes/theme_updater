@@ -13,4 +13,4 @@
  * permanent text corrections which are update-safe. 
  */
 
-$GLOBALS['TL_LANG']['MOD']['pct_theme_updater'][0] = 'Theme-Updater';
+$GLOBALS['TL_LANG']['MOD']['pct_theme_updater'][0] = 'Theme-Updater ('.PCT_THEME_UPDATER.')';
