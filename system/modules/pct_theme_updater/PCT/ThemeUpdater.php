@@ -609,7 +609,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			#}
 
 			// the target folder to extract to
-			$strTargetDir = $GLOBALS['pct_theme_updater']['tmpFolder'].'/'.basename($arrSession['file'], ".zip").'_zip';
+			$strTargetDir = $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/'.basename($arrSession['file'], ".zip").'_zip';
 
 			if(Input::get('action') == 'run')
 			{
@@ -653,7 +653,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->step = 'COPY_FILES';
 			
 			// the target folder to extract to
-			$strTargetDir = $GLOBALS['pct_theme_updater']['tmpFolder'].'/'.basename($arrSession['file'], ".zip").'_zip';
+			$strTargetDir = $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/'.basename($arrSession['file'], ".zip").'_zip';
 			$strFolder = $strTargetDir; #$strTargetDir.'/'.basename($arrSession['file'], ".zip");
 
 			if(Input::get('action') == 'run' && is_dir(TL_ROOT.'/'.$strFolder))
@@ -662,7 +662,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				$blnCustomizeCss = false;
 				if(file_exists(TL_ROOT.'/'.Config::get('uploadPath').'/cto_layout/css/customize.css'))
 				{
-					if( Files::getInstance()->copy(Config::get('uploadPath').'/cto_layout/css/customize.css',$GLOBALS['pct_theme_updater']['tmpFolder'].'/customize.css') )
+					if( Files::getInstance()->copy(Config::get('uploadPath').'/cto_layout/css/customize.css',$GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css') )
 					{
 						$blnCustomizeCss = true;
 					}
@@ -698,7 +698,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				// reinstall the customize.css
 				if($blnCustomizeCss)
 				{
-					Files::getInstance()->copy($GLOBALS['pct_theme_updater']['tmpFolder'].'/customize.css',Config::get('uploadPath') ?: 'files'.'/cto_layout/css/customize.css');
+					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css',Config::get('uploadPath') ?: 'files'.'/cto_layout/css/customize.css');
 				}
 				
 				// log errors
@@ -848,7 +848,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		else if(Input::get('status') == 'installation' && Input::get('step') == 'sql_template_wait')
 		{
 			// get the template by contao version
-			$strTemplate = $GLOBALS['pct_theme_updater']['THEMES'][$this->strTheme]['sql_templates'][VERSION];
+			$strTemplate = $GLOBALS['PCT_THEME_UPDATER']['THEMES'][$this->strTheme]['sql_templates'][VERSION];
 
 			$this->Template->status = 'INSTALLATION';
 			$this->Template->step = 'SQL_TEMPLATE_WAIT';
@@ -986,6 +986,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->license = $objLicense;
 			$arrErrors = array();
 			
+
 			// coming from ajax request
 			if(Input::get('action') == 'run')
 			{
@@ -996,8 +997,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrParams['sendToAjax'] = 1;
 				$arrParams['product'] = $objLicense->file->id;
 
-				$strFileRequest = html_entity_decode( $GLOBALS['pct_theme_updater']['api_url'].'/api.php?'.http_build_query($arrParams) );
-				
+				$strFileRequest = html_entity_decode( $GLOBALS['PCT_THEME_UPDATER']['api_url'].'/api.php?'.http_build_query($arrParams) );
 				try
 				{
 					$curl = curl_init();
@@ -1010,7 +1010,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					$strFileResponse = curl_exec($curl);
 					curl_close($curl);
 					unset($curl);
-				
+					
 					// response is a json object and not the file content
 					$_test = json_decode($strFileResponse);
 					
@@ -1023,7 +1023,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					}
 					else if(!empty($strFileResponse))
 					{
-						$objFile = new File($GLOBALS['pct_theme_updater']['tmpFolder'].'/'.$objLicense->file->name);
+						$objFile = new File($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/'.$objLicense->file->name);
 						$objFile->write( $strFileResponse );
 						$objFile->close();
 
@@ -1132,7 +1132,7 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			($i%2 == 0 ? $class[] = 'even' : $class[] = 'odd');
 			($i == 0 ? $class[] = 'first' : '');
-			($i == count($GLOBALS['pct_theme_updater']['breadcrumb_steps'] ?? array() ) - 1 ? $class[] = 'last' : '');
+			($i == count($GLOBALS['PCT_THEME_UPDATER']['breadcrumb_steps'] ?? array() ) - 1 ? $class[] = 'last' : '');
 
 			if(!$data['label'])
 			{
