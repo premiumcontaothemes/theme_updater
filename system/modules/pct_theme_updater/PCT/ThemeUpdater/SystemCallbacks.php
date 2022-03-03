@@ -63,47 +63,21 @@ class SystemCallbacks extends System
 		System::loadLanguageFile('default');
 		
 		$objSession = System::getContainer()->get('session');
-		$arrSession = $objSession->get('PCT_THEME_INSTALLER');
-		if(isset($_SESSION['PCT_THEME_INSTALLER']))
-		{
-			$arrSession = $_SESSION['PCT_THEME_INSTALLER'];
-		}
-		
-		#// session still exists
-		#if(!empty($arrSession))
-		#{
-		#   // remove the session
-		#   $objSession->remove('PCT_THEME_INSTALLER');
-		#   unset($_SESSION['PCT_THEME_INSTALLER']);
-		#   
-		#   $strName = $GLOBALS['PCT_THEME_INSTALLER']['THEMES'][ $arrSession['theme'] ]['label'] ?: $arrSession['theme'];
-		#  
-		#   // add backend message
-		#   \Message::addInfo( sprintf($GLOBALS['TL_LANG']['pct_theme_installer']['completeStatusMessage'],$strName) );
-		#  
-		#   // redirect to make backend message appear under Contao lower than 4.4
-		#   if(version_compare(VERSION, '4.4','<') && version_compare(VERSION, '3.5','>='))
-		#   {
-		#	  $url = \Contao\StringUtil::decodeEntities( Controller::addToUrl('completed=1&theme='.$arrSession['theme'].'&sql='.$arrSession['sql'],false,array('referer','rt','ref')) );
-		#	  $this->redirect($url);
-		#   }
-		#   
-		#   return;
-		#}
+		$arrSession = $objSession->get('pct_theme_updater');
 		
 		if(Input::get('welcome') != '')
 		{
 			// check if theme data exists
-			if(!isset($GLOBALS['PCT_THEME_INSTALLER']['THEMES'][ Input::get('welcome') ]))
+			if(!isset($GLOBALS['PCT_THEME_UPDATER']['THEMES'][ Input::get('welcome') ]))
 			{
 				$url = \Contao\StringUtil::decodeEntities( Controller::addToUrl('',false,array('welcome')) );
 				$this->redirect($url);
 			}
 			
-			$strName = $GLOBALS['PCT_THEME_INSTALLER']['THEMES'][ Input::get('welcome') ]['label'] ?: Input::get('welcome');
+			$strName = $GLOBALS['PCT_THEME_UPDATER']['THEMES'][ Input::get('welcome') ]['label'] ?: Input::get('welcome');
 			
 			// add backend message
-			Message::addInfo( sprintf($GLOBALS['TL_LANG']['pct_theme_installer']['completeStatusMessage'],$strName) );
+			Message::addInfo( sprintf($GLOBALS['TL_LANG']['pct_theme_updater']['completeStatusMessage'],$strName) );
 			
 			return;
 		}
@@ -116,25 +90,6 @@ class SystemCallbacks extends System
 			{
 				Files::getInstance()->delete('templates/tmp_'.$strTemplate);
 			}
-			
-			#$objSession->set('PCT_THEME_INSTALLER',array('theme'=>Input::get('theme')));
-			#$_SESSION['PCT_THEME_INSTALLER']['theme'] = Input::get('theme');
-			
-			// redirect to a clean login page and make the message appear
-			#$url = '';
-			#$remove_params = array('referer','rt','ref');
-			#if(version_compare(VERSION, '3.5','>=') && version_compare(VERSION, '4.4','<'))
-			#{
-			#	$remove_params[] = 'completed';
-			#	$remove_params[] = 'theme';
-			#	$remove_params[] = 'sql';
-			#}
-			#// contao 4.4 >=
-			#else if(version_compare(VERSION, '4.4','>='))
-			#{
-			#	$remove_params[] = 'completed';
-			#	$remove_params[] = 'sql';
-			#}
 			
 			$url = \Contao\StringUtil::decodeEntities( Controller::addToUrl('welcome='.Input::get('theme'),false,array('completed','theme','sql','referer','rt','ref')) );
 			$this->redirect($url);

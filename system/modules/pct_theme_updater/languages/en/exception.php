@@ -16,9 +16,9 @@
 /**
  * Errors
  */
-$GLOBALS['TL_LANG']['XPT']['pct_theme_installer']['unzip_error'] 				= 'Extraction of file %s failed';
-$GLOBALS['TL_LANG']['XPT']['pct_theme_installer']['zip_content_error'] 			= 'Mandatory content (%s) not found in extraction folder';
-$GLOBALS['TL_LANG']['XPT']['pct_theme_installer']['sql_not_found'] 				= 'SQL installation template not found';
-$GLOBALS['TL_LANG']['XPT']['pct_theme_installer']['session_lost'] 				= 'The license session is timed out. Please restart the installation.';
-$GLOBALS['TL_LANG']['XPT']['pct_theme_installer']['version_conflict'] 			= 'Please use one of Contaos LTS versions: 4.9';
-$GLOBALS['TL_LANG']['XPT']['pct_theme_installer']['memory_limit']				= 'Memory Limit (memory_limit) too low (%s). Min.: 512M';
+$GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['unzip_error'] 				= 'Extraction of file %s failed';
+$GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['zip_content_error'] 			= 'Mandatory content (%s) not found in extraction folder';
+$GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['sql_not_found'] 				= 'SQL installation template not found';
+$GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['session_lost'] 				= 'The license session is timed out. Please restart the installation.';
+$GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['version_conflict'] 			= 'Please use one of Contaos LTS versions: 4.9';
+$GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['memory_limit']				= 'Memory Limit (memory_limit) too low (%s). Min.: 512M';
