@@ -383,7 +383,6 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				}
 				localStorage.setItem('ThemeUpdater.checked', JSON.stringify(checkboxes));
 
-				console.log(checkboxes.length);
 				// set button to disabled or not
 				if( checkboxes.length >= numberOfTasks )
 				{

@@ -404,16 +404,25 @@ class ThemeUpdater extends \Contao\BackendModule
 			$objLogFile = new File( $GLOBALS['PCT_THEME_UPDATER']['logFile'] );
 			
 			$arrLogs = array();
+			$arrLogsFile = array();
+
 			if( $objLogFile->exists() )
 			{
 				$arrLogs = \json_decode( $objLogFile->getContent(), true );		
+				$arrLogsFile = $arrLogs;
+
 				// get last log
 				if( count($arrLogs) > 1 )
 				{
-					$arrLogs = array( end($arrLogs) );
+					$k = end( \array_keys($arrLogs) );
+					$tmp = $arrLogs;
+					$arrLogs = array();
+					$arrLogs[$k] = $tmp[$k];
+					unset($tmp);
+					unset($k);
 				}
 			}
-
+			
 			// get the task status from the log file
 			$arrTaskLog = array();
 			
@@ -485,12 +494,18 @@ class ThemeUpdater extends \Contao\BackendModule
 					'user'	 	=> $objUser->id,
 				);
 
-				$arrTasks = Input::post('tasks');
+				$arrTasks = Input::post('tasks') ?? array();
 				foreach($objTasks as $k => $category)
 				{
 					$objSubTasks = $category->tasks ?? array();
 					foreach($objSubTasks as $task)
 					{
+						// skip not checked tasks
+						if( !\in_array( $task->id, $arrTasks ) )
+						{
+							continue;
+						}
+						
 						$tmp = array
 						(
 							'id' => $task->id,
@@ -502,10 +517,11 @@ class ThemeUpdater extends \Contao\BackendModule
 							$tmp['status'] = 'done';
 						}
 
-						$arrData['tasks'][] = $tmp;
+						$arrData['tasks'][ $task->id ] = $tmp;
 						unset($tmp);
 					}
 				}
+
 				// flag final
 				if( Input::post('done') !== null )
 				{
@@ -513,9 +529,10 @@ class ThemeUpdater extends \Contao\BackendModule
 				}
 
 				// append new log data
-				$arrLogs[$strKey] = $arrData;
+				$arrLogsFile[$strKey] = $arrData;
+				
 				// write log file
-				$objLogFile->write( \json_encode( $arrLogs, \JSON_NUMERIC_CHECK) );
+				$objLogFile->write( \json_encode( $arrLogsFile ) );
 				$objLogFile->close();
 
 				unset($arrData);
@@ -526,6 +543,9 @@ class ThemeUpdater extends \Contao\BackendModule
 				{
 					$this->redirect( Backend::addToUrl('status=done',true,array('step')) );
 				}
+
+				// reload to flush cache
+				Controller::reload();
 
 			}
 
