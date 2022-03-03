@@ -341,18 +341,25 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			
 			var numberOfTasks = <?= $this->numberOfTasks; ?>;
 			var checkboxes = [];
+			// check all checkboxes from localstorage
+			if( localStorage.getItem('ThemeUpdater.checked') != null )
+			{
+				checkboxes = JSON.parse( localStorage.getItem('ThemeUpdater.checked') );
+				
+				jQuery.each(checkboxes,function(i,k)
+				{
+					jQuery('form#form_pct_theme_updater input[name="'+k+'"]').prop('checked',true);
+				});
+			}
 			jQuery(document).ready(function() 
 			{	
-				if( localStorage.getItem('ThemeUpdater.checked') != null )
+				// reset checkboxes and collect all checked ones
+				checkboxes = [];
+				jQuery.each(jQuery('form#form_pct_theme_updater input[type="checkbox"]:checked'), function(i,k)
 				{
-					checkboxes = JSON.parse(  localStorage.getItem('ThemeUpdater.checked') );
-					
-					jQuery.each(checkboxes,function(i,k)
-					{
-						jQuery('form#form_pct_theme_updater input[name="'+k+'"]').prop('checked',true);
-					});
-				}
-				
+					checkboxes.push( jQuery(k).attr('name') );
+				});
+
 				// set button to disabled or not
 				if( checkboxes.length >= numberOfTasks )
 				{
@@ -376,6 +383,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				}
 				localStorage.setItem('ThemeUpdater.checked', JSON.stringify(checkboxes));
 
+				console.log(checkboxes.length);
 				// set button to disabled or not
 				if( checkboxes.length >= numberOfTasks )
 				{
