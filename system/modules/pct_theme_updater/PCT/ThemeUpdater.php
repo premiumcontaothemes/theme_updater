@@ -486,11 +486,10 @@ class ThemeUpdater extends \Contao\BackendModule
 				);
 
 				$arrTasks = Input::post('tasks');
-				
 				foreach($objTasks as $k => $category)
 				{
 					$objSubTasks = $category->tasks ?? array();
-					foreach($objSubTasks as $i => $task)
+					foreach($objSubTasks as $task)
 					{
 						$tmp = array
 						(
@@ -503,7 +502,7 @@ class ThemeUpdater extends \Contao\BackendModule
 							$tmp['status'] = 'done';
 						}
 
-						$arrData['tasks'][$i] = $tmp;
+						$arrData['tasks'][] = $tmp;
 						unset($tmp);
 					}
 				}
