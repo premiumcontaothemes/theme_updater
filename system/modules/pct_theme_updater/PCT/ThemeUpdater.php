@@ -205,7 +205,6 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			// request license
 			$objUpdaterLicense = \json_decode( $this->request('https://api.premium-contao-themes.com/license_api.php',$arrParams) );
-			
 			// create license file, if not exists
 			if( !$objLicenseFile->exists() && $objUpdaterLicense->status == 'OK' )
 			{
@@ -222,6 +221,14 @@ class ThemeUpdater extends \Contao\BackendModule
 				$objSession->set($this->strSession,$arrSession);
 
 				$this->redirect( Backend::addToUrl('status=enter_theme_license',true) );
+			}
+
+			// elapsed
+			if( $objUpdaterLicense->status == 'ELAPSED' )
+			{
+				$arrSession['errors'] = array($objUpdaterLicense->error);
+				$objSession->set($this->strSession,$arrSession);
+				$this->redirect( Backend::addToUrl('status=error',true) );
 			}
 
 			return;
@@ -933,6 +940,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 			$this->Template->errors = $arrErrors;
 			
+			$this->Template->theme = $this->strTheme;
 			$this->Template->local_version = $strLocalVersion ;
 			$this->Template->live_version = $objUpdate->version;
 			$this->Template->changelog_txt = $objUpdate->changelog;
