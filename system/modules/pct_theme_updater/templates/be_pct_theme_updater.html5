@@ -537,7 +537,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		
 		<script type="text/javascript">
 		<?php 
-		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=sql_template_wait') );
+		$url = StringUtil::decodeEntities( Backend::addToUrl('status=manual_adjustment') );
 		?>
 		PCT_ThemeUpdater.ajax_infotext = '<?= $arrLang['AJAX_INFO']['db_update_modules']; ?>';
 		PCT_ThemeUpdater.redirectTo('<?= $url; ?>',3000);
@@ -620,14 +620,11 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		<?php if(!$this->ajax_running): ?>
 		<!-- start the loading process via ajax -->
 		<script type="text/javascript">
-		/* <![CDATA[ */
-		
 		<?php 
 		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=unzip') );
 		?>
 		PCT_ThemeUpdater.ajax_infotext = '<?= sprintf($arrLang['AJAX_INFO']['loading'],$this->license->file->name); ?>';
 		PCT_ThemeUpdater.request({'action':'run','redirectTo':'<?= $url; ?>'});
-		/* ]]> */
 		</script>
 		<?php endif; ?>
 
