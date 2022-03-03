@@ -26,7 +26,7 @@ $GLOBALS['PCT_THEME_UPDATER']['updater_api_url'] = 'https://update.premium-conta
 $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'] = 'system/tmp/pct_theme_updater';
 $GLOBALS['PCT_THEME_UPDATER']['logFile'] = 'var/pct_themeupdater_log.json';
 
-$GLOBALS['PCT_THEME_INSTALLER']['THEMES']['eclipseX'] = array
+$GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX'] = array
 (
 	'label'	=> 'EclipseX',
 	'zip_folder' => 'eclipseX_zip',
@@ -37,7 +37,7 @@ $GLOBALS['PCT_THEME_INSTALLER']['THEMES']['eclipseX'] = array
 		'4.13' => 'eclipsex_contao_4_13.sql'
 	),
 );
-$GLOBALS['PCT_THEME_INSTALLER']['THEMES']['eclipseX_cc'] = array
+$GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc'] = array
 (
 	'label'	=> 'EclipseX + CustomCatalog Pro',
 	'isCustomCatalog' => true,
