@@ -85,7 +85,7 @@ class ThemeUpdater extends \Contao\BackendModule
 
 		// updater config
 		$objConfig = \json_decode($this->request($GLOBALS['PCT_THEME_UPDATER']['config_url']));
-		
+		$objConfig->local_version = $this->getThemeVersion();
 		//--
 
 		// updater license
@@ -453,7 +453,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				foreach($objSubTasks as $i => $task)
 				{
 					// skip tasked when current theme version is higher than task version
-					if( isset($task->version) && empty($task->version) === false && \version_compare($task->version, $objUpdate->version,'<=') )
+					if( isset($task->version) && empty($task->version) === false && \version_compare($task->version, $objConfig->local_version,'<=') )
 					{
 						unset($objSubTasks[$i]);
 					}
@@ -549,7 +549,6 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			}
 
-			
 			$this->Template->tasks = $objTasks;
 			$this->Template->numberOfTasks = $intTasks;
 			$this->Template->changelog_txt = $objUpdate->changelog;
@@ -951,7 +950,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 
 			// get the installed theme version from version file or changelog.txt
-			$strLocalVersion = $this->getThemeVersion();
+			$strLocalVersion = $objConfig->local_version;
 			
 			if( empty($strLocalVersion) )
 			{
