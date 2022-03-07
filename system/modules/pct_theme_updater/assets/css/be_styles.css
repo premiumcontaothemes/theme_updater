@@ -87,6 +87,7 @@
 #pct_theme_updater .label_orange {color: #fff; background: #f47c00; border-radius: 3px; padding: 3px 5px; display: inline-block;}
 #pct_theme_updater .label_green {background-color: #589b0e; padding: 3px 5px; color: #fff;}
 #pct_theme_updater .label_gray {background-color: #d6d6d6; padding: 3px 5px;}
+#pct_theme_updater .label_small {font-size: 0.8rem;}
 #pct_theme_updater .info {background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgZGF0YS1uYW1lPSJMYXllciAxIiBpZD0iTGF5ZXJfMSIgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojN2RjY2ZjO308L3N0eWxlPjwvZGVmcz48dGl0bGUvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTE2LDFBMTUsMTUsMCwxLDAsMzEsMTYsMTUsMTUsMCwwLDAsMTYsMVptMiwyMmEyLDIsMCwwLDEtNCwwVjE2YTIsMiwwLDAsMSw0LDBaTTE2LDEyLjE5QTIuMTksMi4xOSwwLDEsMSwxOC4xOSwxMCwyLjE5LDIuMTksMCwwLDEsMTYsMTIuMTlaIi8+PC9zdmc+")}
 #pct_theme_updater .info {background-repeat: no-repeat; padding-left: 25px; background-size: 16px;}
 #pct_theme_updater p {line-height: 1.5;}
