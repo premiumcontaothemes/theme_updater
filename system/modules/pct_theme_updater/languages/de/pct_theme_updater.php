@@ -23,8 +23,11 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_install'] 		= 'Upda
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_info'] 	= 'SQL-Template-Datei: %s';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_email'][0] 		= 'Bestell-E-Mail-Adresse';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_email'][1] 		= 'Geben Sie die E-Mail Adresse Ihres Kundenaccounts an.';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license'][0] 	= 'Lizenzschlüssel / Bestellnummer';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license'][0] 	= 'Lizenzschlüssel / Bestellnummer (Theme-Updater)';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license'][1] 	= 'Die Bestellnummer finden Sie auf Ihrer Rechnung oder in Ihrem Kundenaccount.';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license_theme'][0] 	= 'Lizenzschlüssel / Bestellnummer (Theme)';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license_theme'][1] 	= 'Die Bestellnummer finden Sie auf Ihrer Rechnung oder in Ihrem Kundenaccount.';
+
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['label_status']		= 'Status: %s';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['label_step']			= 'Schritt: %s';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_reset'][0]		= 'Neustart'; // linktext
@@ -48,6 +51,8 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['errors'] 							= 'Fehler:
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['not_supported'] 					= 'Der Updater unterstützt die folgenden Produkte: %s';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_installer_buy'] 			= 'Contao Installer';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['enter_updater_license_info'] 		= 'Tragen Sie Ihre Bestellnummer für den Theme-Updater ein.';		
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['enter_theme_license_info'] 		= 'Tragen Sie Ihre Bestellnummer für das Theme ein.';		
+
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['task']		= 'Aufgabe';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['description'] = 'Beschreibung';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['status']		= 'Erledigt';

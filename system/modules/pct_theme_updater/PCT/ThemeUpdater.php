@@ -184,22 +184,35 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'ENTER_UPDATER_LICENSE';
 			$this->Template->breadcrumb = '';
 			
+			$strLicense = '';
 			$objLicenseFile = new File('var/pct_license_themeupdater');
 			if( $objLicenseFile->exists() )
 			{
 				$strLicense = \trim( $objLicenseFile->getContent() ?: '' );
 			}
-
+			
 			// license has been submitted
 			if(Input::post('license') != '' && Input::post('FORM_SUBMIT') == $strForm)
 			{
 				$strLicense = \trim( Input::post('license') );
 			}
 
+			$objThemeLicenseFile = new File('var/pct_license');
+			if( $objLicenseFile->exists() )
+			{
+				$strThemeLicense = \trim( $objThemeLicenseFile->getContent() ?: '' );
+			}
+
+			// license has been submitted
+			if(Input::post('license_theme') != '' && Input::post('FORM_SUBMIT') == $strForm)
+			{
+				$strThemeLicense = \trim( Input::post('license_theme') );
+			}
+
 			// validate
 			$arrParams = array
 			(
-				'domain'	=> StringUtil::decodeEntities( Environment::get('host') ),
+				'domain'	=> $strThemeLicense,#StringUtil::decodeEntities( Environment::get('host') ),
 				'key'		=> $strLicense,
 			);
 
@@ -211,7 +224,18 @@ class ThemeUpdater extends \Contao\BackendModule
 				$objLicenseFile->write($objUpdaterLicense->key);
 				$objLicenseFile->close();
 			}
-			
+			// create theme license file, if not exists
+			if( !$objThemeLicenseFile->exists() && $objUpdaterLicense->status == 'OK' )
+			{
+				$objThemeLicenseFile->write($strThemeLicense);
+				$objThemeLicenseFile->close();
+			}
+
+			// template variables
+			$this->Template->strLicense;
+			$this->Template->strThemeLicense;
+			$this->Template->themeLicenseFileExists = $objThemeLicenseFile->exists();
+					
 			// redirect to theme license
 			if( $objUpdaterLicense->status == 'OK' )
 			{	
