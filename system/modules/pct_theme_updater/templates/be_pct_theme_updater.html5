@@ -46,9 +46,16 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				<div class="input_wrapper licence_check">
 					<div class="widget field w50 license">
 						<h3><?= $arrLangTpl['input_license'][0]; ?></h3>
-						<input type="text" name="license" value="<?= $this->test_license[0]; ?>" class="tl_text" placeholder="">
+						<input type="text" name="license" value="" class="tl_text" <?php if($this->strLicense): ?>value="<?= $this->strLicense; ?>"<?php endif; ?> placeholder="<?= $this->strLicense; ?>">
 						<p class="tl_help tl_tip"><?= $arrLangTpl['input_license'][1]; ?></p>
 					</div>
+					<?php if(!$this->themeLicenseFileExists): ?>
+					<div class="widget field w50 license">
+						<h3><?= $arrLangTpl['input_license_theme'][0]; ?></h3>
+						<input type="text" name="license_theme" value="" class="tl_text" <?php if($this->strThemeLicense): ?>value="<?= $this->strThemeLicense; ?>"<?php endif; ?> placeholder="<?= $this->strThemeLicense; ?>">
+						<p class="tl_help tl_tip"><?= $arrLangTpl['input_license_theme'][1]; ?></p>
+					</div>
+					<?php endif; ?>
 				</div>
 			</div>
 			
@@ -282,6 +289,11 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		</table>
 		</div>
 
+		<?php if( empty($this->tasks) ): ?>
+		<div class="content">
+			<p class="info"><?= $arrLangTpl['empty_tasks']; ?></p>
+		</div>
+		<?php else: ?>
 		<form id="form_pct_theme_updater" action="<?= $this->action; ?>" class="tl_form" method="post">
 			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
 			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
@@ -464,7 +476,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				</div>
 			</div>
 		</form>
-		
+		<?php endif; ?>
 		</div>
 
 <?php elseif($this->status == 'INSTALLATION' && $this->step == 'UNZIP'): ?>

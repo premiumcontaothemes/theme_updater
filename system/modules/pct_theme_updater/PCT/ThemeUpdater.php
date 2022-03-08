@@ -184,22 +184,35 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'ENTER_UPDATER_LICENSE';
 			$this->Template->breadcrumb = '';
 			
+			$strLicense = '';
 			$objLicenseFile = new File('var/pct_license_themeupdater');
 			if( $objLicenseFile->exists() )
 			{
 				$strLicense = \trim( $objLicenseFile->getContent() ?: '' );
 			}
-
+			
 			// license has been submitted
 			if(Input::post('license') != '' && Input::post('FORM_SUBMIT') == $strForm)
 			{
 				$strLicense = \trim( Input::post('license') );
 			}
 
+			$objThemeLicenseFile = new File('var/pct_license');
+			if( $objLicenseFile->exists() )
+			{
+				$strThemeLicense = \trim( $objThemeLicenseFile->getContent() ?: '' );
+			}
+
+			// license has been submitted
+			if(Input::post('license_theme') != '' && Input::post('FORM_SUBMIT') == $strForm)
+			{
+				$strThemeLicense = \trim( Input::post('license_theme') );
+			}
+
 			// validate
 			$arrParams = array
 			(
-				'domain'	=> StringUtil::decodeEntities( Environment::get('host') ),
+				'domain'	=> $strThemeLicense,#StringUtil::decodeEntities( Environment::get('host') ),
 				'key'		=> $strLicense,
 			);
 
@@ -211,7 +224,18 @@ class ThemeUpdater extends \Contao\BackendModule
 				$objLicenseFile->write($objUpdaterLicense->key);
 				$objLicenseFile->close();
 			}
-			
+			// create theme license file, if not exists
+			if( !$objThemeLicenseFile->exists() && $objUpdaterLicense->status == 'OK' )
+			{
+				$objThemeLicenseFile->write($strThemeLicense);
+				$objThemeLicenseFile->close();
+			}
+
+			// template variables
+			$this->Template->strLicense;
+			$this->Template->strThemeLicense;
+			$this->Template->themeLicenseFileExists = $objThemeLicenseFile->exists();
+					
 			// redirect to theme license
 			if( $objUpdaterLicense->status == 'OK' )
 			{	
@@ -472,13 +496,20 @@ class ThemeUpdater extends \Contao\BackendModule
 						$task->documentation = $strTemplate;
 					}
 				}
+				
+				if( empty($objSubTasks) )
+				{
+					unset($objTasks->{$k});
+					continue;
+				}
+
 				// update the tasks of the category
 				$category->tasks = $objSubTasks;
 
 				// count number of tasks
 				$intTasks += count($objSubTasks);			
 			}
-
+			
 			// write log when checking in or when done
 			if( Input::post('FORM_SUBMIT') == $strForm && (Input::post('commit') !== null || Input::post('done') !== null) )
 			{
@@ -549,6 +580,11 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			}
 
+			if( empty( array_filter( (array)$objTasks) ) )
+			{
+				$objTasks = null;
+			}
+			
 			$this->Template->tasks = $objTasks;
 			$this->Template->numberOfTasks = $intTasks;
 			$this->Template->changelog_txt = $objUpdate->changelog;
