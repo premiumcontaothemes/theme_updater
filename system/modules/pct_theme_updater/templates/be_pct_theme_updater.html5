@@ -282,6 +282,11 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		</table>
 		</div>
 
+		<?php if( empty($this->tasks) ): ?>
+		<div class="content">
+			<p class="info"><?= $arrLangTpl['empty_tasks']; ?></p>
+		</div>
+		<?php else: ?>
 		<form id="form_pct_theme_updater" action="<?= $this->action; ?>" class="tl_form" method="post">
 			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
 			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
@@ -464,7 +469,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				</div>
 			</div>
 		</form>
-		
+		<?php endif; ?>
 		</div>
 
 <?php elseif($this->status == 'INSTALLATION' && $this->step == 'UNZIP'): ?>

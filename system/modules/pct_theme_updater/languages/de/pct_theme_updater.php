@@ -54,6 +54,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['st
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['iframe']		= 'Dokumentation';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_commit']						= 'Zwischenstand speichern';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_done']							= 'Update abschließen';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['empty_tasks']							= 'Keine weiteren Aufgaben.';
 
 /**
  * Breadcrumb

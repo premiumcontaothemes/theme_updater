@@ -472,13 +472,20 @@ class ThemeUpdater extends \Contao\BackendModule
 						$task->documentation = $strTemplate;
 					}
 				}
+				
+				if( empty($objSubTasks) )
+				{
+					unset($objTasks->{$k});
+					continue;
+				}
+
 				// update the tasks of the category
 				$category->tasks = $objSubTasks;
 
 				// count number of tasks
 				$intTasks += count($objSubTasks);			
 			}
-
+			
 			// write log when checking in or when done
 			if( Input::post('FORM_SUBMIT') == $strForm && (Input::post('commit') !== null || Input::post('done') !== null) )
 			{
@@ -549,6 +556,11 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			}
 
+			if( empty( array_filter( (array)$objTasks) ) )
+			{
+				$objTasks = null;
+			}
+			
 			$this->Template->tasks = $objTasks;
 			$this->Template->numberOfTasks = $intTasks;
 			$this->Template->changelog_txt = $objUpdate->changelog;
