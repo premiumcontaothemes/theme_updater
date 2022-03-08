@@ -140,3 +140,4 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['manual_adjustme
  */
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['CATEGORIES']['fe_modules'] = 'Frontend-Module';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['CATEGORIES']['layout'] = 'Seitenlayouts';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['CATEGORIES']['various'] = 'Sonstige Änderungen';
