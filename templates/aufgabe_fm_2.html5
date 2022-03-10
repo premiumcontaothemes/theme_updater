@@ -1,0 +1,51 @@
+<div class="desc_content">
+   <table class="documentation_inside table_fe_modules">
+      <tr>
+         <th class="t_col1">Frontend-Modul:</th>
+         <th class="t_col2">Änderung betrifft:</th>
+         <th class="t_col3">Änderung:</th>
+      </tr>
+      
+      <tr>
+         <td>Eventteaser (v1)</td>
+         <td>Modul Template</td>
+         <td>mod_eventlist_teaser_v1</td>
+      </tr>
+      
+       <tr>
+         <td>Newsteaser (v1)</td>
+         <td>Modul Template</td>
+         <td>mod_newslist_teaser</td>
+      </tr>
+      <tr>
+         <td>Newsteaser (v2)</td>
+         <td>Modul Template</td>
+         <td>mod_newslist_teaser</td>
+      </tr>
+      <tr>
+         <td>Newsteaser (v3)</td>
+         <td>Modul Template</td>
+         <td>mod_newslist_teaser</td>
+      </tr>
+      <tr>
+         <td>Newsteaser (v4)</td>
+         <td>Modul Template</td>
+         <td>mod_newslist_teaser</td>
+      </tr>
+      <tr>
+         <td>Newsteaser (v5)</td>
+         <td>Modul Template</td>
+         <td>mod_newslist_teaser</td>
+      </tr>
+      <tr>
+         <td>Newsteaser (v6)</td>
+         <td>Modul Template</td>
+         <td>mod_newslist_teaser_v6</td>
+      </tr>
+      <tr>
+         <td>Newsteaser (v7)</td>
+         <td>Modul Template</td>
+         <td>mod_newslist_teaser</td>
+      </tr>
+   </table>
+</div>

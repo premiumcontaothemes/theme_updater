@@ -1,0 +1,30 @@
+<div class="desc_content">
+<div class="info">
+   <p>Diese Änderung ist nur nötig, wenn Sie ein Megamenü verwenden</p>
+</div>
+<p>Die Megamenü Erweiterung bindet die Inhalte nicht mehr über die Seiteneigenschaften ein, sondern über einen eigenen Seitentyp "Megamenu". Auf dieser Seite kann beliebiger Inhalt platziert werden, welcher dann im Megamenü ausgegeben wird.</p>
+<br><br>
+<div class="label_step"><strong>Schritt 1: Seitentyp ändern</strong></div>
+<br><br>
+<div class="label_orange label_small">Layout > Seitenstruktur > Seiteneinstellungen > Seitentyp: Megamenu</div>
+<br><br>
+<p>Bei der Seite welche das Megamenu ausgeben soll muss der Seitentyp auf <span class="label_gray">Megamenu</span> umgestellt werden.</p>
+<br><br>
+<div class="label_step"><strong>Schritt 2: Inhalte anpassen</strong></div>
+<br><br>
+<div class="label_orange label_small">Inhalte > Artikel</div>
+<br><br>
+<p>Legen Sie auf der Seite (Seitentyp: Megamenu) die Inhalte an die im Megamenu ausgegeben werden sollen. <br><br>
+   In unseren Demos wurde das 1-Click Grid (AutoGrid) für die Spaltenteilung in Kombination mit mehreren Frontend-Modulen vom Modultyp Navigationsmenü verwendet.</p>
+<br>
+   <a href="https://update.premium-contao-themes.com/screenshots/task_div_7.png" target="_blank" class="screenshot">Siehe Screenshot</a>
+   <br>
+   <br>
+   <br>
+<div class="info">
+   <p>Alternativ kann ein Megamenü-Preset verwendet werden.</p>
+</div>
+<br><br>
+<p>Eine ausführliche Beschreibung zur Funktionsweise des Megamenüs und den Megamenü-Presets finden Sie in der Dokumentation <a href="https://help.premium-contao-themes.com/megamenu.html" target="_blank">Megamenu</a>.</p>
+
+</div>

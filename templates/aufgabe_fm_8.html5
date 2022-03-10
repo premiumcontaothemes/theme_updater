@@ -1,0 +1,35 @@
+<div class="desc_content">
+   <table class="documentation_inside table_fe_modules">
+      <tr>
+         <th class="t_col1">Frontend-Modul:</th>
+         <th class="t_col2">Änderung betrifft:</th>
+         <th class="t_col3">Änderung:</th>
+      </tr>
+      
+      <tr>
+         <td>Neues Modul anlegen</td>
+         <td>Titel</td>
+         <td>Header Smallview Trigger</td>
+      </tr>
+      
+      <tr>
+         <td></td>
+         <td>Modultyp</td>
+         <td>Eigener HTML-Code</td>
+      </tr>
+      
+      <tr>
+         <td></td>
+         <td>Inhalt</td>
+         <td>leer</td>
+      </tr>
+      
+      <tr>
+         <td></td>
+         <td>Modul Template</td>
+         <td>mod_html_header_smallview_trigger</td>
+      </tr>
+      
+   </table>
+
+</div>

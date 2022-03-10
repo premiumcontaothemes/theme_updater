@@ -1,0 +1,9 @@
+<div class="desc_content">
+
+<div class="label_orange label_small">System > Systemwartung > CustomElements Aufgaben > Vault-Datenübertragung</div>
+<br><br>
+<p>Checkbox <span class="label_gray">Vault-Datenübertragung</span> aktivieren und <span class="label_gray">Start</span> klicken.</p>
+<p>Dies überträgt nun die Daten aus der Vault-Tabelle in die tl_content. Je nach Umfang der Website und der Server Performance kann dies etwas dauern.</p>
+<br><br>
+<div class="info"><p>Sollte die Meldung "Vault-Datenübertragung ausführen" im Backend weiterhin angezeigt werden muss der Browsercache geleert werden.</p></div>
+</div>

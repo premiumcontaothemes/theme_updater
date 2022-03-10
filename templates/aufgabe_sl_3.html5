@@ -1,0 +1,72 @@
+<div class="desc_content">
+<div class="label_orange label_small">Alle Seitenlayouts > Frontend-Module > Eingebundene Module</div>
+<br><br>
+<div class="label_step"><strong>Schritt 1: Neues Frontend-Modul einbinden</strong></div>
+<br><br>
+
+   <table class="documentation_inside table_pagelayouts">
+      <tr>
+         <th class="t_col1">Einbinden/Löschen:</th>
+         <th class="t_col2">Titel:</th>
+         <th class="t_col3">Layoutbereich:</th>
+      </tr>
+      
+      <tr>
+         <td>Neu einbinden:</td>
+         <td>Top: Left/Right Divider</td>
+         <td>top_section</td>  
+      </tr>
+            
+   </table>
+   <br><br>
+<div class="label_step"><strong>Schritt 2: Sortierung von top_section anpassen</strong></div>
+<br><br>
+<p>Sortierung der Frontend-Module für den Bereich <span class="label_gray">top_section</span> in allen Seitenlayouts anpassen:</p><br>
+   <table class="documentation_inside table_pagelayouts">
+      <tr>
+         <th class="t_col1">Titel</th>
+         <th class="t_col2">Layoutbereich</th>
+      </tr>
+      
+      <tr>
+         <td>1 Themesetting: Top: Phone</td>
+         <td>top_section</td>
+      </tr>
+      
+        <tr>
+         <td>1 Themesetting: Top: Mail</td>
+         <td>top_section</td>
+      </tr>
+      
+        <tr>
+         <td>Top: Left/Right Divider</td>
+         <td>top_section</td>
+      </tr>
+      
+        <tr>
+         <td>1 Themesetting: Top: Meta-Navi</td>
+         <td>top_section</td>
+      </tr>
+      
+        <tr>
+         <td>1 Themesetting: Top: Login</td>
+         <td>top_section</td>
+      </tr>
+      
+      <tr>
+         <td>1 Themesetting: Header: Langswitcher</td>
+         <td>top_section</td>
+      </tr>
+      
+      <tr>
+         <td>1 Themesetting: Socials </td>
+         <td>top_section</td>
+      </tr>
+   </table>
+   
+   <br>
+   <br>
+   <a href="https://update.premium-contao-themes.com/screenshots/task_sl_3.png" target="_blank" class="screenshot">Siehe Screenshot</a>
+   <br>
+   <br>
+</div>

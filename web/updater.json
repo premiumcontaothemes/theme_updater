@@ -1,0 +1,220 @@
+{
+	"name": "Theme Updater",
+	"min_client_version":"1.0.0",
+	"themes":
+	{
+		"testprodukt_eclipsex": 
+		{
+			"name": "EclipseX",
+			"version": "4.0.2",
+			"release": "2022-02-24",
+			"contao": "4.9.26|4.13.0",
+			"doc": "https://help.premium-contao-themes.com/contao-installieren-contao-installer.html",
+			"changelog": "https://update.premium-contao-themes.com/eclipsex/changelog.txt",
+			"tasks": 
+			{
+				"fe_modules":
+				{
+					"description": "Contao > Layout > Themes > Eclipse > Frontend-Module",
+					"tasks":
+					[
+						{
+							"id": "aufgabe_fm1",
+							"title": "Aufgabe FM 1",
+							"description": "Frontend-Module Typ HTML neue Templates zuweisen",
+							"link": "",
+							"template": "aufgabe_fm_1",
+							"mandatory": true,
+							"db_update": false,
+							"version": "1.3.25"
+						},
+						{
+							"id": "aufgabe_fm2",
+							"title": "Aufgabe FM 2",
+							"description": "Frontend-Module Typ Teaser neue Templates zuweisen",
+							"link": "",
+							"mandatory": true,
+							"template": "aufgabe_fm_2",
+							"version": "1.3.27"
+						},
+						{
+							"id": "aufgabe_fm3",
+							"title": "Aufgabe FM 3",
+							"description": "Frontend-Module für Mobnav anpassen",
+							"link": "",
+							"mandatory": true,
+							"template": "aufgabe_fm_3",
+							"version": "1.4.0"
+						},
+						{
+							"id": "aufgabe_fm4",
+							"title": "Aufgabe FM 4",
+							"description": "Frontend-Modul Privacy Opt-In Überschrift ergänzen",
+							"link": "",
+							"mandatory": true,
+							"template": "aufgabe_fm_4",
+							"version": "2.0.0"
+						},
+						{
+							"id": "aufgabe_fm5",
+							"title": "Aufgabe FM 5",
+							"description": "Frontend-Modul für Top-Bereich Divider anlegen",
+							"link": "",
+							"mandatory": true,
+							"template": "aufgabe_fm_5",
+							"version": "3.0.0"
+						},
+						{
+							"id": "aufgabe_fm6",
+							"title": "Aufgabe FM 6",
+							"description": "Frontend-Modul Footer Modultyp ändern",
+							"link": "",
+							"mandatory": true,
+							"template": "aufgabe_fm_6",
+							"version": "3.0.0"
+						},
+						{
+							"id": "aufgabe_fm7",
+							"title": "Aufgabe FM 7",
+							"description": "Frontend-Modul Bottom Inhalte anpassen",
+							"link": "",
+							"mandatory": true,
+							"template": "aufgabe_fm_7",
+							"version": "3.0.0"
+						},
+						{
+							"id": "aufgabe_fm8",
+							"title": "Aufgabe FM 8",
+							"description": "Frontend-Modul Trigger für minimierte Darstellung der Headervarianten Beside",
+							"link": "",
+							"mandatory": true,
+							"template": "aufgabe_fm_8",
+							"version": "3.0.0"
+						},
+						{
+							"id": "aufgabe_fm9",
+							"title": "Aufgabe FM 9",
+							"description": "Frontend-Module Inhalte und Templates anpassen",
+							"link": "",
+							"mandatory": true,
+							"template": "aufgabe_fm_9",
+							"version": "4.0.0"
+						}
+					]
+				},
+				"layout":
+				{
+					"description": "Contao > Layout > Themes > Eclipse > Seitenlayouts",
+					"tasks":
+					[
+						{
+							"id": "aufgabe_sl1",
+							"title": "Aufgabe SL 1",
+							"description": "Alle Seitenlayouts: Mobilemenu anpassen",
+							"link": "",
+							"template": "aufgabe_sl_1",
+							"mandatory": true,
+							"version": "1.4.0"
+						},
+						{
+							"id": "aufgabe_sl2",
+							"title": "Aufgabe SL 2",
+							"description": "Alle Seitenlayouts: j_privacymanager aktivieren",
+							"link": "",
+							"template": "aufgabe_sl_2",
+							"mandatory": true,
+							"version": "2.0.0"
+						},
+						{
+							"id": "aufgabe_sl3",
+							"title": "Aufgabe SL 3",
+							"description": "Alle Seitenlayouts: Top-Bereich anpassen",
+							"link": "",
+							"template": "aufgabe_sl_3",
+							"mandatory": true,
+							"version": "3.0.0"
+						},
+						{
+							"id": "aufgabe_sl4",
+							"title": "Aufgabe SL 4",
+							"description": "Seitenlayout Home: Pageimage entfernen",
+							"link": "",
+							"template": "aufgabe_sl_4",
+							"mandatory": true,
+							"version": "3.0.0"
+						}
+					]
+				},
+				"various":
+				{
+					"tasks":
+					[
+						{
+							"id": "aufgabe_div1",
+							"title": "Aufgabe DIV 1",
+							"description": "Inhalte für Footer anpassen",
+							"link": "",
+							"template": "aufgabe_div_1",
+							"mandatory": true,
+							"version": "3.0.0"
+						},
+						{
+							"id": "aufgabe_div2",
+							"title": "Aufgabe DIV 2",
+							"description": "Revolution Slider anpassen",
+							"link": "",
+							"template": "aufgabe_div_2",
+							"mandatory": true,
+							"version": "3.0.0"
+						},
+						{
+							"id": "aufgabe_div3",
+							"title": "Aufgabe DIV 3",
+							"description": "CustomElements Migration durchführen",
+							"link": "",
+							"template": "aufgabe_div_3",
+							"mandatory": true,
+							"version": "4.0.0"
+						},
+						{
+							"id": "aufgabe_div4",
+							"title": "Aufgabe DIV 4",
+							"description": "Inhaltselemente importieren",
+							"link": "",
+							"template": "aufgabe_div_4",
+							"mandatory": true,
+							"version": "4.0.0"
+						},
+						{
+							"id": "aufgabe_div5",
+							"title": "Aufgabe DIV 5",
+							"description": "Iconpicker Klassen entfernen",
+							"link": "",
+							"template": "aufgabe_div_5",
+							"mandatory": true,
+							"version": "4.0.0"
+						},
+						{
+							"id": "aufgabe_div6",
+							"title": "Aufgabe DIV 6",
+							"description": "Template-Ordner anpassen",
+							"link": "",
+							"template": "aufgabe_div_6",
+							"mandatory": true,
+							"version": "4.0.0"
+						},
+						{
+							"id": "aufgabe_div7",
+							"title": "Aufgabe DIV 7",
+							"description": "Megamenu anpassen",
+							"link": "",
+							"template": "aufgabe_div_7",
+							"mandatory": true,
+							"version": "4.0.0"
+						}
+					]
+				}
+			}
+		}
+	}
+}

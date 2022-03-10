@@ -1,0 +1,10 @@
+<div class="desc_content">
+   <div class="info"><p>Dieser Schritt muss nur durchgeführt werden, wenn Icons in der Navigation verwendet wurden.</p></div>
+<div class="label_orange label_small">Layout > Seitenstruktur > Seiteneinstellungen > CSS-Feld</div>
+<br><br>
+<p>
+Alle Icon-Klassen entfernen. Bsp.: fa fa-check
+</p><br>
+<p>Die Icon Klassen werden nur noch im Iconpicker-Feld benötigt (Seiteneinstellungen > Font-Icon Einstellungen).</p>
+
+</div>

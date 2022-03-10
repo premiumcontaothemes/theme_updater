@@ -1,0 +1,9 @@
+<div class="desc_content">
+<div class="label_orange label_small">Layout > Templates</div>
+<br><br>
+<p>Alle Dateien und Ordner in dem Ordner <span class="label_gray">templates/</span> bis auf die Datei <span class="label_orange">changelog.txt</span> löschen</p>
+<div class="info">
+   <p>Templates mit eigenen Modifikationen müssen manuell mit den neuen Templates in /system/modules/pct_theme_templates/ abgeglichen werde.</p>
+   <p>Alle Theme-Templates befinden sich ab sofort in /system/modules/pct_theme_templates/. Bei eigenen Änderungen an den Theme-Templates können diese im Ordner templates/ updatesicher gespeichert werden.</p>
+</div>
+</div>

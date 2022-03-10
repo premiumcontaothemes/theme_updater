@@ -1,0 +1,17 @@
+<div class="desc_content">
+   <table class="documentation_inside table_fe_modules">
+      <tr>
+         <th class="t_col1">Frontend-Modul:</th>
+         <th class="t_col2">Änderung betrifft:</th>
+         <th class="t_col3">Änderung:</th>
+      </tr>
+      
+      <tr>
+         <td>1 Themesetting: Privacy Opt-In</td>
+         <td>Überschrift eintragen</td>
+         <td>Datenschutzeinstellungen</td>
+      </tr>
+      
+   </table>
+
+</div>

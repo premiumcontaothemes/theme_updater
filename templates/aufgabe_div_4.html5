@@ -1,0 +1,47 @@
+<div class="desc_content">
+<div class="label_orange label_small">Inhalte > Meine Inhaltselemente > Vorlagen Importieren</div>
+<br><br>
+<p>
+Neue/Aktualisierte Inhaltselemente importieren:
+</p>
+
+   <table class="documentation_inside table_div">
+      <tr>
+         <th class="t_col1">Name</th>
+         <th class="t_col2">Bezeichnung beim Import</th>
+         <th class="t_col2">Was ist zu tun?</th>
+      </tr>
+      
+      <tr>
+         <td>Fancybox</td>
+         <td>import_fancybox</td>
+         <td>Neu importieren</td>
+      </tr>
+      
+      <tr>
+         <td>FancyLinks</td>
+         <td>import_fancylink</td>
+         <td>Neu importieren</td>
+      </tr>
+      
+           
+      <tr>
+         <td>Bild [erweitert]</td>
+         <td>import_image_extended</td>
+         <td>Vor dem Import das bestehende Element löschen</td>
+      </tr>
+      
+      <tr>
+         <td>Text [erweitert]</td>
+         <td>import_text_extented</td>
+         <td>Vor dem Import das bestehende Element löschen</td>
+      </tr>
+      
+      <tr>
+         <td>Wrap</td>
+         <td>import_wrap</td>
+         <td>Vor dem Import das bestehende Element löschen</td>
+      </tr>
+
+   </table>
+</div>

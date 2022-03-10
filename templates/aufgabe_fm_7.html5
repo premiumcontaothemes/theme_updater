@@ -1,0 +1,27 @@
+<div class="desc_content">
+   <table class="documentation_inside table_fe_modules">
+      <tr>
+         <th class="t_col1">Frontend-Modul:</th>
+         <th class="t_col2">Änderung betrifft:</th>
+         <th class="t_col3">Änderung:</th>
+      </tr>
+      
+      <tr>
+         <td>1 Themesetting: Bottom</td>
+         <td>Modul Template</td>
+         <td>mod_html_bottom</td>
+      </tr>
+      
+       <tr>
+         <td></td>
+         <td>HTML-Code</td>
+         <td>&lt;div class="left">Copyright {{date::Y}}. All Rights Reserved.&lt;/div>&lt;div class="right">&lt;a href="{{link_url::XXX}}">Impressum&lt;/a>&lt;a href="{{link_url::XXX}}">Datenschutz&lt;/a>&lt;/div>
+      </td>
+      </tr>
+       </table>
+       <br><br>
+<div class="info">
+<p>Die Inhalte werden in dieser Änderung nicht mehr über die Insert-Tags {{insert_article}} ausgegeben, sondern über herkömmlichen HTML-Code. Dies ermöglicht die Bearbeitung von Bottom über das Frontend Quickedit Modul.</p>
+</div>
+
+</div>
