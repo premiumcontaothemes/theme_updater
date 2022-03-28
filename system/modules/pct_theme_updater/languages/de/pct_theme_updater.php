@@ -60,6 +60,8 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['if
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_commit']						= 'Zwischenstand speichern';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_done']							= 'Update abschließen';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['empty_tasks']							= 'Keine weiteren Aufgaben.';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['up_to_date'] 							= 'Keine neue Version verfügbar';		
+
 
 /**
  * Breadcrumb

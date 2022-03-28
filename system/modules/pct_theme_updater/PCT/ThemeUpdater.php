@@ -72,8 +72,22 @@ class ThemeUpdater extends \Contao\BackendModule
 	 */
 	protected function compile()
 	{
+		// check contao version
+		$blnAllowed = false;
+		if( \version_compare(VERSION, '4.9','==') || \version_compare(VERSION, '4.13','==') )
+		{
+			$blnAllowed = true;
+		}
+
+		// not supported
+		if(Input::get('status') != 'version_conflict' && $blnAllowed === false)
+		{
+			$this->redirect( Backend::addToUrl('status=version_conflict',true,array('step','action')) );
+		}
+		//--
 		System::loadLanguageFile('pct_theme_updater');
 		System::loadLanguageFile('exception');
+		System::loadLanguageFile('default');
 
 		// @var object Session
 		$objSession = System::getContainer()->get('session');
@@ -138,6 +152,9 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 		$this->Template->ajax_running = $blnAjax;
 
+		// testproduct
+		#$objLicense->name = $objLicense->file->name  = 'testprodukt_eclipsex';
+
 		// the theme or module name of this lizence
 		$this->strTheme = $objLicense->name ?: $objLicense->file->name ?: '';
 		if($objLicense->file->name)
@@ -146,21 +163,16 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->theme = $this->strTheme;
 		}
 
+		// check if there are updater information for current theme
+		$objUpdate = $objConfig->themes->{\strtolower($this->strTheme)};
+		if( Input::get('status') != 'done' && ($objUpdate === null || \version_compare($objUpdate->version, $objConfig->local_version,'==') ) )
+		{
+			$this->redirect( Backend::addToUrl('status=done',true) );
+		}
+		
 		
 //! status : VERSION_CONFLICT
 
-
-		$blnAllowed = false;
-		if( \version_compare(VERSION, '4.9','==') || \version_compare(VERSION, '4.13','==') )
-		{
-			$blnAllowed = true;
-		}
-
-		// not supported
-		if(Input::get('status') != 'version_conflict' && $blnAllowed === false)
-		{
-			$this->redirect( Backend::addToUrl('status=version_conflict',true,array('step','action')) );
-		}
 
 		if(Input::get('status') == 'version_conflict')
 		{
@@ -209,15 +221,18 @@ class ThemeUpdater extends \Contao\BackendModule
 				$strThemeLicense = \trim( Input::post('license_theme') );
 			}
 
+			// registration logic
+			$strRegistration = $strThemeLicense.'___'.StringUtil::decodeEntities( Environment::get('host') );
+
 			// validate
 			$arrParams = array
 			(
-				'domain'	=> $strThemeLicense,#StringUtil::decodeEntities( Environment::get('host') ),
+				'domain'	=> $strRegistration,
 				'key'		=> $strLicense,
 			);
 
 			// request license
-			$objUpdaterLicense = \json_decode( $this->request('https://api.premium-contao-themes.com/license_api.php',$arrParams) );
+			$objUpdaterLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
 			// create license file, if not exists
 			if( !$objLicenseFile->exists() && $objUpdaterLicense->status == 'OK' )
 			{
@@ -230,7 +245,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				$objThemeLicenseFile->write($strThemeLicense);
 				$objThemeLicenseFile->close();
 			}
-
+	
 			// template variables
 			$this->Template->strLicense;
 			$this->Template->strThemeLicense;
@@ -296,7 +311,6 @@ class ThemeUpdater extends \Contao\BackendModule
 				}
 			}
 			
-			
 			// request license
 			$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/api.php',$arrParams) );
 			// license is ok
@@ -307,6 +321,14 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrSession['license'] = $objLicense;
 				$objSession->set($this->strSession,$arrSession);
 				
+				$objThemeLicenseFile = new File('var/pct_license');
+				if( !$objLicenseFile->exists() )
+				{
+					$objThemeLicenseFile->write($objLicense->key);
+					$objThemeLicenseFile->close();
+				}
+
+
 				// redirect to the beginning
 				$this->redirect( Backend::addToUrl('status=ready',true) );
 			}
@@ -322,7 +344,19 @@ class ThemeUpdater extends \Contao\BackendModule
 		{
 			$this->Template->status = 'DONE';
 			$this->Template->breadcrumb = '';
-
+			$this->Template->up_to_date = false;
+				
+			// no update information for installed product
+			if( $objUpdate === null )
+			{
+				$this->Template->errors = array('No update information found for product: '.$this->strTheme);
+			}
+			else if( \version_compare($objUpdate->version, $objConfig->local_version,'==') )
+			{
+				$this->Template->up_to_date = true;
+				#$this->Template->messages = array('You are up to date');
+			}
+			
 			// remove version file
 			$objVersionFile = new File('var/pct_theme_version');
 			$objVersionFile->delete();
@@ -584,7 +618,8 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$objTasks = null;
 			}
-			
+			debug($objUpdate);
+			debug($objUpdate->version);
 			$this->Template->tasks = $objTasks;
 			$this->Template->numberOfTasks = $intTasks;
 			$this->Template->changelog_txt = $objUpdate->changelog;
