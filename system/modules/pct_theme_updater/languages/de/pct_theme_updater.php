@@ -107,7 +107,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.copy_files'] = 
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.clear_cache'] = 'Internen Cache leeren';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.db_update_modules'] = 'Datenbank-Update';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['manual_adjustment'] = 'Manuelle Anpassungen';
-
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['done'] = 'Abgeschlossen';
 
 /**
  * Ajax infotexts
@@ -141,6 +141,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sq
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sql_template_import'] 	= 'Das Installations-Template wird importiert.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['version_conflict'] 					= 'Versionskonflikt';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['manual_adjustment'] 					= 'Manuelle Anpassungen';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['done'] 								= 'Zusammenfassung';
 
 /**
  * Categories
