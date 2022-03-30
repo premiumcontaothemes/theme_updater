@@ -373,13 +373,6 @@ class ThemeUpdater extends \Contao\BackendModule
 			$objLicense = null;
 			$objLicenseUpdater = null;
 			$objSession->remove( $this->strSession );
-						
-			// remove version file
-			$objVersionFile = new File('var/pct_theme_version');
-			if ( $objVersionFile->exists() )
-			{
-				$objVersionFile->delete();
-			}
 			
 			// redirect to the beginning
 			$this->redirect( Backend::addToUrl('do=pct_theme_updater',true,array('status','step')) );
@@ -611,7 +604,14 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				// redirect on done
 				if( Input::post('done') !== null )
-				{
+				{							
+					// remove version file
+					$objVersionFile = new File('var/pct_theme_version');
+					if ( $objVersionFile->exists() )
+					{
+						$objVersionFile->delete();
+					}
+			
 					$this->redirect( Backend::addToUrl('status=done',true,array('step')) );
 				}
 
