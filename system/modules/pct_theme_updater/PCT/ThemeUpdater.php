@@ -152,15 +152,17 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 		$this->Template->ajax_running = $blnAjax;
 
-		// testproduct
-		#$objLicense->name = $objLicense->file->name  = 'testprodukt_eclipsex';
-
 		// the theme or module name of this lizence
-		$this->strTheme = $objLicense->name ?: $objLicense->file->name ?: '';
-		if($objLicense->file->name)
+		$this->strTheme = $objLicense->name ?? '';
+		if( isset($objLicense->file->name) )
 		{
 			$this->strTheme = basename($objLicense->file->name,'.zip');
 			$this->Template->theme = $this->strTheme;
+		}
+
+		if( isset($GLOBALS['PCT_THEME_UPDATER']['test_product']) && !empty($GLOBALS['PCT_THEME_UPDATER']['test_product']) )
+		{
+			$this->strTheme = $GLOBALS['PCT_THEME_UPDATER']['test_product'];
 		}
 
 		// check if there are updater information for current theme
@@ -345,7 +347,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'DONE';
 			$this->Template->breadcrumb = '';
 			$this->Template->up_to_date = false;
-				
+			
 			// no update information for installed product
 			if( $objUpdate === null )
 			{
@@ -356,6 +358,12 @@ class ThemeUpdater extends \Contao\BackendModule
 				$this->Template->up_to_date = true;
 				#$this->Template->messages = array('You are up to date');
 			}
+
+			// @var object The whole updater config object
+			$this->Template->Config = $objConfig;
+			$this->Template->ThemeConfig = $objUpdate;
+			$this->Template->changelog_txt = $objUpdate->changelog;
+			$this->Template->live_version = $objUpdate->version;
 			
 			// remove version file
 			$objVersionFile = new File('var/pct_theme_version');
@@ -618,8 +626,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$objTasks = null;
 			}
-			debug($objUpdate);
-			debug($objUpdate->version);
+			
 			$this->Template->tasks = $objTasks;
 			$this->Template->numberOfTasks = $intTasks;
 			$this->Template->changelog_txt = $objUpdate->changelog;
