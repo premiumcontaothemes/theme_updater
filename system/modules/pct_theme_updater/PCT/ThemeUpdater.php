@@ -363,11 +363,8 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->Config = $objConfig;
 			$this->Template->ThemeConfig = $objUpdate;
 			$this->Template->changelog_txt = $objUpdate->changelog;
+			$this->Template->local_version = $objConfig->local_version;
 			$this->Template->live_version = $objUpdate->version;
-			
-			// remove version file
-			$objVersionFile = new File('var/pct_theme_version');
-			$objVersionFile->delete();
 
 			return;
 		}
@@ -382,7 +379,14 @@ class ThemeUpdater extends \Contao\BackendModule
 			$objLicense = null;
 			$objLicenseUpdater = null;
 			$objSession->remove( $this->strSession );
-
+						
+			// remove version file
+			$objVersionFile = new File('var/pct_theme_version');
+			if ( $objVersionFile->exists() )
+			{
+				$objVersionFile->delete();
+			}
+			
 			// redirect to the beginning
 			$this->redirect( Backend::addToUrl('status=enter_updater_license',true,array('step')) );
 		}
