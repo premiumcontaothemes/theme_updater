@@ -167,7 +167,7 @@ class ThemeUpdater extends \Contao\BackendModule
 
 		// check if there are updater information for current theme
 		$objUpdate = $objConfig->themes->{\strtolower($this->strTheme)};
-		if( Input::get('status') != 'done' && ($objUpdate === null || \version_compare($objUpdate->version, $objConfig->local_version,'==') ) )
+		if( !\in_array($strStatus, array('done','reset')) && ($objUpdate === null || \version_compare($objUpdate->version, $objConfig->local_version,'==') ) )
 		{
 			$this->redirect( Backend::addToUrl('status=done',true) );
 		}
@@ -388,7 +388,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 			
 			// redirect to the beginning
-			$this->redirect( Backend::addToUrl('status=enter_updater_license',true,array('step')) );
+			$this->redirect( Backend::addToUrl('do=pct_theme_updater',true,array('status','step')) );
 		}
 				
 
