@@ -125,25 +125,32 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 <?php elseif($this->status == 'DONE'): ?>
 <!-- ! DONE, COMPLETED screen -->
 	
+	<?php if($this->errors): ?>
+	<div class="backend_explanation_additional error"><?= implode("\n", $this->errors); ?></div>
+	<?php endif; ?>
+
+	<?php if($this->messages): ?>
+	<div class="backend_explanation_additional"><?= implode("\n", $this->messages); ?></div>
+	<?php endif; ?>
+
+	<?php // up to date
+	if( $this->up_to_date ): ?>
+	<div class="backend_explanation_additional">
+	<p class="checked"><?= $arrLangTpl['up_to_date']; ?></p>
+	<table>
+		<tr class="tl_green">
+			<td>Installation ist aktuell. Version: <?= $this->local_version; ?></td>
+		<tr>
+	</table>
+	</div>
+
+	<?php endif; ?>
 	
-		<?php if($this->errors): ?>
-		<div class="backend_explanation_additional error"><?= implode("\n", $this->errors); ?></div>
-		<?php endif; ?>
-
-		<?php if($this->messages): ?>
-		<div class="backend_explanation_additional"><?= implode("\n", $this->messages); ?></div>
-		<?php endif; ?>
-
-		<?php if( $this->up_to_date ): ?>
-		<p class="checked"><?= $arrLangTpl['up_to_date']; ?></p>
-		<?php endif; ?>
-		
-		<script>
-		localStorage.removeItem('ThemeUpdater.toggler');
-		localStorage.removeItem('ThemeUpdater.checked');
-		</script>
+	<script>
+	localStorage.removeItem('ThemeUpdater.toggler');
+	localStorage.removeItem('ThemeUpdater.checked');
+	</script>
 	
-
 <?php elseif( in_array($this->status, array('VERSION_CONFLICT', 'MIN_REQUIREMENT')) ): ?>
 <!-- ! VERSION_CONFLICT screen -->
 	
