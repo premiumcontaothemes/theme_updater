@@ -144,6 +144,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		$this->Template->ajax_action = 'theme_updater_loading'; // just a simple action status message
 		$this->Template->test_license = $GLOBALS['PCT_THEME_UPDATER']['test_license'];
 		$this->Template->license = $objLicense;
+		$this->Template->up_to_date = false;	
 
 		$blnAjax = false;
 		if(Input::get('action') != '' && Environment::get('isAjaxRequest'))
@@ -169,10 +170,10 @@ class ThemeUpdater extends \Contao\BackendModule
 		$objUpdate = $objConfig->themes->{\strtolower($this->strTheme)};
 		if( !\in_array($strStatus, array('done','reset')) && ($objUpdate === null || \version_compare($objUpdate->version, $objConfig->local_version,'==') ) )
 		{
-			$this->redirect( Backend::addToUrl('status=done',true) );
+			$this->Template->up_to_date = true;	
 		}
 		
-		
+	
 //! status : VERSION_CONFLICT
 
 
@@ -330,7 +331,6 @@ class ThemeUpdater extends \Contao\BackendModule
 					$objThemeLicenseFile->close();
 				}
 
-
 				// redirect to the beginning
 				$this->redirect( Backend::addToUrl('status=ready',true) );
 			}
@@ -346,19 +346,13 @@ class ThemeUpdater extends \Contao\BackendModule
 		{
 			$this->Template->status = 'DONE';
 			$this->Template->breadcrumb = '';
-			$this->Template->up_to_date = false;
 			
 			// no update information for installed product
 			if( $objUpdate === null )
 			{
 				$this->Template->errors = array('No update information found for product: '.$this->strTheme);
 			}
-			else if( \version_compare($objUpdate->version, $objConfig->local_version,'==') )
-			{
-				$this->Template->up_to_date = true;
-				#$this->Template->messages = array('You are up to date');
-			}
-
+			
 			// @var object The whole updater config object
 			$this->Template->Config = $objConfig;
 			$this->Template->ThemeConfig = $objUpdate;
