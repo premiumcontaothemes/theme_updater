@@ -147,6 +147,7 @@ $GLOBALS['PCT_THEME_UPDATER']['breadcrumb_steps'] = array
 		'description' => &$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['manual_adjustment'][1],
 		'href'	=> 'status=manual_adjustment',
 		'isLink'	=> true,
+		'avoid_complete' => true
 	),
 );
 

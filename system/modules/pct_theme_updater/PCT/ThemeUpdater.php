@@ -1219,8 +1219,10 @@ class ThemeUpdater extends \Contao\BackendModule
 				$data['title'] = $data['label'];
 			}
 
+			$avoid_complete =  $data['avoid_complete'] ?? false;
+
 			// active
-			if($strCurrent == $status)
+			if($strCurrent == $status && $avoid_complete === false )
 			{
 				$data['isActive'] = true;
 				$class[] = 'tl_green';
@@ -1228,6 +1230,8 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				$arrSession['BREADCRUMB']['completed'][$k] = true;
 			}
+
+
 
 			// completed
 			if($arrSession['BREADCRUMB']['completed'][$k] === true && $strCurrent != $status)
