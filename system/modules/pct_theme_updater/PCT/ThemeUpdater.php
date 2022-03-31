@@ -145,6 +145,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		$this->Template->test_license = $GLOBALS['PCT_THEME_UPDATER']['test_license'];
 		$this->Template->license = $objLicense;
 		$this->Template->up_to_date = false;	
+		$this->Template->language = System::getContainer()->get('request_stack')->getCurrentRequest()->getLocale();
 
 		$blnAjax = false;
 		if(Input::get('action') != '' && Environment::get('isAjaxRequest'))

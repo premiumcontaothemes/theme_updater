@@ -307,6 +307,16 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 <?php elseif($this->status == 'MANUAL_ADJUSTMENT'): ?>
 <!-- ! MANUAL_ADJUSTMENT -->		
 
+		<?php if( !empty($this->tasks) ): ?>
+		<div class="backend_explanation_additional">
+		<?php if($this->language == 'de'): ?>
+		In diesem Schritt finden Sie eine Auflistung der manuellen Anpassungen des Themes, die für den Update-Abschluss notwendig sind. Automatisierte Updates sind technisch für diese Anpassungen leider nicht möglich. Die Checklisten dienen der Selbstkontrolle und geben eine Übersicht der bereits abgeschlossenen Aufgaben.
+		<?php else: ?>
+		In this step you will find a list of the manual adjustments to the theme that are necessary to complete the update. Unfortunately, automated updates are technically not possible for these adjustments. The checklists are used for self-control and provide an overview of the tasks that have already been completed.
+		<?php endif; ?>
+		</div>
+		<?php endif; ?>
+		
 		<div class="backend_explanation_additional">
 		<table>
 			<tr class="tl_green">
