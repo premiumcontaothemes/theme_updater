@@ -611,8 +611,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					{
 						$objVersionFile->delete();
 					}
-			
-					$this->redirect( Backend::addToUrl('status=done',true,array('step')) );
+					$this->redirect( Backend::addToUrl('status=reset',true,array('step')) );
 				}
 
 				// reload to flush cache
