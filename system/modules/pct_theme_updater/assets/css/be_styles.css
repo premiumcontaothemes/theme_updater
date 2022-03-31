@@ -46,6 +46,9 @@
 #pct_theme_updater tr.not_accepted td,
 #pct_theme_updater tr.not_accepted td a {color: red;}
 
+#pct_theme_updater .agreement_container {font-size: 0.8rem; margin-bottom: 15px; display: flex; line-height: 17px;}
+#pct_theme_updater .agreement_container input {margin-right: 10px;}
+
 #pct_theme_updater .license_information .file {display: none;}
 
 #pct_theme_updater .tl_info,

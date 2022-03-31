@@ -36,7 +36,6 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['domainRegistrationError'] 
 Die Lizenznehmerdomain weicht von der Installationsdomain ab.<br><br>Bitte updaten Sie Ihre Lizenznehmerdomain in Ihrem <a href="https://login.premium-contao-themes.com/" target="_blank" style="text-decoration:underline;">Kundenbereich</a>.<br>
 Die Lizenzbestimmungen, sowie Antworten auf häufig gestellte Fragen (FAQ) finden Sie <a href="https://www.premium-contao-themes.com/lizenzbestimmungen.html" target="_blank" style="text-decoration:underline;">hier</a>.<br><br>
 Mit dem Beginn der Installation "Installation starten" wird die Installationsanfrage von der Domain (%s) in unserem System gespeichert.';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['dataOverwriteMsg']					= 'Hinweis: Bitte sichern Sie Ihre angepassten Templates und Dateien gleicher Namensgebung.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_headline']				= 'Bereit zum Import der Demo-Webseite.'; // title
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_subheadline']			= 'Hinweis: Bestehende Daten gehen verloren. Ihr Benutzerprofil bleibt erhalten.'; // title
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_info']					= 'Der Import der Demo-Webseite (SQL-Template) '; // title
@@ -142,6 +141,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sq
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['version_conflict'] 					= 'Versionskonflikt';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['manual_adjustment'] 					= 'Manuelle Anpassungen';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['done'] 								= 'Zusammenfassung';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['agreement'] 						= 'Ich habe ein aktuelles Backup aller relevanten Daten erstellt, mit dem ich im Bedarfsfall ausgehend die Webseite wiederherstellen kann. Alle Theme-Dateien bis auf templates/ und customize.css/js werden überschrieben. Ein Update in einer Live-Umgebung ist nicht empfohlen. Seamedia® Themes übernimmt keine Haftung oder Gewährleistungen für Updates. (*Pflichtfeld)';
 
 /**
  * Categories

@@ -237,7 +237,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				<td><?= $this->local_version; ?></td>
 			<tr>
 			<tr class="tl_green">
-				<td>Update für Version:</td>
+				<td>Verfügbare Version:</td>
 				<td><?= $this->live_version; ?>, Datum der Veröffentlichung: <?= $this->release_date; ?></td>
 			<tr>
 			<tr>
@@ -261,10 +261,6 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			</div>
 			<?php endif; ?>
 			
-			<div class="tl_message">
-				<p class="tl_error"><?= $arrLangTpl['dataOverwriteMsg']; ?></p>
-			</div>
-			
 			<!-- file information -->
 			<div class="product file"><?= $this->license->file->name; ?></div>	
 		</div>
@@ -281,16 +277,18 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			
 			<div class="tl_formbody_top">
 			</div>
-			
+						
 			<div class="tl_formbody_bottom tl_formbody_submit">
+
 				<div class="tl_submit_container">
+   				<div class="agreement_container">
+   				   <input type="checkbox" name="agreement" id="agreement">
+                  <label for="agreement"><?= $arrLang['BACKEND_DESCRIPTION']['agreement']; ?></label>
+   				</div>
 					<input type="submit" disabled name="install" class="tl_submit" value="<?= $arrLangTpl['submit_install']; ?>">
 				</div>
 			</div>
 			
-			<input type="checkbox" name="agreement" id="agreement">
-			<label for="agreement">Einverstanden</label>
-
 			<script>
 			jQuery(document).ready(function() 
 			{
