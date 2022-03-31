@@ -320,7 +320,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		<div class="backend_explanation_additional">
 		<table>
 			<tr class="tl_green">
-				<td>Manuelle Update-Schritte für Version:</td>
+				<td>Manuelle Update-Schritte für Version:&nbsp;</td>
 				<td><?= $this->live_version; ?></td>
 			<tr>
 			<tr>
