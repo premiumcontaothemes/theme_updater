@@ -37,62 +37,19 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 class SystemCallbacks extends System
 {
 	/**
-	 * Installation completed when contao quits back to the login screen
+	 * Remove backend module for non admins
 	 * 
 	 * Called from [initializeSystem] Hook
 	 */
-	public function installationCompletedStatus()
+	public function initializeSystemCallback()
 	{
-		if(version_compare(VERSION, '4.4', '<') && Config::get('adminEmail') == '')
+		if( TL_MODE == 'BE' )
 		{
-			return;
-		}
-		
-		if(TL_MODE != 'BE' || Environment::get('isAjaxRequest'))
-		{
-			return;
-		}
-		
-		$objUser = BackendUser::getInstance();
-		if((int)$objUser->id > 0)
-		{
-			return;
-		}
-		
-		// load language files
-		System::loadLanguageFile('default');
-		
-		$objSession = System::getContainer()->get('session');
-		$arrSession = $objSession->get('pct_theme_updater');
-		
-		if(Input::get('welcome') != '')
-		{
-			// check if theme data exists
-			if(!isset($GLOBALS['PCT_THEME_UPDATER']['THEMES'][ Input::get('welcome') ]))
+			$objUser = BackendUser::getInstance();
+			if( !$objUser->admin )
 			{
-				$url = \Contao\StringUtil::decodeEntities( Controller::addToUrl('',false,array('welcome')) );
-				$this->redirect($url);
+				unset( $GLOBALS['BE_MOD']['system']['pct_theme_updater'] );
 			}
-			
-			$strName = $GLOBALS['PCT_THEME_UPDATER']['THEMES'][ Input::get('welcome') ]['label'] ?: Input::get('welcome');
-			
-			// add backend message
-			Message::addInfo( sprintf($GLOBALS['TL_LANG']['pct_theme_updater']['completeStatusMessage'],$strName) );
-			
-			return;
-		}
-		
-		if((int)Input::get('completed') == 1 && Input::get('theme') != '')
-		{
-			// remove the tmp.SQL file
-			$strTemplate = Input::get('sql');
-			if(file_exists(TL_ROOT.'/templates/tmp_'.$strTemplate))
-			{
-				Files::getInstance()->delete('templates/tmp_'.$strTemplate);
-			}
-			
-			$url = \Contao\StringUtil::decodeEntities( Controller::addToUrl('welcome='.Input::get('theme'),false,array('completed','theme','sql','referer','rt','ref')) );
-			$this->redirect($url);
 		}
 	}
 	

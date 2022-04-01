@@ -168,5 +168,5 @@ $GLOBALS['BE_MOD']['system']['pct_theme_updater'] = array
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['parseTemplate'][] = array('PCT\ThemeUpdater\SystemCallbacks','injectScripts');
-$GLOBALS['TL_HOOKS']['initializeSystem'][] = array('PCT\ThemeUpdater\SystemCallbacks','installationCompletedStatus');
+$GLOBALS['TL_HOOKS']['initializeSystem'][] = array('PCT\ThemeUpdater\SystemCallbacks','initializeSystemCallback');
 $GLOBALS['TL_HOOKS']['executePostActions'][] = array('PCT\ThemeUpdater\SystemCallbacks','executePostActionsCallback');
