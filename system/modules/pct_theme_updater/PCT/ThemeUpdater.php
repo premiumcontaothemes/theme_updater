@@ -744,7 +744,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				}
 
 				$objFiles = Files::getInstance();
-				$arrIgnore = array('.ds_store');
+				$arrIgnore = array('.ds_store','customize.css','customize.js');
 
 				// folder to copy
 				$arrFolders = scan(TL_ROOT.'/'.$strFolder.'/upload');
