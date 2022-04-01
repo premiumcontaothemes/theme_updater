@@ -737,11 +737,21 @@ class ThemeUpdater extends \Contao\BackendModule
 				$blnCustomizeCss = false;
 				if(file_exists(TL_ROOT.'/'.Config::get('uploadPath').'/cto_layout/css/customize.css'))
 				{
-					if( Files::getInstance()->copy(Config::get('uploadPath').'/cto_layout/css/customize.css',$GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css') )
+					if (Files::getInstance()->copy(Config::get('uploadPath').'/cto_layout/css/customize.css',$GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css') )
 					{
 						$blnCustomizeCss = true;
 					}
+					
 				}
+				$blnCustomizeJs = false;
+				if(file_exists(TL_ROOT.'/'.Config::get('uploadPath').'/cto_layout/scripts/customize.js'))
+				{
+					if( Files::getInstance()->copy(Config::get('uploadPath').'/cto_layout/scripts/customize.js',$GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.js') )
+					{
+						$blnCustomizeJs = true;
+					}
+				}
+				
 
 				$objFiles = Files::getInstance();
 				$arrIgnore = array('.ds_store','customize.css','customize.js');
@@ -773,7 +783,11 @@ class ThemeUpdater extends \Contao\BackendModule
 				// reinstall the customize.css
 				if($blnCustomizeCss)
 				{
-					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css',Config::get('uploadPath') ?: 'files'.'/cto_layout/css/customize.css');
+					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css',Config::get('uploadPath').'/cto_layout/css/customize.css');
+				}
+				if($blnCustomizeJs)
+				{
+					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.js',Config::get('uploadPath').'/cto_layout/scripts/customize.js');
 				}
 				
 				// log errors
