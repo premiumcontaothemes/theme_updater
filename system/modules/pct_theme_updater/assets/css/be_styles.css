@@ -1,4 +1,4 @@
-
+.tl_error {display: none!important}
 .header_toggle_mode {float: left; margin-left:12px; padding:2px 0 3px 18px; background: url('../img/icon.gif') no-repeat left center; }
 .header_toggle_mode.is_active { background: url('../img/icon_off.gif') no-repeat left center; }
 
@@ -50,6 +50,8 @@
 #pct_theme_updater .agreement_container input {margin-right: 10px;}
 
 #pct_theme_updater .license_information .file {display: none;}
+
+#pct_theme_updater .theme_updater_desc {padding: 0 15px 15px 15px; font-size: 0.85rem; line-height: 17px;}
 
 #pct_theme_updater .tl_info,
 #pct_theme_updater .tl_message {margin: 15px;}

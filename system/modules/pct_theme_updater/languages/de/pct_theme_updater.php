@@ -124,6 +124,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['AJAX_INFO']['db_update_modules'] = 'Da
  * Backend descriptions
  */
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['welcome'] 							= 'Willkommen im Theme-Updater ('.\PCT_THEME_UPDATER.')';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['theme_updater_desc'] 				= 'Mit dem Theme Updater kann das Theme inklusive aller Module upgedatet werden. Alle Anpassungen über den ThemeDesigner, sowie in der customize.css/js und im Ordner templates/ bleiben erhalten. Für ein Contao Update empfehlen wir unseren <a href="https://www.premium-contao-themes.com/contao-installer.html" target="_blank">Contao-Installer.</a>';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['ready'] 								= 'Update: <span class="italic">%s</span>';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['loading'] 							= 'Die Daten werden geladen...';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['choose_product'] 					= 'Ihre Lizenz beinhalte mehr als ein Produkt.<br>Bitte wählen sie das zu installierende Produkt aus.';
@@ -141,7 +142,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sq
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['version_conflict'] 					= 'Versionskonflikt';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['manual_adjustment'] 					= 'Manuelle Anpassungen';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['done'] 								= 'Zusammenfassung';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['agreement'] 						= 'Ich habe ein aktuelles Backup aller relevanten Daten erstellt, mit dem ich im Bedarfsfall ausgehend die Webseite wiederherstellen kann. Alle Theme-Dateien bis auf templates/ und customize.css/js werden überschrieben. Ein Update in einer Live-Umgebung ist nicht empfohlen. Seamedia® Themes übernimmt keine Haftung oder Gewährleistungen für Updates. (*Pflichtfeld)';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['agreement'] 						= 'Ich habe ein aktuelles Backup aller relevanten Daten erstellt, mit dem ich im Bedarfsfall ausgehend die Webseite wiederherstellen kann. Alle Theme-Dateien (ausgenommen templates/, customize.css/js, ThemeDesigner-Anpassungen) werden überschrieben. Ein Update in einer Live-Umgebung ist nicht empfohlen. Seamedia® Themes übernimmt keine Haftung oder Gewährleistungen für Updates. (*Pflichtfeld)';
 
 /**
  * Categories
