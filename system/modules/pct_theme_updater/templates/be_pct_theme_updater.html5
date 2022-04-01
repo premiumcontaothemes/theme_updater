@@ -76,6 +76,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 <?php elseif($this->status == 'ENTER_THEME_LICENSE'): ?>
 		<div class="backend_explanation_additional">
 			<?= $arrLangTpl['welcome_info']; ?>
+
 		</div>
 		
 		<form action="<?php echo $this->action; ?>" class="tl_form" method="post">
@@ -229,7 +230,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 
 <?php elseif($this->status == 'READY'): ?>
 <!-- ! READY  -->
-		
+		<div class="theme_updater_desc"><?= $arrLang['BACKEND_DESCRIPTION']['theme_updater_desc']; ?></div>
 		<div class="backend_explanation_additional">
 		<table>
 			<tr class="tl_blue">
