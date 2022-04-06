@@ -1,4 +1,3 @@
-.tl_error {display: none!important}
 .header_toggle_mode {float: left; margin-left:12px; padding:2px 0 3px 18px; background: url('../img/icon.gif') no-repeat left center; }
 .header_toggle_mode.is_active { background: url('../img/icon_off.gif') no-repeat left center; }
 
