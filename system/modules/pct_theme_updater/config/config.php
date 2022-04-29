@@ -150,6 +150,12 @@ $GLOBALS['PCT_THEME_UPDATER']['breadcrumb_steps'] = array
 		'avoid_complete' => true
 	),
 );
+// redirects
+$GLOBALS['PCT_THEME_UPDATER']['routes'] = array
+(
+	'enter_theme_license' => 'enter_updater_license',
+	'enter_updater_license' => 'ready',
+);
 
 
 /**

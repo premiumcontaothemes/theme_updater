@@ -33,9 +33,9 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['label_step']			= 'Schritt:
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_reset'][0]		= 'Neustart'; // linktext
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_reset'][1]		= 'Die Installation erneut beginnen'; // title
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['domainRegistrationError'] = '
-Die Lizenznehmerdomain weicht von der Installationsdomain ab.<br><br>Bitte updaten Sie Ihre Lizenznehmerdomain in Ihrem <a href="https://login.premium-contao-themes.com/" target="_blank" style="text-decoration:underline;">Kundenbereich</a>.<br>
+Die im Kundenbereich hinterlegte Lizenznehmerdomain des Themes weicht von der Domain <span style="font-weight:bold">%s</span> ab.<br><br>Bitte updaten Sie Ihre Lizenznehmerdomain (Bestellnummer <span style="font-weight:bold">%s</span>) in Ihrem <a href="https://login.premium-contao-themes.com/" target="_blank" style="text-decoration:underline;">Kundenbereich</a>.<br>
 Die Lizenzbestimmungen, sowie Antworten auf häufig gestellte Fragen (FAQ) finden Sie <a href="https://www.premium-contao-themes.com/lizenzbestimmungen.html" target="_blank" style="text-decoration:underline;">hier</a>.<br><br>
-Mit dem Beginn der Installation "Installation starten" wird die Installationsanfrage von der Domain (%s) in unserem System gespeichert.';
+Mit dem Beginn der Update-Routine wird die Anfrage von der Domain (%s) in unserem System gespeichert.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_headline']				= 'Bereit zum Import der Demo-Webseite.'; // title
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_subheadline']			= 'Hinweis: Bestehende Daten gehen verloren. Ihr Benutzerprofil bleibt erhalten.'; // title
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_info']					= 'Der Import der Demo-Webseite (SQL-Template) '; // title

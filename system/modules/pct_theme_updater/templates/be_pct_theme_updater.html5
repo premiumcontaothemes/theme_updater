@@ -35,6 +35,11 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 
 <!-- ! UPDATER_LICENSE, WELCOME screen -->
 <?php if($this->status == 'ENTER_UPDATER_LICENSE' || $this->status == 'WELCOME'): ?>
+		
+		<?php if($this->errors): ?>
+		<div class="backend_explanation_additional error"><?= implode("\n", $this->errors); ?></div>
+		<?php endif; ?>
+	
 		<div class="backend_explanation_additional">
 			<?= $arrLangTpl['enter_updater_license_info']; ?>
 		</div>
@@ -87,9 +92,9 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			<div class="tl_formbody_top">
 				<div class="input_wrapper licence_check">
 					<div class="widget field w50 license">
-						<h3><?= $arrLangTpl['input_license'][0]; ?></h3>
+						<h3><?= $arrLangTpl['input_license_theme'][0]; ?></h3>
 						<input type="text" name="license" value="<?= $this->test_license[0]; ?>" class="tl_text" placeholder="">
-						<p class="tl_help tl_tip"><?= $arrLangTpl['input_license'][1]; ?></p>
+						<p class="tl_help tl_tip"><?= $arrLangTpl['input_license_theme'][1]; ?></p>
 					</div>
 					<div class="widget field w50 email">
 						<h3><?= $arrLangTpl['input_email'][0]; ?></h3>

@@ -192,7 +192,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		// check : UPDATER-LICENSE FILE
 		if( $objUpdaterLicense->status != 'OK' && !in_array($strStatus,array('welcome','enter_updater_license','enter_theme_license','reset','error','version_conflict')))
 		{
-			$this->redirect( Backend::addToUrl('status=enter_updater_license',true) );
+			$this->redirect( Backend::addToUrl('status=enter_theme_license',true) );
 		}
 		
 		if( Input::get('status') == 'enter_updater_license' )
@@ -200,6 +200,12 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'ENTER_UPDATER_LICENSE';
 			$this->Template->breadcrumb = '';
 			
+			// theme license has domain errors
+			if( $objLicense->registration->hasError )
+			{
+				$this->Template->errors = array(\sprintf($GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['domainRegistrationError'],Environment::get('host'),$objLicense->key,Environment::get('host')) );
+			}
+		
 			$strLicense = '';
 			$objLicenseFile = new File('var/pct_license_themeupdater');
 			if( $objLicenseFile->exists() )
@@ -263,7 +269,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrSession['updater_license'] = $objUpdaterLicense;
 				$objSession->set($this->strSession,$arrSession);
 
-				$this->redirect( Backend::addToUrl('status=enter_theme_license',true) );
+				$this->redirect( Backend::addToUrl('status='.$GLOBALS['PCT_THEME_UPDATER']['routes'][$strStatus],true) );
 			}
 
 			// elapsed
@@ -298,6 +304,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					'email'		=> 'theme_updater',
 				);
 			}
+			
 
 			// check license from formular
 			if(Input::post('license') != '' && Input::post('email') != '' && Input::post('FORM_SUBMIT') == $strForm)
@@ -333,7 +340,8 @@ class ThemeUpdater extends \Contao\BackendModule
 				}
 
 				// redirect to the beginning
-				$this->redirect( Backend::addToUrl('status=ready',true) );
+				#$this->redirect( Backend::addToUrl('status=ready',true) );
+				$this->redirect( Backend::addToUrl('status='.$GLOBALS['PCT_THEME_UPDATER']['routes'][$strStatus],true) );
 			}
 
 			return;
@@ -1321,7 +1329,7 @@ class ThemeUpdater extends \Contao\BackendModule
 	{
 		$strRequest = \html_entity_decode($strUrl.(count($arrParams) > 0 ? '?'.\http_build_query($arrParams) : '') );
 		// log
-		System::log('Sending license request: '.$strRequest,__METHOD__,\TL_GENERAL);
+		System::log('Sending request: '.$strRequest,__METHOD__,\TL_GENERAL);
 		// validate the license
 		$curl = \curl_init();
 		\curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
