@@ -19,16 +19,9 @@ namespace PCT\ThemeUpdater;
  * Imports 
  */
 use Contao\System;
-use Contao\Environment;
 use Contao\BackendUser;
 use Contao\Input;
-use Contao\Config;
-use Contao\Controller;
-use Contao\Message;
-use Contao\Files;
-use Contao\Session;
-use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+
 
 /**
  * Class file
