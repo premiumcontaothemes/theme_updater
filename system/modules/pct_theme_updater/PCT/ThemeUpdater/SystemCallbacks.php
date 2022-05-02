@@ -50,6 +50,13 @@ class SystemCallbacks extends System
 			{
 				unset( $GLOBALS['BE_MOD']['system']['pct_theme_updater'] );
 			}
+
+			// load jquery in theme updater backend module
+			if( Input::get('do') == 'pct_theme_updater' && !isset($GLOBALS['PCT_AUTOGRID']['assetsLoaded']) )
+			{
+				$GLOBALS['TL_JAVASCRIPT'][] = '//code.jquery.com/jquery-3.6.0.min.js';
+				$GLOBALS['TL_HEAD'][] = '<script>jQuery.noConflict();</script>';
+			}
 		}
 	}
 	
