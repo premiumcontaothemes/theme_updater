@@ -48,7 +48,6 @@ class SystemCallbacks extends System
 			if( Input::get('do') == 'pct_theme_updater' && !isset($GLOBALS['PCT_AUTOGRID']['assetsLoaded']) )
 			{
 				$GLOBALS['TL_JAVASCRIPT'][] = '//code.jquery.com/jquery-3.6.0.min.js';
-				$GLOBALS['TL_HEAD'][] = '<script>jQuery.noConflict();</script>';
 			}
 		}
 	}
@@ -66,6 +65,11 @@ class SystemCallbacks extends System
 		{
 			$objScripts = new \Contao\BackendTemplate('be_js_pct_theme_updater');
 			$objTemplate->javascripts .= $objScripts->parse();
+			
+			if( Input::get('do') == 'pct_theme_updater' && !isset($GLOBALS['PCT_AUTOGRID']['assetsLoaded']) )
+			{
+				$objTemplate->javascripts .= '<script>jQuery.noConflict();</script>';
+			}			
 		}
 	}
 
