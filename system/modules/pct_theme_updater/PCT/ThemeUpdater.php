@@ -1061,8 +1061,11 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->live_version = $objUpdate->version;
 			$this->Template->changelog_txt = $objUpdate->changelog;
 			
-			$objDate = new Date($objUpdate->release,'Y-m-d');
-			$this->Template->release_date = \Contao\Date::parse('d.m.Y',$objDate->tstamp);
+			if( isset($objUpdate->release) )
+			{
+				$objDate = new Date($objUpdate->release,'Y-m-d');
+				$this->Template->release_date = \Contao\Date::parse('d.m.Y',$objDate->tstamp);
+			}
 
 			if(Input::post('install') != '' && Input::post('FORM_SUBMIT') == $strForm)
 			{
