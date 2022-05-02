@@ -264,7 +264,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			<!-- wrong domain registration -->
 			<?php if($this->hasRegistrationError): ?>
 			<div class="tl_message">
-				<p class="tl_error"><?= sprintf($arrLangTpl['domainRegistrationError'],$this->license->domain); ?></p>
+				<p class="tl_error"><?= sprintf($arrLangTpl['domainRegistrationError'],Environment::get('host'),$this->license->domain,Environment::get('host')); ?></p>
 			</div>
 			<?php endif; ?>
 			
