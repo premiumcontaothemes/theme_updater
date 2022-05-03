@@ -16,28 +16,41 @@ Titel: mmenu_middle | ID: mmenu_middle | Template: block_section | Position: Man
 
    <table class="documentation_inside table_pagelayouts">
       <tr>
-         <th class="t_col1">Einbinden/Löschen:</th>
+         <th class="t_col1">Aufgabe:</th>
          <th class="t_col2">Frontend-Modul Titel:</th>
          <th class="t_col3">Layoutbereich:</th>
       </tr>
       
       <tr>
-         <td>Löschen</td>
-         <td>Nav: Mobnav Horizontal [body_bottom]</td>
-         <td>-</td>
-      </tr>
-      
-      <tr>
-         <td>Neu einbinden</td>
+         <td>Layoutbereich ändern</td>
          <td>Nav: Mobnav Horizontal</td>
-         <td>mmenu_middle</td>  
+         <td>mmenu_middle</td>
       </tr>
       
+       <tr>
+         <td>Layoutbereich ändern</td>
+         <td>1 Themesetting: Header: Langswitcher [mmenu_bottom]</td>
+         <td>mmenu_top</td>  
+      </tr>
+            
        <tr>
          <td>Neu einbinden</td>
          <td>Nav: Mobnav Vertical</td>
          <td>mmenu_middle</td>  
       </tr>
+      
+      <tr>
+         <td>Neu einbinden</td>
+         <td>1 Themesetting: Mobnav (Customnav Bottom)</td>
+         <td>mmenu_bottom</td>  
+      </tr>
+      
+      <tr>
+         <td>Sortierung anpassen</td>
+         <td>Alle Module in mmenu_top, mmenu_middle, mmenu_bottom</td>
+         <td>Siehe Screenshot unten</td>  
+      </tr>
+      
       
    </table>
    <br>
