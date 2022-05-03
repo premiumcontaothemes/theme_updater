@@ -220,7 +220,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 
 			$objThemeLicenseFile = new File('var/pct_license');
-			if( $objLicenseFile->exists() )
+			if( $objThemeLicenseFile->exists() )
 			{
 				$strThemeLicense = \trim( $objThemeLicenseFile->getContent() ?: '' );
 			}
