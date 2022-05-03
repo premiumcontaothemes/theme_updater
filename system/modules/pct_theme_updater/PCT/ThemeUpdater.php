@@ -173,7 +173,13 @@ class ThemeUpdater extends \Contao\BackendModule
 		{
 			$this->Template->up_to_date = true;	
 		}
-		
+
+		if($objLicense->status == 'ACCESS_DENIED' && Input::get('status') != 'access_denied' )
+		{
+			$this->redirect( Backend::addToUrl('status=access_denied',true) );
+			return;
+		}
+
 	
 //! status : VERSION_CONFLICT
 
@@ -233,7 +239,7 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			// registration logic
 			$strRegistration = $strThemeLicense.'___'.StringUtil::decodeEntities( Environment::get('host') );
-
+			
 			// validate
 			$arrParams = array
 			(
@@ -301,11 +307,12 @@ class ThemeUpdater extends \Contao\BackendModule
 				(
 					'domain'	=> StringUtil::decodeEntities( Environment::get('host') ),
 					'key'		=> $strLicense,
-					'email'		=> 'theme_updater',
 				);
+
+				// validation
+				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
 			}
 			
-
 			// check license from formular
 			if(Input::post('license') != '' && Input::post('email') != '' && Input::post('FORM_SUBMIT') == $strForm)
 			{
@@ -320,10 +327,10 @@ class ThemeUpdater extends \Contao\BackendModule
 				{
 					$arrParams['product'] = Input::post('product');
 				}
+			
+				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/api.php',$arrParams) );
 			}
 			
-			// request license
-			$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/api.php',$arrParams) );
 			// license is ok
 			if( $objLicense->status == 'OK' )
 			{
