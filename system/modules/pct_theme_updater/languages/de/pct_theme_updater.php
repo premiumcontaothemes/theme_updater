@@ -23,16 +23,15 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_install'] 		= 'Upda
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_info'] 	= 'SQL-Template-Datei: %s';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_email'][0] 		= 'Bestell-E-Mail-Adresse';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_email'][1] 		= 'Geben Sie die E-Mail Adresse Ihres Kundenaccounts an.';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license'][0] 	= 'Tragen Sie Ihre Bestellnummer und Bestell-E-Mail-Adresse Ihrer Theme-Updater Bestellung ein.';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license'][0] 	= 'Lizenzschlüssel / Bestellnummer (Theme-Updater)';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license'][1] 	= 'Die Bestellnummer finden Sie auf Ihrer Rechnung oder in Ihrem Kundenaccount.';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license_theme'][0] 	= 'Tragen Sie Ihre Bestellnummer und Bestell-E-Mail-Adresse Ihrer Eclipse X / Eclipse X+CC Bestellung ein';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license_theme'][0] 	= 'Bestellnummer (EclipseX oder EclipseX + CustomCatalog Bundle)';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license_theme'][1] 	= 'Die Bestellnummer finden Sie auf Ihrer Rechnung oder in Ihrem Kundenaccount.';
 
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['label_status']		= 'Status: %s';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['label_step']			= 'Schritt: %s';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_reset'][0]		= 'Neustart'; // linktext
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_reset'][1]		= 'Die Installation erneut beginnen'; // title
-
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['domainRegistrationError'] = '
 Die im Kundenbereich hinterlegte Lizenznehmerdomain des Themes weicht von der Domain <span style="font-weight:bold">%s</span> ab.<br><br>Bitte updaten Sie Ihre Lizenznehmerdomain (Bestellnummer <span style="font-weight:bold">%s</span>) in Ihrem <a href="https://login.premium-contao-themes.com/" target="_blank" style="text-decoration:underline;">Kundenbereich</a>.<br>
 Die Lizenzbestimmungen, sowie Antworten auf häufig gestellte Fragen (FAQ) finden Sie <a href="https://www.premium-contao-themes.com/lizenzbestimmungen.html" target="_blank" style="text-decoration:underline;">hier</a>.<br><br>
@@ -44,13 +43,13 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_sql_template_import
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['choose_product_info']					= 'Bitte wählen Sie das Produkt aus, das installiert werden soll.'; // title
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['product_select_blankOption']			= 'Produkt wählen...'; // title
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_systemlog'][0] 				= 'Gehe zu Systemlog...';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['welcome_info'] 						= 'Tragen Sie Ihre Bestellnummer und Bestell-E-Mail-Adresse ein und klicken Sie "Lizenz abfragen". Anschließend können Sie den 1-Click-Updater starten. Die Theme-Daten werden automatisch vom Premium Contao Themes Server auf Ihren Server geladen und anschließend installiert.';		
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['welcome_info'] 						= 'Tragen Sie Ihre Bestellnummer und Bestell-E-Mail-Adresse Ihrer EclipseX / EclipseX + CustomCatalog Bestellung ein und klicken Sie "Lizenz abfragen". Nach Prüfung Ihrer Lizenzinformationen werden Sie weitergeleitet.';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_import_info'] 			= 'Der SQL-Import kann einige Minuten in Anspruch nehmen. Nach erfolgreichem Import werden Sie zum Contao-Login weitergeleitet.';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['access_denied'] 					= 'Meldung: %s';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['errors'] 							= 'Fehler: %s';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['not_supported'] 					= 'Der Updater unterstützt die folgenden Produkte: %s';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_installer_buy'] 			= 'Contao Installer';		
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['enter_updater_license_info'] 		= 'Tragen Sie Ihre Bestellnummer für den Theme-Updater ein.';		
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['enter_updater_license_info'] 		= 'Tragen Sie Ihre Bestellnummer Ihrer Theme-Updater Bestellung ein und klicken Sie auf "Lizenz abfragen".<br>Nach Prüfung Ihrer Lizenzinformationen werden Sie weitergeleitet und können den 1-Click-Updater starten.<br>Die Theme-Daten werden automatisch vm Premium Contao Themes Server auf Ihren Server geladen und anschließend installiert.';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['enter_theme_license_info'] 		= 'Tragen Sie Ihre Bestellnummer für das Theme ein.';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_license_buy'] 				= 'Theme Updater Lizenz erwerben';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['task']		= 'Aufgabe';

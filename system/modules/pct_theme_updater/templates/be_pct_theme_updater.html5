@@ -78,11 +78,10 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			</div>
 		</form>
 
-<!-- ! WELCOME screen -->
+<!-- ! WELCOME, ENTER THEME LICENSE screen -->
 <?php elseif($this->status == 'ENTER_THEME_LICENSE'): ?>
 		<div class="backend_explanation_additional">
 			<?= $arrLangTpl['welcome_info']; ?>
-
 		</div>
 		
 		<form action="<?php echo $this->action; ?>" class="tl_form" method="post">
