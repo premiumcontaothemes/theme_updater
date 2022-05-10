@@ -283,7 +283,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				$this->redirect( Backend::addToUrl('status='.$GLOBALS['PCT_THEME_UPDATER']['routes'][$strStatus],true) );
 			}
 
-			// elapsed
+			// access_denied
 			if( $objUpdaterLicense->status == 'ACCESS_DENIED' )
 			{
 				$arrSession['errors'] = array($objUpdaterLicense->error);
@@ -362,6 +362,14 @@ class ThemeUpdater extends \Contao\BackendModule
 				// redirect to the beginning
 				#$this->redirect( Backend::addToUrl('status=ready',true) );
 				$this->redirect( Backend::addToUrl('status='.$GLOBALS['PCT_THEME_UPDATER']['routes'][$strStatus],true) );
+			}
+
+			// access_denied
+			if( $objUpdaterLicense->status == 'ACCESS_DENIED' )
+			{
+				$arrSession['errors'] = array($objLicense->error);
+				$objSession->set($this->strSession,$arrSession);
+				$this->redirect( Backend::addToUrl('status=access_denied',true) );
 			}
 
 			return;
