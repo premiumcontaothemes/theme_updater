@@ -174,13 +174,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->up_to_date = true;	
 		}
 
-		if( ($objLicense->status == 'ACCESS_DENIED' || $objUpdaterLicense->status == 'ACCESS_DENIED') && Input::get('status') != 'access_denied' )
-		{
-			$this->redirect( Backend::addToUrl('status=access_denied',true) );
-			return;
-		}
-
-	
+		
 //! status : VERSION_CONFLICT
 
 
@@ -286,7 +280,11 @@ class ThemeUpdater extends \Contao\BackendModule
 			// access_denied
 			if( $objUpdaterLicense->status == 'ACCESS_DENIED' )
 			{
+				$arrSession['status'] = $objUpdaterLicense->status;
 				$arrSession['errors'] = array($objUpdaterLicense->error);
+				$arrSession['license'] = $objUpdaterLicense;
+				$arrSession['key'] = $strLicense;
+				$arrSession['license_type'] = 'theme_updater';
 				$objSession->set($this->strSession,$arrSession);
 				$this->redirect( Backend::addToUrl('status=access_denied',true) );
 			}
@@ -367,7 +365,11 @@ class ThemeUpdater extends \Contao\BackendModule
 			// access_denied
 			if( $objLicense->status == 'ACCESS_DENIED' )
 			{
+				$arrSession['status'] = $objLicense->status;
 				$arrSession['errors'] = array($objLicense->error);
+				$arrSession['key'] = $strLicense;
+				$arrSession['license'] = $objLicense;
+				$arrSession['license_type'] = 'theme';
 				$objSession->set($this->strSession,$arrSession);
 				$this->redirect( Backend::addToUrl('status=access_denied',true) );
 			}
@@ -482,7 +484,11 @@ class ThemeUpdater extends \Contao\BackendModule
 		if($objLicense->status == 'ACCESS_DENIED' || Input::get('status') == 'access_denied')
 		{
 			$this->Template->status = 'ACCESS_DENIED';
-			$this->Template->errors = $arrSession['errors'];
+			#$this->Template->errors = $arrSession['errors'];
+			
+			// log errers
+			System::log( \implode(',',$arrSession['errors']),__METHOD__,\TL_ERROR );
+			
 			return;
 		}
 

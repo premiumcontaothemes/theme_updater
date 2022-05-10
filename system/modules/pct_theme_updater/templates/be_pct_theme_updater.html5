@@ -706,8 +706,16 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 		<?php endif; ?>
 
 <?php elseif($this->status == 'NOT_ACCEPTED' || $this->status == 'ACCESS_DENIED'): ?>
-<!-- ! LICENSE NOT_ACCEPTED... -->
+<!-- ! LICENSE NOT_ACCEPTED, ACCESS DENIED... -->
 		
+		<div class="backend_explanation_additional">
+		<?php if($this->language == 'de'): ?>
+		Bitte prüfen Sie die Bestellnummer und die hinterlegte Lizenznehmerdomain in Ihrem Kundenbereich.
+		<?php else: ?>
+		Please check the order number and the registered license domain in your customer area.
+		<?php endif; ?>
+		</div>
+
 		<?php if($this->errors): ?>
 		<div class="backend_explanation_additional error"><?= implode("\n", $this->errors); ?></div>
 		<?php endif; ?>
