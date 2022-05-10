@@ -709,8 +709,11 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 <?php elseif($this->status == 'NOT_ACCEPTED' || $this->status == 'ACCESS_DENIED'): ?>
 <!-- ! LICENSE NOT_ACCEPTED... -->
 		
-		<p class="backend_explanation_additional error"><?= sprintf($arrLangTpl['access_denied'], $this->license->error); ?></p>
-		<p class="tl_message header_back"><a class="reset" href="<?= Backend::addToUrl('status=reset',true,array('status','step')); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
+		<?php if($this->errors): ?>
+		<div class="backend_explanation_additional error"><?= implode("\n", $this->errors); ?></div>
+		<?php endif; ?>
+		
+		<p class="tl_message header_back"><a class="reset" href="<?= Controller::getReferer(); ?>" title="<?= $GLOBALS['TL_LANG']['MSC']['backBTTitle']; ?>"><?= $GLOBALS['TL_LANG']['MSC']['backBT']; ?></a></p>
 
 <?php elseif($this->status == 'NOT_SUPPORTED'): ?>
 <!-- ! THEME NOT SUPPORTED... -->

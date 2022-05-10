@@ -32,6 +32,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['label_status']		= 'Status:
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['label_step']			= 'Schritt: %s';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_reset'][0]		= 'Neustart'; // linktext
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_reset'][1]		= 'Die Installation erneut beginnen'; // title
+
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['domainRegistrationError'] = '
 Die im Kundenbereich hinterlegte Lizenznehmerdomain des Themes weicht von der Domain <span style="font-weight:bold">%s</span> ab.<br><br>Bitte updaten Sie Ihre Lizenznehmerdomain (Bestellnummer <span style="font-weight:bold">%s</span>) in Ihrem <a href="https://login.premium-contao-themes.com/" target="_blank" style="text-decoration:underline;">Kundenbereich</a>.<br>
 Die Lizenzbestimmungen, sowie Antworten auf häufig gestellte Fragen (FAQ) finden Sie <a href="https://www.premium-contao-themes.com/lizenzbestimmungen.html" target="_blank" style="text-decoration:underline;">hier</a>.<br><br>
@@ -128,7 +129,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['theme_updater_d
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['ready'] 								= 'Update: <span class="italic">%s</span>';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['loading'] 							= 'Die Daten werden geladen...';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['choose_product'] 					= 'Ihre Lizenz beinhalte mehr als ein Produkt.<br>Bitte wählen sie das zu installierende Produkt aus.';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['error'] 								= 'Während der Installation sind Fehler aufgetreten.';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['error'] 								= 'Es sind Fehler aufgetreten.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['file_not_exists'] 					= 'Datei existiert nicht mehr';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['access_denied'] 						= 'Die Lizenz konnte nicht validiert werden.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['not_supported'] 						= 'Das gewählte Produkt wird nicht unterstützt.';

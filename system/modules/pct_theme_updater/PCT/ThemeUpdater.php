@@ -174,7 +174,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->up_to_date = true;	
 		}
 
-		if($objLicense->status == 'ACCESS_DENIED' && Input::get('status') != 'access_denied' )
+		if( ($objLicense->status == 'ACCESS_DENIED' || $objUpdaterLicense->status == 'ACCESS_DENIED') && Input::get('status') != 'access_denied' )
 		{
 			$this->redirect( Backend::addToUrl('status=access_denied',true) );
 			return;
@@ -196,7 +196,7 @@ class ThemeUpdater extends \Contao\BackendModule
 
 
 		// check : UPDATER-LICENSE FILE
-		if( $objUpdaterLicense->status != 'OK' && !in_array($strStatus,array('welcome','enter_updater_license','enter_theme_license','reset','error','version_conflict')))
+		if( $objUpdaterLicense->status != 'OK' && !in_array($strStatus,array('welcome','access_denied','enter_updater_license','enter_theme_license','reset','error','version_conflict')))
 		{
 			$this->redirect( Backend::addToUrl('status=enter_theme_license',true) );
 		}
@@ -247,8 +247,13 @@ class ThemeUpdater extends \Contao\BackendModule
 				'key'		=> $strLicense,
 			);
 
-			// request license
-			$objUpdaterLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
+			$objUpdaterLicense = new stdClass;
+			if( empty($strLicense) === false )
+			{
+				// request license
+				$objUpdaterLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
+			}
+			
 			// create license file, if not exists
 			if( !$objLicenseFile->exists() && $objUpdaterLicense->status == 'OK' )
 			{
@@ -276,6 +281,14 @@ class ThemeUpdater extends \Contao\BackendModule
 				$objSession->set($this->strSession,$arrSession);
 
 				$this->redirect( Backend::addToUrl('status='.$GLOBALS['PCT_THEME_UPDATER']['routes'][$strStatus],true) );
+			}
+
+			// elapsed
+			if( $objUpdaterLicense->status == 'ACCESS_DENIED' )
+			{
+				$arrSession['errors'] = array($objUpdaterLicense->error);
+				$objSession->set($this->strSession,$arrSession);
+				$this->redirect( Backend::addToUrl('status=access_denied',true) );
 			}
 
 			// elapsed
@@ -450,7 +463,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		if($objLicense->status == 'ACCESS_DENIED' || Input::get('status') == 'access_denied')
 		{
 			$this->Template->status = 'ACCESS_DENIED';
-			
+			$this->Template->errors = $arrSession['errors'];
 			return;
 		}
 
