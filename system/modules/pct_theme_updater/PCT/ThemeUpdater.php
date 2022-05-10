@@ -411,6 +411,17 @@ class ThemeUpdater extends \Contao\BackendModule
 			$objLicenseUpdater = null;
 			$objSession->remove( $this->strSession );
 			
+			$objFile = new File('var/pct_license');
+			if( $objFile->exists() )
+			{
+				$objFile->delete();
+			}
+			$objFile = new File('var/pct_license_themeupdater');
+			if( $objFile->exists() )
+			{
+				$objFile->delete();
+			}
+
 			// redirect to the beginning
 			$this->redirect( Backend::addToUrl('do=pct_theme_updater',true,array('status','step')) );
 		}
