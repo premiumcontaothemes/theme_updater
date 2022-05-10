@@ -200,6 +200,9 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'ENTER_UPDATER_LICENSE';
 			$this->Template->breadcrumb = '';
 			
+			// reset updater license 
+			$objUpdaterLicense = null;
+
 			// theme license has domain errors
 			if( $objLicense->registration->hasError )
 			{
@@ -241,7 +244,6 @@ class ThemeUpdater extends \Contao\BackendModule
 				'key'		=> $strLicense,
 			);
 
-			$objUpdaterLicense = new stdClass;
 			if( empty($strLicense) === false )
 			{
 				// request license
@@ -249,13 +251,13 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 			
 			// create license file, if not exists
-			if( !$objLicenseFile->exists() && $objUpdaterLicense->status == 'OK' )
+			if( !$objLicenseFile->exists() && $objUpdaterLicense !== null && $objUpdaterLicense->status == 'OK' )
 			{
 				$objLicenseFile->write($objUpdaterLicense->key);
 				$objLicenseFile->close();
 			}
 			// create theme license file, if not exists
-			if( !$objThemeLicenseFile->exists() && $objUpdaterLicense->status == 'OK' )
+			if( !$objThemeLicenseFile->exists() && $objUpdaterLicense !== null && $objUpdaterLicense->status == 'OK' )
 			{
 				$objThemeLicenseFile->write($strThemeLicense);
 				$objThemeLicenseFile->close();
@@ -267,7 +269,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->themeLicenseFileExists = $objThemeLicenseFile->exists();
 					
 			// redirect to theme license
-			if( $objUpdaterLicense->status == 'OK' )
+			if( $objUpdaterLicense !== null && $objUpdaterLicense->status == 'OK' )
 			{	
 				// update license session
 				$arrSession['updater_status'] = $objUpdaterLicense->status;
@@ -278,11 +280,11 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 
 			// access_denied
-			if( $objUpdaterLicense->status == 'ACCESS_DENIED' )
+			if( $objUpdaterLicense !== null && $objUpdaterLicense->status == 'ACCESS_DENIED' )
 			{
 				$arrSession['status'] = $objUpdaterLicense->status;
 				$arrSession['errors'] = array($objUpdaterLicense->error);
-				$arrSession['license'] = $objUpdaterLicense;
+				$arrSession['updater_license'] = $objUpdaterLicense;
 				$arrSession['key'] = $strLicense;
 				$arrSession['license_type'] = 'theme_updater';
 				$objSession->set($this->strSession,$arrSession);
@@ -290,9 +292,13 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 
 			// elapsed
-			if( $objUpdaterLicense->status == 'ELAPSED' )
+			if( $objUpdaterLicense !== null && $objUpdaterLicense->status == 'ELAPSED' )
 			{
+				$arrSession['status'] = $objUpdaterLicense->status;
 				$arrSession['errors'] = array($objUpdaterLicense->error);
+				$arrSession['updater_license'] = $objUpdaterLicense;
+				$arrSession['key'] = $strLicense;
+				$arrSession['license_type'] = 'theme_updater';
 				$objSession->set($this->strSession,$arrSession);
 				$this->redirect( Backend::addToUrl('status=error',true) );
 			}
@@ -308,6 +314,9 @@ class ThemeUpdater extends \Contao\BackendModule
 		{	
 			$this->Template->status = 'ENTER_THEME_LICENSE';
 			$this->Template->breadcrumb = '';
+			
+			// reset any license objects before
+			$objLicense = null;
 
 			// check if license file exists and if so, validate the license
 			$objLicenseFile = new File('var/pct_license');
@@ -343,7 +352,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 			
 			// license is ok
-			if( $objLicense->status == 'OK' )
+			if( $objLicense !== null && $objLicense->status == 'OK' )
 			{
 				// store the api response in the session
 				$arrSession['status'] = $objLicense->status;
@@ -363,7 +372,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 
 			// access_denied
-			if( $objLicense->status == 'ACCESS_DENIED' )
+			if( $objLicense !== null && $objLicense->status == 'ACCESS_DENIED' )
 			{
 				$arrSession['status'] = $objLicense->status;
 				$arrSession['errors'] = array($objLicense->error);
@@ -429,21 +438,6 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 				
 
-//! status : NOT_SUPPORTED
-
-		
-		if($objLicense->status == 'NOT_SUPPORTED' && Input::get('status') != 'not_supported')
-		{
-			// redirect to the not supported page
-			$this->redirect( Backend::addToUrl('status=not_supported',true,array('step')) );
-		}
-		
-		if(Input::get('status') == 'not_supported')
-		{
-			$this->Template->status = 'NOT_SUPPORTED';
-			return;
-		}
-
 
 //! status : ERROR
 
@@ -481,11 +475,11 @@ class ThemeUpdater extends \Contao\BackendModule
 //! status : ACCESS_DENIED
 
 
-		if($objLicense->status == 'ACCESS_DENIED' || Input::get('status') == 'access_denied')
+		if( Input::get('status') == 'access_denied' )
 		{
 			$this->Template->status = 'ACCESS_DENIED';
 			#$this->Template->errors = $arrSession['errors'];
-			
+
 			// log errers
 			System::log( \implode(',',$arrSession['errors']),__METHOD__,\TL_ERROR );
 			
