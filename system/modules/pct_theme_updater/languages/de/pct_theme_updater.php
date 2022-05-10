@@ -23,9 +23,9 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_install'] 		= 'Upda
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_info'] 	= 'SQL-Template-Datei: %s';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_email'][0] 		= 'Bestell-E-Mail-Adresse';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_email'][1] 		= 'Geben Sie die E-Mail Adresse Ihres Kundenaccounts an.';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license'][0] 	= 'Lizenzschlüssel / Bestellnummer (Theme-Updater)';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license'][0] 	= 'Tragen Sie Ihre Bestellnummer und Bestell-E-Mail-Adresse Ihrer Theme-Updater Bestellung ein.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license'][1] 	= 'Die Bestellnummer finden Sie auf Ihrer Rechnung oder in Ihrem Kundenaccount.';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license_theme'][0] 	= 'Lizenzschlüssel / Bestellnummer (Theme)';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license_theme'][0] 	= 'Tragen Sie Ihre Bestellnummer und Bestell-E-Mail-Adresse Ihrer Eclipse X / Eclipse X+CC Bestellung ein';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['input_license_theme'][1] 	= 'Die Bestellnummer finden Sie auf Ihrer Rechnung oder in Ihrem Kundenaccount.';
 
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['label_status']		= 'Status: %s';
