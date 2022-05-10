@@ -365,7 +365,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 
 			// access_denied
-			if( $objUpdaterLicense->status == 'ACCESS_DENIED' )
+			if( $objLicense->status == 'ACCESS_DENIED' )
 			{
 				$arrSession['errors'] = array($objLicense->error);
 				$objSession->set($this->strSession,$arrSession);
