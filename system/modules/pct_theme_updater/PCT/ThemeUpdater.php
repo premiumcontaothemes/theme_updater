@@ -659,7 +659,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					{
 						$objVersionFile->delete();
 					}
-					$this->redirect( Backend::addToUrl('status=reset',true,array('step')) );
+					$this->redirect( Backend::addToUrl('do=pct_theme_updater',true,array('step','status')) );
 				}
 
 				// reload to flush cache
