@@ -629,35 +629,6 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				<?= $this->breadcrumb; ?>
 			<?php endif; ?>
 		</div>
-		
-<?php elseif($this->status == 'INSTALLATION' && $this->step == 'SQL_TEMPLATE_IMPORT'): ?>
-<!-- ! INSTALLATION : STEP UNZIP (3.2): SQL_TEMPLATE : IMPORT -->		
-		
-		<div class="backend_explanation_additional">
-			<?= $arrLangTpl['sql_template_import_info']; ?>
-		</div>
-		
-		<div class="tl_formbody_middle">
-			<?php if($this->breadcrumb): ?>
-				<?= $this->breadcrumb; ?>
-			<?php endif; ?>
-		</div>
-		
-		<?php if(!$this->ajax_running): ?>
-		<!-- start the file coping via ajax -->
-		<script type="text/javascript">
-		<?php 
-		#$url = StringUtil::decodeEntities( \Backend::addToUrl('status=completed&theme='.$this->theme) );
-		$url = StringUtil::decodeEntities( Environment::get('base').'contao?completed=1&theme='.$this->theme.'&sql='.$this->sqlFile );
-		if(version_compare(VERSION, '4.4','>='))
-		{
-			$url = StringUtil::decodeEntities( Environment::get('base').'contao/login?completed=1&theme='.$this->theme.'&sql='.$this->sqlFile );
-		}
-		?>
-		PCT_ThemeUpdater.ajax_infotext = '<?= $arrLang['AJAX_INFO']['sql_template_import']; ?>';
-		PCT_ThemeUpdater.request({'action':'run','redirectTo':'<?= $url; ?>'});
-		</script>
-		<?php endif; ?>
 
 <?php elseif($this->status == 'FILE_EXISTS'): ?>
 <!-- ! FILE_EXISTS :: Waiting to start for the installation to begin-->
