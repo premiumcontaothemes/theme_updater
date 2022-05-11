@@ -18,6 +18,8 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 {
 	$this->license->registration->domains = (array)$this->license->registration->domains;
 }
+
+
 ?>
 
 <div id="pct_theme_updater" class="<?= \strtolower($this->status); ?>">
@@ -179,7 +181,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			<!-- wrong domain registration -->
 			<?php if($this->hasRegistrationError): ?>
 			<div class="tl_message">
-				<p class="tl_error"><?= sprintf($arrLangTpl['domainRegistrationError'],$this->license->domain); ?></p>
+			<p class="tl_error"><?= sprintf($arrLangTpl['domainRegistrationError'],Environment::get('host'),$this->license->key,Environment::get('host')); ?></p>
 			</div>
 			<?php endif; ?>
 			<!-- file information -->
@@ -263,7 +265,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			<!-- wrong domain registration -->
 			<?php if($this->hasRegistrationError): ?>
 			<div class="tl_message">
-				<p class="tl_error"><?= sprintf($arrLangTpl['domainRegistrationError'],Environment::get('host'),$this->license->domain,Environment::get('host')); ?></p>
+				<p class="tl_error"><?= sprintf($arrLangTpl['domainRegistrationError'],Environment::get('host'),$this->license->key,Environment::get('host')); ?></p>
 			</div>
 			<?php endif; ?>
 			
