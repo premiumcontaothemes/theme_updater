@@ -462,16 +462,6 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 
-//! status : COMPLETE (probably never been called)
-
-
-		if(Input::get('status') == 'complete')
-		{
-			$this->Template->status = 'COMPLETE';
-			return;
-		}
-
-
 //! status : ACCESS_DENIED
 
 
