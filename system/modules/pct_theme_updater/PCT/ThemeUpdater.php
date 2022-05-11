@@ -970,24 +970,6 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			return;
 		}
-		//! status: INSTALLATION | STEP 5.0 : SQL_TEMPLATE_WAIT : Wait for user input
-		else if(Input::get('status') == 'installation' && Input::get('step') == 'sql_template_wait')
-		{
-			// get the template by contao version
-			$strTemplate = $GLOBALS['PCT_THEME_UPDATER']['THEMES'][$this->strTheme]['sql_templates'][VERSION];
-
-			$this->Template->status = 'INSTALLATION';
-			$this->Template->step = 'SQL_TEMPLATE_WAIT';
-			$this->Template->sql_template_info = sprintf($GLOBALS['TL_LANG']['pct_theme_updater']['sql_template_info'],$strTemplate);
-			
-			// when not in "update" mode, continue sql template installation
-			if(Input::get('mode') == 'install' || Input::get('mode') == '')
-			{
-				$this->redirect( Backend::addToUrl('status=installation&step=sql_template_import') );
-			}
-			
-			return;
-		}
 
 
 //! status: FILE_LOADED ... FILE_CREATED

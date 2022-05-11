@@ -630,25 +630,6 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			<?php endif; ?>
 		</div>
 		
-<?php elseif($this->status == 'INSTALLATION' && $this->step == 'SQL_TEMPLATE_WAIT'): ?>
-<!-- ! INSTALLATION : STEP UNZIP (3.1): SQL_TEMPLATE : WAIT FOR USER -->		
-		
-		
-		<h2><?= $arrLangTpl['sql_template_headline']; ?></h2>
-		<h3 class="tl_info"><?= $arrLangTpl['sql_template_subheadline']; ?></h3>
-		
-		<?php 
-		$url = StringUtil::decodeEntities( Backend::addToUrl('status=installation&step=sql_template_import') );
-		?>
-		
-		<p><a class="tl_button tl_submit button import" href="<?= $url; ?>"><?= $arrLangTpl['button_sql_template_import']; ?></a></p>
-			
-		<div class="tl_formbody_middle">
-			<?php if($this->breadcrumb): ?>
-				<?= $this->breadcrumb; ?>
-			<?php endif; ?>
-		</div>
-		
 <?php elseif($this->status == 'INSTALLATION' && $this->step == 'SQL_TEMPLATE_IMPORT'): ?>
 <!-- ! INSTALLATION : STEP UNZIP (3.2): SQL_TEMPLATE : IMPORT -->		
 		
