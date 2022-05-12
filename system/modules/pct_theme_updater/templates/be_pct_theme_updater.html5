@@ -353,7 +353,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 			jQuery('button[name="done"]').click(function()
 			{
 				<?php 
-				$url = StringUtil::decodeEntities( Backend::addToUrl('status=reset',true,array('step')) );
+				$url = StringUtil::decodeEntities( Backend::addToUrl('do=pct_theme_updater',true,array('step','status')) );
 				?>
 				PCT_ThemeUpdater.ajax_infotext = '';
 				PCT_ThemeUpdater.request({'action':'','redirectTo':'<?= $url; ?>'});
