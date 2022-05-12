@@ -174,6 +174,20 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->up_to_date = true;	
 		}
 
+
+//! status : ""
+
+		
+		if( Input::get('status') == '' )
+		{
+			if( $objLicense === null || $objUpdaterLicense === null )
+			{
+				$this->redirect( Backend::addToUrl('status=enter_theme_license') );
+			}
+			$this->redirect( Backend::addToUrl('status=ready') );
+			return;
+		}
+
 		
 //! status : VERSION_CONFLICT
 
@@ -184,16 +198,16 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->errors = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['version_conflict'] ?: 'Please use the LTS version 4.9');
 			return;
 		}
-
+		
 
 //! status: VALIDATION: ENTER UPDATER LICENSE
 
 
 		// check : UPDATER-LICENSE FILE
-		if( $objUpdaterLicense->status != 'OK' && !in_array($strStatus,array('welcome','access_denied','enter_updater_license','enter_theme_license','reset','error','version_conflict')))
-		{
-			$this->redirect( Backend::addToUrl('status=enter_theme_license',true) );
-		}
+		#if( $objUpdaterLicense->status != 'OK' && !in_array($strStatus,array('welcome','access_denied','enter_updater_license','enter_theme_license','reset','error','version_conflict')))
+		#{
+		#	$this->redirect( Backend::addToUrl('status=enter_theme_license',true) );
+		#}
 		
 		if( Input::get('status') == 'enter_updater_license' )
 		{
@@ -451,17 +465,6 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 
-//! status : WELCOME
-
-
-		if(Input::get('status') == 'welcome' && !$_POST)
-		{
-			$this->Template->status = 'WELCOME';
-			$this->Template->breadcrumb = '';
-			return;
-		}
-
-
 //! status : ACCESS_DENIED
 
 
@@ -595,7 +598,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					'date' 		=> $strKey,
 					'user'	 	=> $objUser->id,
 				);
-
+			
 				$arrTasks = Input::post('tasks') ?? array();
 				foreach($objTasks as $k => $category)
 				{
@@ -649,6 +652,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					{
 						$objVersionFile->delete();
 					}
+					
 					$this->redirect( Backend::addToUrl('do=pct_theme_updater',true,array('step','status')) );
 				}
 
@@ -1166,22 +1170,6 @@ class ThemeUpdater extends \Contao\BackendModule
 				
 				$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
 			}
-
-			return;
-		}
-
-
-//! status : SESSION_LOST
-
-
-		if( (empty($objLicense) || empty($objLicenseUpdater)) && !in_array(Input::get('status'),array('welcome','enter_updater_license','reset','error','version_conflict')))
-		{
-			$this->Template->status = 'SESSION_LOST';
-			$this->Template->content = $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['session_lost'];
-			$this->Template->breadcrumb = '';
-
-			// redirect to the beginning
-			$this->redirect( Backend::addToUrl('status=reset') );
 
 			return;
 		}
