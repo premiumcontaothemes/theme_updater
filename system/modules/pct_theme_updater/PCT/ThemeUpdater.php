@@ -1014,25 +1014,6 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 
-//! status: CHOOSE_PRODUCT, waiting for user to choose the product
-
-
-		if(Input::get('status') == 'choose_product' && $objLicense->status == 'OK')
-		{
-			$this->Template->status = 'CHOOSE_PRODUCT';
-			$this->Template->license = $objLicense;
-			$this->Template->breadcrumb = '';
-
-			// registration error
-			if($objLicense->registration->hasError)
-			{
-				$this->Template->hasRegistrationError = true;
-			}
-
-			return;
-		}
-
-
 //! status: READY, waiting for GO
 
 
@@ -1054,12 +1035,6 @@ class ThemeUpdater extends \Contao\BackendModule
 			if($objLicense->registration->hasError)
 			{
 				$this->Template->hasRegistrationError = true;
-			}
-
-			// has more than one product to choose
-			if(!empty($objLicense->products))
-			{
-				$this->redirect( Backend::addToUrl('status=choose_product',true) );
 			}
 
 			// get the installed theme version from version file or changelog.txt

@@ -173,67 +173,6 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 <!-- ! SESSION LOST -->
 	
 	<p class="tl_message header_back"><a class="reset" href="<?= StringUtil::decodeEntities( Backend::addToUrl('status=reset',true) ); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
-	
-<?php elseif($this->status == 'CHOOSE_PRODUCT'): ?>
-<!-- ! CHOOSE_PRODUCT  -->
-		
-		<div class="license_information tl_formbody_middle">
-			<!-- wrong domain registration -->
-			<?php if($this->hasRegistrationError): ?>
-			<div class="tl_message">
-			<p class="tl_error"><?= sprintf($arrLangTpl['domainRegistrationError'],Environment::get('host'),$this->license->key,Environment::get('host')); ?></p>
-			</div>
-			<?php endif; ?>
-			<!-- file information -->
-			<div class="product file"><?= $this->license->file->name; ?></div>	
-		</div>
-		
-		<form id="form_pct_theme_updater" action="<?php echo $this->action; ?>" class="tl_form" method="post">
-			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
-			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
-			<input type="hidden" name="license" value="<?= $this->license->key; ?>">
-			<input type="hidden" name="email" value="<?= $this->license->email; ?>">
-
-			<div class="tl_formbody_top">
-			</div>
-			
-			<?php if($this->license->products): ?>
-			<p class="tl_message"><?= $arrLangTpl['choose_product_info']; ?></p>
-			<div class="select_container">
-				<select name="product" class="tl_select">
-					<option value="-"><?= $arrLangTpl['product_select_blankOption']; ?></option>
-					<?php foreach($this->license->products as $product): ?>
-					<option value="<?= $product->value; ?>"><?= $product->name; ?></option>
-					<?php endforeach; ?>
-				</select>
-			</div>
-			
-			<script type="text/javascript">
-			/**
-			 * Autosubmit on select change
-			 */
-			window.addEvent('domready', function() 
-			{
-				$$('#form_pct_theme_updater').addEvents(
-				{
-					'change' : function(e) 
-					{
-						//console.log(e.target.value);
-						this.submit();
-					},	
-				});;
-			});
-			</script>
-			
-			<?php endif; ?>
-			
-			<div class="tl_formbody_middle">
-				<?php if($this->breadcrumb): ?>
-					<?= $this->breadcrumb; ?>
-				<?php endif; ?>
-			</div>
-
-		</form>
 
 <?php elseif($this->status == 'READY'): ?>
 <!-- ! READY  -->
@@ -629,15 +568,6 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 				<?= $this->breadcrumb; ?>
 			<?php endif; ?>
 		</div>
-
-<?php elseif($this->status == 'FILE_EXISTS'): ?>
-<!-- ! FILE_EXISTS :: Waiting to start for the installation to begin-->
-		
-		
-<?php elseif($this->status == 'FILE_NOT_EXISTS'): ?>
-<!-- ! FILE_NOT_EXISTS -->
-		
-		<p class="tl_message header_back"><a class="reset" href="<?= Backend::addToUrl('status=reset',true,array('status','step')); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
 
 <?php elseif($this->status == 'LOADING'): ?>
 <!-- ! LICENSE ACCEPTED... begin loading -->
