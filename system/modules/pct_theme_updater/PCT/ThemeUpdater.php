@@ -184,7 +184,17 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$this->redirect( Backend::addToUrl('status=enter_theme_license') );
 			}
-			$this->redirect( Backend::addToUrl('status=ready') );
+			
+			// reset session but the lisense information
+			$objSession->remove($this->strSession);
+			$arrSession = array
+			(
+				'license' => $objLicense,
+				'updater_license' => $objUpdaterLicense,
+			);
+			$objSession->set($this->strSession,$arrSession);
+			// back to ready
+			$this->redirect( Backend::addToUrl('status=ready',true,array('status','step')) );
 			return;
 		}
 
