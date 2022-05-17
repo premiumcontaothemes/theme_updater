@@ -1,0 +1,56 @@
+{
+	"name":"premium-contao-themes/pct_theme_updater",
+	"description":"Update manager for the Premium Contao Themes: EclipseX, EclipseX + CustomCatalog Bundle. https://www.premium-contao-themes.com/",
+	"keywords":["contao","themes","premiumcontaothemes","premium-contao-themes","seamedia themes"],
+	"type":"contao-module",
+    "homepage":"https://github.com/premiumcontaothemes/pct_theme_installer",
+	"license": "LGPL-3.0+",
+	"authors":
+	[
+		{
+			"name":"Tim Gatzky",
+			"homepage":"http://www.tim-gatzky.de",
+			"role":"Interaction-Designer,Developer"
+		},
+		{
+			"name":"Thomas Löschnigg alias Premium Contao Themes",
+			"homepage":"http://www.premium-contao-themes.com",
+			"role":"Graphic-Designer,Developer"
+		}
+	],
+	"support":
+	{
+		"forum":"https://forum.premium-contao-themes.com"
+	},
+	"require":
+	{
+		"php":">=7.4",
+		"contao/core-bundle":"^4.9.0 || ^4.13.0",
+        "contao-community-alliance/composer-plugin":"~2.4 || ~3.0"
+	},
+	"require-dev": 
+	{
+		"contao/manager-plugin": "^2.0"
+	},
+	"replace":
+	{
+		"contao-legacy/pct_theme_updater":"self.version"
+	},	
+	"autoload": 
+	{
+        "psr-0": 
+        {
+            "PCT\\ThemeInstaller\\": "PCT/"
+        }
+    },
+	"extra":
+	{
+		"contao": 
+		{
+            "sources": 
+            {
+                "system/modules/pct_theme_installer": "system/modules/pct_theme_updater"
+            }
+        }
+	}
+}
