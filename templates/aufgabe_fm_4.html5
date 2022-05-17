@@ -1,4 +1,5 @@
 <div class="desc_content">
+   <div class="only_needed_info">Diese Aufgabe ist nur nötig, wenn Sie das Opt-In verwenden.</div>
    <table class="documentation_inside table_fe_modules">
       <tr>
          <th class="t_col1">Frontend-Modul:</th>

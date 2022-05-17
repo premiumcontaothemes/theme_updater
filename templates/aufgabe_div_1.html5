@@ -1,4 +1,5 @@
 <div class="desc_content">
+<div class="only_needed_info">Diese Aufgabe ist nur nötig, wenn Sie den Footer verwenden.</div>
 <div class="label_step"><strong>Schritt 1: Footer Inhalte umstrukturieren</strong></div>
 <br><br>
 <div class="label_orange label_small">Artikel > Resources > Footer</div>

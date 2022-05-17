@@ -6,8 +6,8 @@
 		"eclipsex": 
 		{
 			"name": "EclipseX",
-			"version": "4.0.16",
-			"release": "2022-05-02",
+			"version": "4.1.0",
+			"release": "2022-05-17",
 			"contao": "4.9|4.13",
 			"doc": "https://help.premium-contao-themes.com/contao-installieren-contao-installer.html",
 			"changelog": "https://update.premium-contao-themes.com/eclipsex/changelog.txt",
@@ -211,6 +211,15 @@
 							"template": "aufgabe_div_7",
 							"mandatory": true,
 							"version": "4.0.0"
+						},
+						{
+							"id": "aufgabe_div8",
+							"title": "Aufgabe DIV 8",
+							"description": "Google/Matomo API Keys hinterlegen",
+							"link": "",
+							"template": "aufgabe_div_8",
+							"mandatory": true,
+							"version": "4.1.0"
 						}
 					]
 				}
@@ -424,6 +433,15 @@
 							"template": "aufgabe_div_7",
 							"mandatory": true,
 							"version": "4.0.0"
+						},
+						{
+							"id": "aufgabe_div8",
+							"title": "Aufgabe DIV 8",
+							"description": "Google/Matomo API Keys hinterlegen",
+							"link": "",
+							"template": "aufgabe_div_8",
+							"mandatory": true,
+							"version": "4.1.0"
 						}
 					]
 				}
