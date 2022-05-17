@@ -1,0 +1,7 @@
+<div class="desc_content">
+<div class="only_needed_info">Dieser Schritt muss nur durchgeführt werden, wenn Sie Google Maps, Google Analytics oder Matomo verwenden.</div>
+<div class="label_orange label_small">Layout > Seitenstruktur > Root-Seite (Startpunkt einer Seite) > Seiteneinstellungen > Theme-Einstellungen</div>
+<br><br>
+<p>Tragen Sie Ihre API-Keys für Google/Matomo in die vorgesehenen Felder ein: <span class="label_gray">
+Google Analytics / TagManager Schlüssel</span> | <span class="label_gray">Matomo, Piwik Schlüssel / Pfad</span> | <span class="label_gray">Google Maps Schlüssel</span></p>
+</div>
