@@ -1,5 +1,5 @@
 {
-	"name":"premium-contao-themes/pct_theme_updater",
+	"name":"premium-contao-themes/theme_updater",
 	"description":"Update manager for the Premium Contao Themes: EclipseX, EclipseX + CustomCatalog Bundle. https://www.premium-contao-themes.com/",
 	"keywords":["contao","themes","premiumcontaothemes","premium-contao-themes","seamedia themes"],
 	"type":"contao-module",
@@ -49,7 +49,7 @@
 		{
             "sources": 
             {
-                "system/modules/pct_theme_installer": "system/modules/pct_theme_updater"
+                "system/modules/pct_theme_updater": "system/modules/pct_theme_updater"
             }
         }
 	}
