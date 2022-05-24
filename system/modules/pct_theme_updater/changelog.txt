@@ -1,5 +1,6 @@
 ### 1.0.1
 Update: Check min. client version compared to version installed (#25)
 Update: /favicon folder is now update save (#26)
+Update: Removed logging of API requests (#27)
 
 ### 1.0.0
