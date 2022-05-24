@@ -22,3 +22,4 @@ $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['sql_not_found'] 				= 'SQL inst
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['session_lost'] 				= 'The license session is timed out. Please restart the installation.';
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['version_conflict'] 			= 'Please use one of Contaos LTS versions: 4.9';
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['memory_limit']				= 'Memory Limit (memory_limit) too low (%s). Min.: 512M';
+$GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['client_version_conflict'] 	= 'A newer version of the Theme Updater is available. Please update the module.';		

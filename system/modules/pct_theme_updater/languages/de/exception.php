@@ -23,3 +23,4 @@ $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['session_lost'] 		= 'Die Lizenz-
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['version_conflict'] 	= 'Bitte nutzen Sie Contaos LTS Versionen: 4.9 oder 4.13';
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['memory_limit']			= 'Memory Limit (memory_limit) zu gering (%s). Min.: 512M';
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['changelog_not_found'] 	= 'Aktuelle Theme-Version konnte nicht ermittelt werden. (/templates/changelog.txt nicht gefunden)';		
+$GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['client_version_conflict'] 	= 'Eine neue Version des Theme-Updaters ist verfügbar. Bitte updaten Sie das Modul.';		

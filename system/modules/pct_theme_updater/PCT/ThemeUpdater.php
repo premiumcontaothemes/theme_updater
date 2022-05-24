@@ -102,6 +102,15 @@ class ThemeUpdater extends \Contao\BackendModule
 		$objConfig->local_version = $this->getThemeVersion();
 		//--
 
+		// check client version
+		if( Input::get('status') != 'error' && \version_compare(\PCT_THEME_UPDATER,$objConfig->min_client_version,'<') )
+		{
+			$arrSession['errors'] = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['client_version_conflict']);
+			$objSession->set($this->strSession,$arrSession);
+			System::log('Current version: '.\PCT_THEME_UPDATER.' Min client version required: '.$objConfig->min_client_version,'Theme Updater',\TL_ERROR);
+			$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
+		}
+
 		// updater license
 		$objUpdaterLicense = $arrSession['updater_license'];
 		if( \is_string($arrSession['updater_license']) && empty($arrSession['updater_license']) === false)
@@ -180,6 +189,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		
 		if( Input::get('status') == '' )
 		{
+
 			if( $objLicense === null || $objUpdaterLicense === null )
 			{
 				$this->redirect( Backend::addToUrl('status=enter_theme_license') );
