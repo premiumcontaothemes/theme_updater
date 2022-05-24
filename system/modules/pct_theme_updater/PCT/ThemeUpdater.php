@@ -34,6 +34,7 @@ use Contao\Session;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
 use Contao\Date;
+use Contao\Folder;
 use stdClass;
 
 /**
@@ -812,10 +813,20 @@ class ThemeUpdater extends \Contao\BackendModule
 						$blnCustomizeJs = true;
 					}
 				}
-				
+
+				// favicon folder
+				$blnFavicon = false;
+				if(is_dir(TL_ROOT.'/'.Config::get('uploadPath').'/cto_layout/img/favicon'))
+				{
+					$folder = new Folder( Config::get('uploadPath').'/cto_layout/img/favicon' );
+					if( $folder->copyTo( $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/favicon') )
+					{
+						$blnFavicon = true;
+					}
+				}
 
 				$objFiles = Files::getInstance();
-				$arrIgnore = array('.ds_store','customize.css','customize.js','favicon');
+				$arrIgnore = array('.ds_store','customize.css','customize.js');
 
 				// folder to copy
 				$arrFolders = scan(TL_ROOT.'/'.$strFolder.'/upload');
@@ -849,6 +860,15 @@ class ThemeUpdater extends \Contao\BackendModule
 				if($blnCustomizeJs)
 				{
 					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.js',Config::get('uploadPath').'/cto_layout/scripts/customize.js');
+				}
+
+				// favicon folder
+				if($blnFavicon)
+				{
+					$tmp_folder = new Folder( $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/favicon' );
+					$folder = new Folder( Config::get('uploadPath').'/cto_layout/img/favicon' );
+					$folder->purge();
+					$tmp_folder->copyTo( $folder->__get('path') );
 				}
 				
 				// log errors
