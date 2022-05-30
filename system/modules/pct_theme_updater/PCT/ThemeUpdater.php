@@ -185,6 +185,17 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 
+		// check if local version matches the required contao version
+		if( $strStatus !== 'error' && \version_compare($objConfig->local_version,'4','<') && \version_compare(VERSION,'4.9','>') )
+		{
+			$error = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict'],$objConfig->local_version,\VERSION,'4.9');
+			$arrSession['errors'] = array($error);
+			$objSession->set($this->strSession,$arrSession);
+
+			// redirect
+			$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
+		}
+		
 //! status : ""
 
 		
@@ -194,7 +205,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$this->redirect( Backend::addToUrl('status=enter_theme_license') );
 			}
-			
+
 			// reset session but the lisense information
 			$objSession->remove($this->strSession);
 			$arrSession = array
