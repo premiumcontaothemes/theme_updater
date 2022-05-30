@@ -795,6 +795,10 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			if(Input::get('action') == 'run' && is_dir(TL_ROOT.'/'.$strFolder))
 			{
+				// clear cache
+				$objInstallationController = new \PCT\ThemeInstaller\Contao4\InstallationController;
+				$objInstallationController->call('purgeSymfonyCache');
+
 				// backup an existing customize.css
 				$blnCustomizeCss = false;
 				if(file_exists(TL_ROOT.'/'.Config::get('uploadPath').'/cto_layout/css/customize.css'))
