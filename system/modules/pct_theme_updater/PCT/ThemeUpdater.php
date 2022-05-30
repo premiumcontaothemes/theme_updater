@@ -190,8 +190,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		
 		if( Input::get('status') == '' )
 		{
-
-			if( $objLicense === null || $objUpdaterLicense === null )
+			if( $objLicense === null || $objUpdaterLicense === null || empty($this->strTheme) )
 			{
 				$this->redirect( Backend::addToUrl('status=enter_theme_license') );
 			}
@@ -1339,7 +1338,6 @@ class ThemeUpdater extends \Contao\BackendModule
 
 		return '';
 	}
-
 
 
 	/**
