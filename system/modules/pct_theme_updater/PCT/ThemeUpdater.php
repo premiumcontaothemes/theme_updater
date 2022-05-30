@@ -354,7 +354,7 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			// check if license file exists and if so, validate the license
 			$objLicenseFile = new File('var/pct_license');
-			if( $objLicenseFile->exists() && $objLicense->status != 'OK' )
+			if( $objLicenseFile->exists() )
 			{
 				$strLicense = \trim( $objLicenseFile->getContent() ?: '' );
 				$arrParams = array
