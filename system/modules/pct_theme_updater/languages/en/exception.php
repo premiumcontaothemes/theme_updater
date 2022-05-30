@@ -24,3 +24,4 @@ $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['version_conflict'] 			= 'Please
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['memory_limit']				= 'Memory Limit (memory_limit) too low (%s). Min.: 512M';
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['client_version_conflict'] 	= 'A newer version of the Theme Updater is available. Please update the module.';		
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict'] 	= 'Your current theme version %s is not compatible to Contao %s. Please run the update in Contao %s and update Contao afterwards.';		
+$GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_version_conflict'] 	= 'Contao %s is not supported. Supported Contao versions: %s';
