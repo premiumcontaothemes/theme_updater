@@ -195,10 +195,12 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
 		}
 
+
 		// check supported contao versions
-		$blnSupported = false;
-		if( isset($objUpdate->contao) )
+		if( isset($objUpdate->contao) && !empty($objUpdate->contao) )
 		{
+			$blnSupported = false;
+		
 			foreach($objUpdate->contao as $version)
 			{
 				if( \version_compare(\VERSION,$version,'==') )
@@ -206,16 +208,18 @@ class ThemeUpdater extends \Contao\BackendModule
 					$blnSupported = true;
 				}
 			}
+			
+			if( $strStatus !== 'error' && $blnSupported === false && !empty($this->strTheme) )
+			{
+				$error = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_version_conflict'],\VERSION, \implode(',',$objUpdate->contao));
+				$arrSession['errors'] = array($error);
+				$objSession->set($this->strSession,$arrSession);
+	
+				// redirect
+				$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
+			}
 		}
-		if( $strStatus !== 'error' && $blnSupported === false )
-		{
-			$error = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_version_conflict'],\VERSION, \implode(',',$objUpdate->contao));
-			$arrSession['errors'] = array($error);
-			$objSession->set($this->strSession,$arrSession);
-
-			// redirect
-			$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
-		}
+		
 		
 //! status : ""
 
