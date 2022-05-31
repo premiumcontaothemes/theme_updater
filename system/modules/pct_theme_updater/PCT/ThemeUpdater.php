@@ -21,7 +21,6 @@ namespace PCT;
 use Contao\Automator;
 use Contao\System;
 use Contao\Environment;
-use Contao\Database;
 use Contao\Backend;
 use Contao\Input;
 use Contao\Config;
@@ -30,12 +29,10 @@ use Contao\Message;
 use Contao\Files;
 use Contao\File;
 use Contao\StringUtil;
-use Contao\Session;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
 use Contao\Date;
 use Contao\Folder;
-use stdClass;
 
 /**
  * Class file
@@ -94,7 +91,6 @@ class ThemeUpdater extends \Contao\BackendModule
 		$objSession = System::getContainer()->get('session');
 		$arrSession = $objSession->get($this->strSession);
 		
-		$objDatabase = Database::getInstance();
 		$arrErrors = array();
 		$arrParams = array();		
 
@@ -305,7 +301,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 
 			// registration logic
-			$strRegistration = $strThemeLicense.'___'.StringUtil::decodeEntities( Environment::get('host') );
+			$strRegistration = $strThemeLicense.'___'.StringUtil::decodeEntities( str_replace(array('www.'),'',Environment::get('host')) );
 			
 			// validate
 			$arrParams = array

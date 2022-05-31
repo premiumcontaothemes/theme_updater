@@ -7,5 +7,7 @@ Update: Added $GLOBALS['PCT_THEME_UPDATER']['debug'] to enable debug mode (#33)
 Update: Check current contao version against recommend update start version (#28)
 Update: Clear Symphony-Cache before coping files to force contao to load fresh config.php information (#29)
 Update: Display version number in backend (#35)
+Update: Remove "www." from domain request to prevend invalid domain validations (#37)
+Removed: Unused classes (#38)
 
 ### 1.0.0
