@@ -305,7 +305,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 
 			// registration logic
-			$strRegistration = $strThemeLicense.'___'.StringUtil::decodeEntities( Environment::get('host') );
+			$strRegistration = $strThemeLicense.'___'.StringUtil::decodeEntities( str_replace(array('www.'),'',Environment::get('host')) );
 			
 			// validate
 			$arrParams = array
