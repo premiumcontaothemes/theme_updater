@@ -47,7 +47,7 @@ class SystemCallbacks extends System
 			// load jquery in theme updater backend module
 			if( Input::get('do') == 'pct_theme_updater' && !isset($GLOBALS['PCT_AUTOGRID']['assetsLoaded']) )
 			{
-				$GLOBALS['TL_JAVASCRIPT'][] = '//code.jquery.com/jquery-3.6.0.min.js';
+				$GLOBALS['TL_JAVASCRIPT'][] = System::getContainer()->get('contao.assets.assets_context')->getStaticUrl().'/jquery/js/jquery.min.js';
 			}
 		}
 	}

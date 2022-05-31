@@ -1,1 +1,11 @@
+### 1.0.1
+Update: Check min. client version compared to version installed (#25)
+Update: /favicon folder is now update save (#26)
+Update: Removed logging of API requests (#27)
+Update: Use local version of jquery (#34)
+Update: Added $GLOBALS['PCT_THEME_UPDATER']['debug'] to enable debug mode (#33)
+Update: Check current contao version against recommend update start version (#28)
+Update: Clear Symphony-Cache before coping files to force contao to load fresh config.php information (#29)
+Update: Display version number in backend (#35)
+
 ### 1.0.0

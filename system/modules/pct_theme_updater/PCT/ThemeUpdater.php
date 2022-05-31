@@ -34,6 +34,7 @@ use Contao\Session;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
 use Contao\Date;
+use Contao\Folder;
 use stdClass;
 
 /**
@@ -101,6 +102,15 @@ class ThemeUpdater extends \Contao\BackendModule
 		$objConfig = \json_decode($this->request($GLOBALS['PCT_THEME_UPDATER']['config_url']));
 		$objConfig->local_version = $this->getThemeVersion();
 		//--
+
+		// check client version
+		if( Input::get('status') != 'error' && \version_compare(\PCT_THEME_UPDATER,$objConfig->min_client_version,'<') )
+		{
+			$arrSession['errors'] = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['client_version_conflict']);
+			$objSession->set($this->strSession,$arrSession);
+			System::log('Current version: '.\PCT_THEME_UPDATER.' Min client version required: '.$objConfig->min_client_version,'Theme Updater',\TL_ERROR);
+			$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
+		}
 
 		// updater license
 		$objUpdaterLicense = $arrSession['updater_license'];
@@ -174,17 +184,53 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->up_to_date = true;	
 		}
 
+		// check if local version matches the required contao version
+		if( $strStatus !== 'error' && \version_compare($objConfig->local_version,'4','<') && \version_compare(VERSION,'4.9','>') )
+		{
+			$error = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict'],$objConfig->local_version,\VERSION,'4.9');
+			$arrSession['errors'] = array($error);
+			$objSession->set($this->strSession,$arrSession);
 
+			// redirect
+			$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
+		}
+
+
+		// check supported contao versions
+		if( isset($objUpdate->contao) && !empty($objUpdate->contao) )
+		{
+			$blnSupported = false;
+		
+			foreach($objUpdate->contao as $version)
+			{
+				if( \version_compare(\VERSION,$version,'==') )
+				{
+					$blnSupported = true;
+				}
+			}
+			
+			if( $strStatus !== 'error' && $blnSupported === false && !empty($this->strTheme) )
+			{
+				$error = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_version_conflict'],\VERSION, \implode(',',$objUpdate->contao));
+				$arrSession['errors'] = array($error);
+				$objSession->set($this->strSession,$arrSession);
+	
+				// redirect
+				$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
+			}
+		}
+		
+		
 //! status : ""
 
 		
 		if( Input::get('status') == '' )
 		{
-			if( $objLicense === null || $objUpdaterLicense === null )
+			if( $objLicense === null || $objUpdaterLicense === null || empty($this->strTheme) )
 			{
 				$this->redirect( Backend::addToUrl('status=enter_theme_license') );
 			}
-			
+
 			// reset session but the lisense information
 			$objSession->remove($this->strSession);
 			$arrSession = array
@@ -344,7 +390,7 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			// check if license file exists and if so, validate the license
 			$objLicenseFile = new File('var/pct_license');
-			if( $objLicenseFile->exists() && $objLicense->status != 'OK' )
+			if( $objLicenseFile->exists() )
 			{
 				$strLicense = \trim( $objLicenseFile->getContent() ?: '' );
 				$arrParams = array
@@ -784,6 +830,10 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			if(Input::get('action') == 'run' && is_dir(TL_ROOT.'/'.$strFolder))
 			{
+				// clear cache
+				$objInstallationController = new \PCT\ThemeInstaller\Contao4\InstallationController;
+				$objInstallationController->call('purgeSymfonyCache');
+
 				// backup an existing customize.css
 				$blnCustomizeCss = false;
 				if(file_exists(TL_ROOT.'/'.Config::get('uploadPath').'/cto_layout/css/customize.css'))
@@ -802,7 +852,17 @@ class ThemeUpdater extends \Contao\BackendModule
 						$blnCustomizeJs = true;
 					}
 				}
-				
+
+				// favicon folder
+				$blnFavicon = false;
+				if(is_dir(TL_ROOT.'/'.Config::get('uploadPath').'/cto_layout/img/favicon'))
+				{
+					$folder = new Folder( Config::get('uploadPath').'/cto_layout/img/favicon' );
+					if( $folder->copyTo( $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/favicon') )
+					{
+						$blnFavicon = true;
+					}
+				}
 
 				$objFiles = Files::getInstance();
 				$arrIgnore = array('.ds_store','customize.css','customize.js');
@@ -839,6 +899,15 @@ class ThemeUpdater extends \Contao\BackendModule
 				if($blnCustomizeJs)
 				{
 					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.js',Config::get('uploadPath').'/cto_layout/scripts/customize.js');
+				}
+
+				// favicon folder
+				if($blnFavicon)
+				{
+					$tmp_folder = new Folder( $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/favicon' );
+					$folder = new Folder( Config::get('uploadPath').'/cto_layout/img/favicon' );
+					$folder->purge();
+					$tmp_folder->copyTo( $folder->__get('path') );
 				}
 				
 				// log errors
@@ -1307,7 +1376,6 @@ class ThemeUpdater extends \Contao\BackendModule
 	}
 
 
-
 	/**
 	 * Send requests
 	 */
@@ -1316,7 +1384,10 @@ class ThemeUpdater extends \Contao\BackendModule
 	{
 		$strRequest = \html_entity_decode($strUrl.(count($arrParams) > 0 ? '?'.\http_build_query($arrParams) : '') );
 		// log
-		System::log('Sending request: '.$strRequest,__METHOD__,\TL_GENERAL);
+		if( $GLOBALS['PCT_THEME_UPDATER']['debug'] === true )
+		{
+			System::log('Sending request: '.$strRequest,__METHOD__,\TL_GENERAL);
+		}
 		// validate the license
 		$curl = \curl_init();
 		\curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
