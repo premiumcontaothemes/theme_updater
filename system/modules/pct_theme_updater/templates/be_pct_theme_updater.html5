@@ -25,6 +25,7 @@ if(isset($this->license->registration->domains) && !is_array($this->license->reg
 <div id="pct_theme_updater" class="<?= \strtolower($this->status); ?>">
 	<div class="tl_formbody">
 		<div id="tl_buttons">
+			<span class="version">Version: <?= \PCT_THEME_UPDATER; ?></span>
 			<!-- <a class="shop_link" href="https://www.premium-contao-themes.com/contao-installer.html" target="_blank"><?= $arrLangTpl['button_installer_buy']; ?></a>-->
 			<a class="shop_link" href="https://www.premium-contao-themes.com" target="_blank"><?= $arrLangTpl['button_license_buy']; ?></a>
 			<?php if($strStatus): ?>
