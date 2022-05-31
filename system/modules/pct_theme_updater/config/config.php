@@ -25,6 +25,7 @@ $GLOBALS['PCT_THEME_UPDATER']['config_url'] = 'https://update.premium-contao-the
 $GLOBALS['PCT_THEME_UPDATER']['updater_api_url'] = 'https://update.premium-contao-themes.com/updater.php';
 $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'] = 'system/tmp/pct_theme_updater';
 $GLOBALS['PCT_THEME_UPDATER']['logFile'] = 'var/pct_themeupdater_log.json';
+$GLOBALS['PCT_THEME_UPDATER']['debug'] = false;
 
 $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX'] = array
 (

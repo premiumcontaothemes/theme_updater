@@ -1380,7 +1380,10 @@ class ThemeUpdater extends \Contao\BackendModule
 	{
 		$strRequest = \html_entity_decode($strUrl.(count($arrParams) > 0 ? '?'.\http_build_query($arrParams) : '') );
 		// log
-		#System::log('Sending request: '.$strRequest,__METHOD__,\TL_GENERAL);
+		if( $GLOBALS['PCT_THEME_UPDATER']['debug'] === true )
+		{
+			System::log('Sending request: '.$strRequest,__METHOD__,\TL_GENERAL);
+		}
 		// validate the license
 		$curl = \curl_init();
 		\curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
