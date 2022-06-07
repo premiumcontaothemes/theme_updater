@@ -397,6 +397,23 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				// validation
 				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
+			
+				if( $objLicense !== null && $objLicense->status == 'OK' )
+				{
+					$arrParams = array
+					(
+						'key'   => trim($strLicense),
+						'email'  => trim($objLicense->email),
+						'domain' => StringUtil::decodeEntities( Environment::get('host') ),
+					);
+	
+					if(Input::post('product') != '')
+					{
+						$arrParams['product'] = Input::post('product');
+					}
+				
+					$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/api.php',$arrParams) );
+				}
 			}
 			
 			// check license from formular
