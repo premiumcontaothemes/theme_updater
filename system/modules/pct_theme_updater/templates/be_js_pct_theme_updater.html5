@@ -144,7 +144,7 @@ var PCT_ThemeUpdater =
 			// hide Contaos loading box
 			PCT_ThemeUpdater.hideAjaxInfobox();
 			// log
-			console.log('ThemeInstaller redirect: '+strUrl);
+			console.log('ThemeUpdater redirect: '+strUrl);
 			// redirect
 			window.location = strUrl;		
 		}, intDelay);
