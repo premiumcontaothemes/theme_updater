@@ -1,3 +1,6 @@
+### 1.0.3
+Fixed: Namespace error in InstallationController class (#44)
+
 ### 1.0.2
 Fixed: Missing file information in auto. validated theme license (#40)
 Fixed: Finishing the update did not remove the pct_theme_version file correctly (#42)
