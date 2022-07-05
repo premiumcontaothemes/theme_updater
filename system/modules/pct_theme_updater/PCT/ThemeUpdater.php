@@ -844,7 +844,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			if(Input::get('action') == 'run' && is_dir(TL_ROOT.'/'.$strFolder))
 			{
 				// clear cache
-				$objInstallationController = new \PCT\ThemeInstaller\Contao4\InstallationController;
+				$objInstallationController = new \PCT\ThemeUpdater\Contao4\InstallationController;
 				$objInstallationController->call('purgeSymfonyCache');
 
 				// backup an existing customize.css
@@ -1000,7 +1000,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				#Files::getInstance()->rrdir($strCacheDir,true);
 
 				// try to rebuild the symphony cache
-				$objInstallationController = new \PCT\ThemeInstaller\Contao4\InstallationController;
+				$objInstallationController = new \PCT\ThemeUpdater\Contao4\InstallationController;
 				$objInstallationController->call('purgeSymfonyCache');
 				#$objInstallationController->call('warmUpSymfonyCache');
 
@@ -1023,8 +1023,6 @@ class ThemeUpdater extends \Contao\BackendModule
 				// Contao 4.4 >=
 				if(version_compare(VERSION, '4.4','>='))
 				{
-					// @var object \PCT\ThemeInstaller\InstallationController
-					#$objInstaller = new \PCT\ThemeInstaller\InstallationController;
 					$objContainer = System::getContainer();
 					$objInstaller = $objContainer->get('contao.installer');
 					// compile sql
