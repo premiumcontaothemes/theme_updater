@@ -69,8 +69,6 @@ var PCT_ThemeUpdater =
 			// start
 			onRequest: function()
 			{
-		    	//console.log('Start loading: <?= $this->license->file->name; ?>');
-		    	//console.log('Please wait...');
 		    	// show Contaos loading box
 		    	PCT_ThemeUpdater.showAjaxInfobox( PCT_ThemeUpdater.ajax_infotext );
 		    },
@@ -99,7 +97,6 @@ var PCT_ThemeUpdater =
 				// reload on success
 				if(blnReload)
 				{
-					//console.log('File successfully created in: <?= $this->file_target_directory; ?>. You will be redirected...');
 					// reload page
 					location.reload();
 				}
