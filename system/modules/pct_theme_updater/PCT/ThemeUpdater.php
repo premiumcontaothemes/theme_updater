@@ -109,16 +109,16 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 		// updater license
-		$objUpdaterLicense = $arrSession['updater_license'];
-		if( \is_string($arrSession['updater_license']) && empty($arrSession['updater_license']) === false)
+		$objUpdaterLicense = $arrSession['updater_license'] ?? null;
+		if( isset($arrSession['updater_license']) && \is_string($arrSession['updater_license']) && empty($arrSession['updater_license']) === false)
 		{
 			$objUpdaterLicense = \json_decode($arrSession['updater_license']);
 		}
 		//--
 
 		// theme license
-		$objLicense = $arrSession['license'];
-		if( \is_string($arrSession['license']) && empty($arrSession['license']) === false)
+		$objLicense = $arrSession['license'] ?? null;
+		if( isset($arrSession['license']) && \is_string($arrSession['license']) && empty($arrSession['license']) === false)
 		{
 			$objLicense = \json_decode($arrSession['license']);
 		}
@@ -139,16 +139,16 @@ class ThemeUpdater extends \Contao\BackendModule
 		$this->Template->button = $GLOBALS['TL_LANG']['MSC']['backBT'];
 		$this->Template->resetUrl = Backend::addToUrl('status=reset');
 		$this->Template->messages = Message::generate();
-		$this->Template->label_key = $GLOBALS['TL_LANG']['pct_theme_updater']['label_key'] ?: 'License / Order number';
-		$this->Template->label_email = $GLOBALS['TL_LANG']['pct_theme_updater']['label_email'] ?: 'Order email address';
+		$this->Template->label_key = $GLOBALS['TL_LANG']['pct_theme_updater']['label_key'] ?? 'License / Order number';
+		$this->Template->label_email = $GLOBALS['TL_LANG']['pct_theme_updater']['label_email'] ?? 'Order email address';
 		$this->Template->placeholder_license = '';
 		$this->Template->placeholder_email = '';
-		$this->Template->label_submit = $GLOBALS['TL_LANG']['pct_theme_updater']['label_submit'];
-		$this->Template->value_submit = $GLOBALS['TL_LANG']['pct_theme_updater']['value_submit'];
+		$this->Template->label_submit = $GLOBALS['TL_LANG']['pct_theme_updater']['label_submit'] ?? 'Submit';
+		$this->Template->value_submit = $GLOBALS['TL_LANG']['pct_theme_updater']['value_submit'] ?? 'Submit';
 		$this->Template->file_written_response = 'file_written';
 		$this->Template->file_target_directory = $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'];
 		$this->Template->ajax_action = 'theme_updater_loading'; // just a simple action status message
-		$this->Template->test_license = $GLOBALS['PCT_THEME_UPDATER']['test_license'];
+		$this->Template->test_license = $GLOBALS['PCT_THEME_UPDATER']['test_license'] ?? null;
 		$this->Template->license = $objLicense;
 		$this->Template->up_to_date = false;	
 		$this->Template->language = System::getContainer()->get('request_stack')->getCurrentRequest()->getLocale();
@@ -174,7 +174,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 		// check if there are updater information for current theme
-		$objUpdate = $objConfig->themes->{\strtolower($this->strTheme)};
+		$objUpdate = $objConfig->themes->{\strtolower($this->strTheme)} ?? null;
 		if( !\in_array($strStatus, array('done','reset')) && ($objUpdate === null || \version_compare($objUpdate->version, $objConfig->local_version,'==') ) )
 		{
 			$this->Template->up_to_date = true;	
@@ -270,7 +270,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			$objUpdaterLicense = null;
 
 			// theme license has domain errors
-			if( $objLicense->registration->hasError )
+			if( isset($objLicense->registration->hasError) )
 			{
 				$this->Template->errors = array(\sprintf($GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['domainRegistrationError'],Environment::get('host'),$objLicense->key,Environment::get('host')) );
 			}
@@ -596,7 +596,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			$arrTasksDone = array();
 			foreach($arrLogs as $log)
 			{
-				if( \is_array($log['tasks']) === false )
+				if( !isset($log['tasks']) || \is_array($log['tasks']) === false )
 				{
 					continue;
 				}
@@ -800,7 +800,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				// extract zip
 				$objZip = new \ZipArchive;
-				if($objZip->open(TL_ROOT.'/'.$objFile->path) === true && !$arrSession['unzipped'])
+				if($objZip->open(TL_ROOT.'/'.$objFile->path) === true && !isset($arrSession['unzipped']))
 				{
 					$objZip->extractTo(TL_ROOT.'/'.$strTargetDir);
 					$objZip->close();
@@ -1122,7 +1122,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 
 			// registration error
-			if($objLicense->registration->hasError)
+			if( isset($objLicense->registration->hasError) )
 			{
 				$this->Template->hasRegistrationError = true;
 			}
@@ -1278,7 +1278,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		$arrSession = $objSession->get($this->strSession);
 		
 		// store the processed steps
-		if(!is_array($arrSession['BREADCRUMB']['completed']))
+		if( !isset($arrSession['BREADCRUMB']['completed']) || !is_array($arrSession['BREADCRUMB']['completed']))
 		{
 			$arrSession['BREADCRUMB']['completed'] = array();
 		}
@@ -1289,7 +1289,7 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			// css class
 			$class = array('item',$status);
-			if($data['protected'])
+			if( isset($data['protected']) && $data['protected'])
 			{
 				$class[] = 'hidden';
 			}
@@ -1298,13 +1298,13 @@ class ThemeUpdater extends \Contao\BackendModule
 			($i == 0 ? $class[] = 'first' : '');
 			($i == count($GLOBALS['PCT_THEME_UPDATER']['breadcrumb_steps'] ?? array() ) - 1 ? $class[] = 'last' : '');
 
-			if(!$data['label'])
+			if( !isset($data['label']) || empty($data['label']) )
 			{
 				$data['label'] = $k;
 			}
 
 			// title
-			if(!$data['title'])
+			if( !isset($data['title']) || empty($data['title']) )
 			{
 				$data['title'] = $data['label'];
 			}
@@ -1321,10 +1321,11 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrSession['BREADCRUMB']['completed'][$k] = true;
 			}
 
-
+			$data['completed'] = false;
+			$data['isActive'] = false;
 
 			// completed
-			if($arrSession['BREADCRUMB']['completed'][$k] === true && $strCurrent != $status)
+			if( isset($arrSession['BREADCRUMB']['completed'][$k]) && $arrSession['BREADCRUMB']['completed'][$k] === true && $strCurrent != $status)
 			{
 				$data['completed'] = true;
 				$class[] = 'completed';
@@ -1339,6 +1340,11 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			$data['href'] = Controller::addToUrl($data['href'].'&rt='.REQUEST_TOKEN,true,array('step'));
 			$data['class'] = implode(' ', array_unique($class));
+			
+			if( !isset($data['isLink']) )
+			{
+				$data['isLink'] = false;
+			}
 			
 			$arrItems[ $k ] = $data;
 
