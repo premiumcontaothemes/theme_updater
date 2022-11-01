@@ -70,6 +70,8 @@ class ThemeUpdater extends \Contao\BackendModule
 	 */
 	protected function compile()
 	{
+		\error_reporting(E_ERROR | E_PARSE | E_NOTICE);
+		
 		// check contao version
 		$blnAllowed = false;
 		if( \version_compare(VERSION, '4.9','==') || \version_compare(VERSION, '4.13','==') )
