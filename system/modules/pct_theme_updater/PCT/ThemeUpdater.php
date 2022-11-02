@@ -583,7 +583,8 @@ class ThemeUpdater extends \Contao\BackendModule
 				// get last log
 				if( count($arrLogs) > 1 )
 				{
-					$k = end( \array_keys($arrLogs) );
+					$keys = \array_keys($arrLogs) ?? array();
+					$k = end( $keys );
 					$tmp = $arrLogs;
 					$arrLogs = array();
 					$arrLogs[$k] = $tmp[$k];
