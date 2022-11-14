@@ -1,3 +1,7 @@
+### 1.0.5
+Update: error_reporting(E_ERROR | E_PARSE | E_NOTICE) (#49)
+Update: General PHP8 updates (#48)
+
 ### 1.0.4
 Update: Removed commented out javascript code from be_js_pct_theme_updater.html5 template (#46)
 
