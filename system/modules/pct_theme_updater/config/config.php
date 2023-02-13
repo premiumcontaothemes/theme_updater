@@ -13,7 +13,7 @@
 /**
  * Constants
  */
-define('PCT_THEME_UPDATER', '1.0.5');
+define('PCT_THEME_UPDATER', '1.1.0');
 define('PCT_THEME_UPDATER_PATH','system/modules/pct_theme_updater');
 
 
