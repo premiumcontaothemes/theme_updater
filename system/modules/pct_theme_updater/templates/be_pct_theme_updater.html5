@@ -291,6 +291,10 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
 			<div class="tl_formbody_submit">
 				<div class="tl_submit_container">
+					<div class="checkbox_container">
+						<input type="checkbox" name="delete_demo_files" id="delete_demo_files">
+						<label for="agreement"><?= $arrLang['BACKEND_DESCRIPTION']['delete_demo_files']; ?></label>
+					</div>
 					<button type="submit" class="tl_submit" name="done"><?= $arrLangTpl['submit_done']; ?></button>
 				</div>
 			</div>
@@ -473,6 +477,10 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 
 			<div class="tl_formbody_submit">
 				<div class="tl_submit_container">
+					<div class="checkbox_container">
+						<input type="checkbox" name="delete_demo_files" id="delete_demo_files">
+						<label for="agreement"><?= $arrLang['BACKEND_DESCRIPTION']['delete_demo_files']; ?></label>
+					</div>
 					<button type="submit" class="tl_submit" name="commit"><?= $arrLangTpl['submit_commit']; ?></button>
 					<button type="submit" class="tl_submit" name="done" disabled><?= $arrLangTpl['submit_done']; ?></button>
 				</div>

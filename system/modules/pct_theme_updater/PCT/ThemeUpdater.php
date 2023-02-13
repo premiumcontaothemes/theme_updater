@@ -717,7 +717,22 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				// redirect on done
 				if( Input::post('done') !== null )
-				{							
+				{			
+					// delete demo_files
+					if( Input::post('delete_demo_files') !== null )
+					{
+						$objFolder = new Folder('templates/demo_installer');
+						if( $objFolder->isEmpty() === false )
+						{
+							$objFolder->purge();
+						}
+						$objFolder = new Folder('files/cto_layout/img/delete_this');
+						if( $objFolder->isEmpty() === false )
+						{
+							$objFolder->purge();
+						}
+					}
+					
 					// remove version file
 					$objVersionFile = new File('var/pct_theme_version');
 					if ( $objVersionFile->exists() )
