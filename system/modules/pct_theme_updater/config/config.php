@@ -170,7 +170,6 @@ $GLOBALS['PCT_THEME_UPDATER']['routes'] = array
 /**
  * Register backend page / key
  */
-// Eclipse installer
 $GLOBALS['BE_MOD']['system']['pct_theme_updater'] = array
 (
 	'callback'    	=> 'PCT\ThemeUpdater',
