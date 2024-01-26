@@ -10,12 +10,20 @@
  * @package		pct_theme_updater
  */
 
+use Contao\CoreBundle\ContaoCoreBundle;
+use Contao\System;
+
 /**
  * Constants
  */
 define('PCT_THEME_UPDATER', '1.1.0');
 define('PCT_THEME_UPDATER_PATH','system/modules/pct_theme_updater');
 
+if( version_compare(ContaoCoreBundle::getVersion(),'5.0','>=') )
+{
+	$rootDir = System::getContainer()->getParameter('kernel.project_dir');
+	include( $rootDir.'/'.PCT_THEME_UPDATER_PATH.'/config/autoload.php' );
+}
 
 /**
  * Globals
