@@ -15,6 +15,7 @@
  */
 namespace PCT\ThemeUpdater\Contao4;
 
+use Contao\System;
 use ReflectionObject;
 
 /**
@@ -25,10 +26,6 @@ class InstallationController extends \Contao\InstallationBundle\Controller\Insta
 {
 	public function __construct()
 	{
-		if($this->container === null)
-		{
-			$this->container = \Contao\System::getContainer();
-		}
 	}
 	
 	
@@ -39,7 +36,8 @@ class InstallationController extends \Contao\InstallationBundle\Controller\Insta
 	 */
 	public function call($strMethod, $arrArguments=array())
 	{
-		if(TL_MODE != 'BE')
+		$request = System::getContainer()->get('request_stack')->getCurrentRequest();
+		if( $request && !System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request) )
 		{
 			throw new \Exception('Not allowed to be executed outside Contaos backend');
 		}
@@ -56,7 +54,7 @@ class InstallationController extends \Contao\InstallationBundle\Controller\Insta
 	public function purgeSymfonyCache()
 	{
 		$obj = new parent;
-		$obj->container = $this->container;
+		$obj->container = System::getContainer();
 		$reflector = new ReflectionObject( $obj );
 		$method = $reflector->getMethod('purgeSymfonyCache');
 		$method->setAccessible(true);

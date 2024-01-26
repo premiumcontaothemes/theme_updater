@@ -95,7 +95,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		System::loadLanguageFile('default');
 
 		// @var object Session
-		$objSession = System::getContainer()->get('session');
+		$objSession = System::getContainer()->get('request_stack')->getSession();
 		$arrSession = $objSession->get($this->strSession);
 		
 		$arrErrors = array();
@@ -1258,7 +1258,8 @@ class ThemeUpdater extends \Contao\BackendModule
 	 */
 	public function injectScripts($objTemplate)
 	{
-		if(TL_MODE == 'BE' && $objTemplate->getName() == 'be_main')
+		$request = System::getContainer()->get('request_stack')->getCurrentRequest();
+		if( $request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)	&& $objTemplate->getName() == 'be_main')
 		{
 			$objScripts = new BackendTemplate('be_js_pct_theme_updater');
 
@@ -1283,7 +1284,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		$arrItems = array();
 		$i = 0;
 
-		$objSession = System::getContainer()->get('session');
+		$objSession = System::getContainer()->get('request_stack')->getSession();
 		$arrSession = $objSession->get($this->strSession);
 		
 		// store the processed steps
