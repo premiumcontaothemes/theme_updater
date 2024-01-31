@@ -21,7 +21,7 @@ $classMap = array
 (
 	'PCT\ThemeUpdater' 							=> $path.'/PCT/ThemeUpdater.php',
 	'PCT\ThemeUpdater\SystemCallbacks'			=> $path.'/PCT/ThemeUpdater/SystemCallbacks.php',
-	'PCT\ThemeUpdater\Contao4\InstallationController'	=> $path.'/PCT/ThemeUpdater/Contao4/InstallationController.php',
+	'PCT\ThemeUpdater\InstallerHelper'			=> $path.'/PCT/ThemeUpdater/InstallerHelper.php',
 );
 
 $loader = new \Composer\Autoload\ClassLoader();

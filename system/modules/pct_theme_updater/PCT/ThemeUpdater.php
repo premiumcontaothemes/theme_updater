@@ -34,6 +34,7 @@ use Contao\BackendUser;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\Date;
 use Contao\Folder;
+use PCT\ThemeUpdater\InstallerHelper;
 
 /**
  * Class file
@@ -75,7 +76,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		
 		$version = ContaoCoreBundle::getVersion();
 		$rootDir = System::getContainer()->getParameter('kernel.project_dir');
-
+		$uploadPath = Config::get('uploadPath') ?? 'files';
 
 		// check contao version
 		$blnAllowed = false;
@@ -100,7 +101,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		
 		$arrErrors = array();
 		$arrParams = array();		
-
+		
 		// updater config
 		$objConfig = \json_decode($this->request($GLOBALS['PCT_THEME_UPDATER']['config_url']));
 		$objConfig->local_version = $this->getThemeVersion();
@@ -867,24 +868,20 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			if(Input::get('action') == 'run' && is_dir($rootDir.'/'.$strFolder))
 			{
-				// clear cache
-				$objInstallationController = new \PCT\ThemeUpdater\Contao4\InstallationController;
-				$objInstallationController->call('purgeSymfonyCache');
-
 				// backup an existing customize.css
 				$blnCustomizeCss = false;
-				if(file_exists($rootDir.'/'.Config::get('uploadPath').'/cto_layout/css/customize.css'))
+				if(file_exists($rootDir.'/'.$uploadPath.'/cto_layout/css/customize.css'))
 				{
-					if (Files::getInstance()->copy(Config::get('uploadPath').'/cto_layout/css/customize.css',$GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css') )
+					if (Files::getInstance()->copy($uploadPath.'/cto_layout/css/customize.css',$GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css') )
 					{
 						$blnCustomizeCss = true;
 					}
 					
 				}
 				$blnCustomizeJs = false;
-				if(file_exists($rootDir.'/'.Config::get('uploadPath').'/cto_layout/scripts/customize.js'))
+				if(file_exists($rootDir.'/'.$uploadPath.'/cto_layout/scripts/customize.js'))
 				{
-					if( Files::getInstance()->copy(Config::get('uploadPath').'/cto_layout/scripts/customize.js',$GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.js') )
+					if( Files::getInstance()->copy($uploadPath.'/cto_layout/scripts/customize.js',$GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.js') )
 					{
 						$blnCustomizeJs = true;
 					}
@@ -892,9 +889,9 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				// favicon folder
 				$blnFavicon = false;
-				if(is_dir($rootDir.'/'.Config::get('uploadPath').'/cto_layout/img/favicon'))
+				if(is_dir($rootDir.'/'.$uploadPath.'/cto_layout/img/favicon'))
 				{
-					$folder = new Folder( Config::get('uploadPath').'/cto_layout/img/favicon' );
+					$folder = new Folder( $uploadPath.'/cto_layout/img/favicon' );
 					if( $folder->copyTo( $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/favicon') )
 					{
 						$blnFavicon = true;
@@ -919,30 +916,32 @@ class ThemeUpdater extends \Contao\BackendModule
 					$strDestination = $f;
 					if($f == 'files')
 					{
-						$strDestination = Config::get('uploadPath') ?: 'files';
+						$strDestination = $uploadPath ?: 'files';
 					}
+
+					$objFiles->rcopy($strSource,$strDestination);
 					
-					if($objFiles->rcopy($strSource,$strDestination) !== true)
-					{
-						$arrErrors[] = 'Copy "'.$strSource.'" to "'.$strDestination.'" failed';
-					}
+					#if($objFiles->rcopy($strSource,$strDestination) !== true)
+					#{
+					#	$arrErrors[] = 'Copy "'.$strSource.'" to "'.$strDestination.'" failed';
+					#}
 				}
 
 				// reinstall the customize.css
 				if($blnCustomizeCss)
 				{
-					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css',Config::get('uploadPath').'/cto_layout/css/customize.css');
+					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css',$uploadPath.'/cto_layout/css/customize.css');
 				}
 				if($blnCustomizeJs)
 				{
-					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.js',Config::get('uploadPath').'/cto_layout/scripts/customize.js');
+					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.js',$uploadPath.'/cto_layout/scripts/customize.js');
 				}
 
 				// favicon folder
 				if($blnFavicon)
 				{
 					$tmp_folder = new Folder( $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/favicon' );
-					$folder = new Folder( Config::get('uploadPath').'/cto_layout/img/favicon' );
+					$folder = new Folder( $uploadPath.'/cto_layout/img/favicon' );
 					$folder->purge();
 					$tmp_folder->copyTo( $folder->__get('path') );
 				}
@@ -950,7 +949,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				// log errors
 				if(count($arrErrors) > 0)
 				{
-					System::getContainer()->get('monolog.logger.contao.error')->info( 'Theme Installer: Copy files: '.implode(', ', $arrErrors) );
+					System::getContainer()->get('monolog.logger.contao.error')->info( 'Theme Updater: Copy files: '.implode(', ', $arrErrors) );
 
 					// track error				
 					$arrSession['errors'] = $arrErrors;
@@ -990,33 +989,6 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'INSTALLATION';
 			$this->Template->step = 'CLEAR_CACHE';
 
-			if(Input::get('action') == 'run')
-			{
-				// clear internal cache of Contao 4.4
-				$objContainer = System::getContainer();
-				$strCacheDir = StringUtil::stripRootDir($objContainer->getParameter('kernel.cache_dir'));
-				$strRootDir = $objContainer->getParameter('kernel.project_dir');
-				$strWebDir = $objContainer->getParameter('contao.web_dir');
-				$arrBundles = $objContainer->getParameter('kernel.bundles');
-				
-				// @var object Contao\Automator
-				$objAutomator = new Automator;
-				// generate symlinks to /assets, /files, /system
-				$objAutomator->generateSymlinks();
-				// generate bundles symlinks
-				$objSymlink = new \Contao\CoreBundle\Util\SymlinkUtil;
-				$arrBundles = array('calendar','comments','core','faq','news','newsletter');
-				foreach($arrBundles as $bundle)
-				{
-					$from = $strRootDir.'/vendor/contao/'.$bundle.'-bundle/src/Resources/public';
-					$to = $strWebDir.'/bundles/contao'.$bundle;
-					$objSymlink::symlink($from, $to,$strRootDir);
-				}
-
-				die('Symlinks created and Symphony cache cleared');
-			
-			}
-
 			return;
 		}
 
@@ -1027,38 +999,42 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->step = 'DB_UPDATE_MODULES';
 			
 			$arrErrors = array();
+			$arrStatements = array();
+
 			try
 			{
-				// Contao 4.4 >=
-				if(version_compare($version, '4.4','>='))
+				$objInstallHelper = new InstallerHelper;
+				$arrSQL = $objInstallHelper->sqlCompileCommandsCallback(array());
+
+				if(!empty($arrSQL) && is_array($arrSQL))
 				{
-					$objContainer = System::getContainer();
-					$objInstaller = $objContainer->get('contao.installer');
-					// compile sql
-					$arrSQL = $objInstaller->getCommands();
-					if(!empty($arrSQL) && is_array($arrSQL))
+					foreach($arrSQL as $operation => $sql)
 					{
-						foreach($arrSQL as $operation => $sql)
+						// never run operations
+						if(in_array($operation, array('DELETE','DROP','ALTER_DROP','ALTER_CHANGE')))
 						{
-							// never run operations
-							if(in_array($operation, array('DELETE','DROP','ALTER_DROP')))
+							continue;
+						}
+						
+						foreach($sql as $statement)
+						{
+							if( \strpos($statement,'ADD KEY') || \strpos($statement,'ADD UNIQUE KEY') )
 							{
 								continue;
-							}
-
-							foreach($sql as $hash => $statement)
-							{
-								$objInstaller->execCommand($hash);
-							}
+							}	
+							// track the statements executed
+							$arrStatements[] = $statement;
+							// execute
+							$this->Database->query( $statement );
 						}
 					}
-				}
+				}		
 			}
 			catch(\Exception $e)
 			{
 				$arrErrors[] = $e->getMessage();
 			}
-			
+
 			// log errors and redirect
 			if(count($arrErrors) > 0)
 			{
