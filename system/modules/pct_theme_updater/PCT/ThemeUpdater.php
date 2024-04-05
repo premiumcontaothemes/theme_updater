@@ -74,13 +74,14 @@ class ThemeUpdater extends \Contao\BackendModule
 	{
 		\error_reporting(E_ERROR | E_PARSE | E_NOTICE);
 		
-		$version = ContaoCoreBundle::getVersion();
+		$full_version = ContaoCoreBundle::getVersion();
+		$version = substr( $full_version, 0, strrpos($full_version, '.') );
 		$rootDir = System::getContainer()->getParameter('kernel.project_dir');
 		$uploadPath = Config::get('uploadPath') ?? 'files';
 
 		// check contao version
 		$blnAllowed = false;
-		if( \version_compare($version, '4.13','==') || \version_compare($version, '5.2','>=') )
+		if( \version_compare($version, '4.13','==') || \version_compare($version, '5.3','>=') )
 		{
 			$blnAllowed = true;
 		}
@@ -988,6 +989,11 @@ class ThemeUpdater extends \Contao\BackendModule
 		{
 			$this->Template->status = 'INSTALLATION';
 			$this->Template->step = 'CLEAR_CACHE';
+
+			// @var object Contao\Automator
+			$objAutomator = new Automator;
+			// generate symlinks to /assets, /files, /system
+			$objAutomator->generateSymlinks();
 
 			return;
 		}
