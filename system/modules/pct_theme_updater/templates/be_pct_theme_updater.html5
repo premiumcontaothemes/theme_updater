@@ -100,12 +100,12 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 				<div class="input_wrapper licence_check">
 					<div class="widget field w50 license">
 						<h3><?= $arrLangTpl['input_license_theme'][0]; ?></h3>
-						<input type="text" name="license" value="" class="tl_text" placeholder="">
+						<input type="text" name="license" value="" class="tl_text" placeholder="" required>
 						<p class="tl_help tl_tip"><?= $arrLangTpl['input_license_theme'][1]; ?></p>
 					</div>
 					<div class="widget field w50 email">
 						<h3><?= $arrLangTpl['input_email'][0]; ?></h3>
-						<input type="email" name="email" value="" class="tl_text" placeholder="">
+						<input type="email" name="email" value="" class="tl_text" placeholder="" required>
 						<p class="tl_help tl_tip"><?= $arrLangTpl['input_email'][1]; ?></p>
 					</div>
 				</div>
