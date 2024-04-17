@@ -81,7 +81,6 @@ class Maintenance extends Backend implements MaintenanceModuleInterface
 				$objThemeUpdater = new ThemeUpdater;
 				// request license
 				$objUpdaterLicense = \json_decode( $objThemeUpdater->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
-				debug($objUpdaterLicense);
 				if( $objUpdaterLicense->status == 'OK' )
 				{
 					$arrSession['updater_license'] = $objUpdaterLicense;
