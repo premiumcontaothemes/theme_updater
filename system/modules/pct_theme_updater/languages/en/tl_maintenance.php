@@ -21,6 +21,6 @@ $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['jobs_done']		= 'Task(
  * Jobs
  */
 $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['news_order'][0] 				= 'Newslist sorting';
-$GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['news_order'][1] 				= 'Change newslist sorting from "date DESC" to "order_date_desc"';
+$GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['news_order'][1] 				= 'Change newslist sorting from "date DESC" (unknown option) to "order_date_desc"';
 $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['center_center_to_crop'][0] 	= 'Update image size selections';
 $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['center_center_to_crop'][1] 	= 'Update image size seelctions from "CENTER_CENTER" (unknown option) to "CROP" ';

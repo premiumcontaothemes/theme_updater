@@ -21,6 +21,6 @@ $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['jobs_done']		= 'Aufga
  * Jobs
  */
 $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['news_order'][0] 				= 'Nachrichtenlisten Sortierung';
-$GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['news_order'][1] 				= 'Nachrichtenlisten Sortierung "date DESC" ändern in "order_date_desc"';
+$GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['news_order'][1] 				= 'Nachrichtenlisten Sortierung "date DESC" (Unbekannte Option) ändern in "order_date_desc"';
 $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['center_center_to_crop'][0] 	= 'Bildgrößen-Auswahlen updaten';
-$GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['center_center_to_crop'][1] 	= 'Bildgrößen Einstellung "CENTER_CENTER" (Unbekannte option) ändern in "CROP"';
+$GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['center_center_to_crop'][1] 	= 'Bildgrößen Einstellung "CENTER_CENTER" (Unbekannte Option) ändern in "CROP"';
