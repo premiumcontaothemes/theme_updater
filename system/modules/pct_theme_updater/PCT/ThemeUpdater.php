@@ -1390,7 +1390,7 @@ class ThemeUpdater extends \Contao\BackendModule
 	 * Send requests
 	 */
 	// ! send requests
-	protected function request($strUrl,$arrParams=array())
+	public function request($strUrl,$arrParams=array())
 	{
 		$strRequest = \html_entity_decode($strUrl.(count($arrParams) > 0 ? '?'.\http_build_query($arrParams) : '') );
 		// log
