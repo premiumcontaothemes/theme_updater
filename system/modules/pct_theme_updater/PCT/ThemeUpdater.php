@@ -74,6 +74,9 @@ class ThemeUpdater extends \Contao\BackendModule
 	{
 		\error_reporting(E_ERROR | E_PARSE | E_NOTICE);
 		
+		// validate
+		$blnIsValid = static::validate();
+		
 		$full_version = ContaoCoreBundle::getVersion();
 		$version = substr( $full_version, 0, strrpos($full_version, '.') );
 		$rootDir = System::getContainer()->getParameter('kernel.project_dir');
@@ -1390,7 +1393,7 @@ class ThemeUpdater extends \Contao\BackendModule
 	 * Send requests
 	 */
 	// ! send requests
-	public function request($strUrl,$arrParams=array())
+	protected function request($strUrl,$arrParams=array())
 	{
 		$strRequest = \html_entity_decode($strUrl.(count($arrParams) > 0 ? '?'.\http_build_query($arrParams) : '') );
 		// log
@@ -1411,5 +1414,64 @@ class ThemeUpdater extends \Contao\BackendModule
 		unset($curl);
 
 		return $strResponse;
+	}
+
+
+	/**
+	 * Check if the theme updater license is valid
+	 * @return boolean
+	 */
+	// ! validate
+	public static function validate()
+	{
+		$objSession = System::getContainer()->get('request_stack')->getSession();
+		
+		// check license
+		$arrSession = $objSession->get('pct_theme_updater');
+		$objUpdaterLicense = $arrSession['updater_license'] ?? null;
+		if( isset($arrSession['updater_license']) && \is_string($arrSession['updater_license']) && empty($arrSession['updater_license']) === false)
+		{
+			$objUpdaterLicense = \json_decode($arrSession['updater_license']);
+		}
+		else
+		{
+			$objFile = new File('var/pct_license');
+			if( $objFile->exists() === true )
+			{
+				$strThemeLicense = trim( $objFile->getContent() );
+			}
+			$objFile = new File('var/pct_license_themeupdater');
+			if( $objFile->exists() === true )
+			{
+				$strLicense = trim( $objFile->getContent() );
+			}
+
+			// registration logic
+			$strRegistration = $strThemeLicense.'___'.StringUtil::decodeEntities( str_replace(array('www.'),'',Environment::get('host')) );
+			
+			// validate
+			$arrParams = array
+			(
+				'domain'	=> $strRegistration,
+				'key'		=> $strLicense,
+			);
+
+			if( empty($strLicense) === false )
+			{
+				$objThemeUpdater = new ThemeUpdater;
+				// request license
+				$objUpdaterLicense = \json_decode( $objThemeUpdater->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
+			}
+		}
+
+		// all good, update the session
+		if( $objUpdaterLicense !== null && isset($objUpdaterLicense->status) && \strtolower($objUpdaterLicense->status) == 'ok')
+		{
+			$arrSession['updater_license'] = $objUpdaterLicense;
+			$objSession->set('pct_theme_updater',$arrSession);
+			return true;
+		}
+
+		return false;
 	}
 }

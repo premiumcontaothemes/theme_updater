@@ -44,57 +44,13 @@ class Maintenance extends Backend implements MaintenanceModuleInterface
 	 */
 	public function run()
 	{
-		$objSession = System::getContainer()->get('request_stack')->getSession();
-		
-		// check license
-		$arrSession = $objSession->get('pct_theme_updater');
-		$objUpdaterLicense = $arrSession['updater_license'] ?? null;
-		if( isset($arrSession['updater_license']) && \is_string($arrSession['updater_license']) && empty($arrSession['updater_license']) === false)
-		{
-			$objUpdaterLicense = \json_decode($arrSession['updater_license']);
-		}
-		else
-		{
-			$objFile = new File('var/pct_license');
-			if( $objFile->exists() === true )
-			{
-				$strThemeLicense = trim( $objFile->getContent() );
-			}
-			$objFile = new File('var/pct_license_themeupdater');
-			if( $objFile->exists() === true )
-			{
-				$strLicense = trim( $objFile->getContent() );
-			}
-
-			// registration logic
-			$strRegistration = $strThemeLicense.'___'.StringUtil::decodeEntities( str_replace(array('www.'),'',Environment::get('host')) );
-			
-			// validate
-			$arrParams = array
-			(
-				'domain'	=> $strRegistration,
-				'key'		=> $strLicense,
-			);
-
-			if( empty($strLicense) === false )
-			{
-				$objThemeUpdater = new ThemeUpdater;
-				// request license
-				$objUpdaterLicense = \json_decode( $objThemeUpdater->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
-				if( $objUpdaterLicense->status == 'OK' )
-				{
-					$arrSession['updater_license'] = $objUpdaterLicense;
-					$objSession->set('pct_theme_updater',$arrSession);
-				}
-			}
-		}
-
-		if( $objUpdaterLicense === null || !isset($objUpdaterLicense->status) || $objUpdaterLicense->status != 'OK')
+		if( ThemeUpdater::validate() === false )
 		{
 			return '';
 		}
-		//---
-
+		
+		$objSession = System::getContainer()->get('request_stack')->getSession();
+		
 		$arrJobs = array();
 		foreach( array('news_order','center_center_to_crop') as $key)
 		{
