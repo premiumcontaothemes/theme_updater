@@ -3,6 +3,7 @@ New: Support for Contao 4.13, 5.3 (#53)
 New: Checkbox "Delete demo files" to removed demo_installer files and delete_this folders after update has been checked in (#51)
 Update: error_reporting(E_ERROR | E_PARSE | E_NOTICE) (#49)
 Update: General PHP8 updates (#48)
+Update: Added maintenance jobs to migrate database values (#56)
 Removed: Contao 4.9 support (#53)
 
 ### 1.0.4
