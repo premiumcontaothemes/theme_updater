@@ -26,6 +26,11 @@ if( version_compare(ContaoCoreBundle::getVersion(),'5.0','>=') )
 }
 
 /**
+ * Maintenance
+ */
+$GLOBALS['TL_MAINTENANCE'][] = 'PCT\ThemeUpdater\Maintenance';
+
+/**
  * Globals
  */
 $GLOBALS['PCT_THEME_UPDATER']['api_url'] = 'https://api.premium-contao-themes.com';

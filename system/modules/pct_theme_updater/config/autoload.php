@@ -22,6 +22,8 @@ $classMap = array
 	'PCT\ThemeUpdater' 							=> $path.'/PCT/ThemeUpdater.php',
 	'PCT\ThemeUpdater\SystemCallbacks'			=> $path.'/PCT/ThemeUpdater/SystemCallbacks.php',
 	'PCT\ThemeUpdater\InstallerHelper'			=> $path.'/PCT/ThemeUpdater/InstallerHelper.php',
+	'PCT\ThemeUpdater\Maintenance' 				=> $path.'/PCT/ThemeUpdater/Maintenance.php',
+	'PCT\ThemeUpdater\Maintenance\Jobs' 		=> $path.'/PCT/ThemeUpdater/Maintenance/Jobs.php',
 );
 
 $loader = new \Composer\Autoload\ClassLoader();
@@ -36,4 +38,5 @@ $loader->register();
 	'be_pct_theme_updater'					=> 'system/modules/pct_theme_updater/templates',
 	'be_js_pct_theme_updater'				=> 'system/modules/pct_theme_updater/templates',
 	'pct_theme_updater_breadcrumb'			=> 'system/modules/pct_theme_updater/templates',
+	'be_maintenance_theme_updater'		=> 'system/modules/pct_theme_updater/templates'
 ));
