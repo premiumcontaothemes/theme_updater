@@ -866,10 +866,11 @@ class ThemeUpdater extends \Contao\BackendModule
 		{
 			$this->Template->status = 'INSTALLATION';
 			$this->Template->step = 'COPY_FILES';
-			
+
 			// the target folder to extract to
 			$strTargetDir = $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/'.basename($arrSession['file'], ".zip").'_zip';
 			$strFolder = $strTargetDir; #$strTargetDir.'/'.basename($arrSession['file'], ".zip");
+
 
 			if(Input::get('action') == 'run' && is_dir($rootDir.'/'.$strFolder))
 			{
@@ -906,18 +907,15 @@ class ThemeUpdater extends \Contao\BackendModule
 				$objFiles = Files::getInstance();
 				$arrIgnore = array('.ds_store','customize.css','customize.js');
 
-				// clear /templates folders in "pct_"-modules
-				$arrModuleFolders = \array_keys(System::getContainer()->getParameter('kernel.bundles'));
-				foreach($arrModuleFolders as $name)
-				{
-					if( strpos($name, 'pct_') === 0 )
-					{
-						$objFiles->rrdir('system/modules/'.$name.'/templates',true);
-					}
-				}
-
 				// folder to copy
 				$arrFolders = Folder::scan( $rootDir.'/'.$strFolder.'/upload' );
+
+				// clear /templates folders in "pct_"-modules
+				$arrModulesFolders = Folder::scan( $rootDir.'/'.$strFolder.'/upload/system/modules' );
+				foreach($arrModulesFolders as $name)
+				{
+					$objFiles->rrdir('system/modules/'.$name.'/templates',true);
+				}
 
 				foreach($arrFolders as $f)
 				{
