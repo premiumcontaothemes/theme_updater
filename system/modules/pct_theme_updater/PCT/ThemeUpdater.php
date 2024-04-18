@@ -1425,7 +1425,9 @@ class ThemeUpdater extends \Contao\BackendModule
 	public static function validate()
 	{
 		$objSession = System::getContainer()->get('request_stack')->getSession();
-		
+		$strLicense = '';
+		$strThemeLicense = '';
+			
 		// check license
 		$arrSession = $objSession->get('pct_theme_updater');
 		$objUpdaterLicense = $arrSession['updater_license'] ?? null;
