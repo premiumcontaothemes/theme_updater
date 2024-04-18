@@ -34,6 +34,7 @@ use Contao\BackendUser;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\Date;
 use Contao\Folder;
+use Contao\TemplateLoader;
 use PCT\ThemeUpdater\InstallerHelper;
 
 /**
@@ -993,10 +994,23 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'INSTALLATION';
 			$this->Template->step = 'CLEAR_CACHE';
 
-			// @var object Contao\Automator
-			$objAutomator = new Automator;
-			// generate symlinks to /assets, /files, /system
-			$objAutomator->generateSymlinks();
+			if(Input::get('action') == 'run')
+			{
+				$objContainer = System::getContainer();
+				$strCacheDir = StringUtil::stripRootDir($objContainer->getParameter('kernel.cache_dir'));
+				
+				Files::getInstance()->rrdir($strCacheDir,true);
+
+				TemplateLoader::reset();
+
+				// @var object Contao\Automator
+				$objAutomator = new Automator;
+				// generate symlinks to /assets, /files, /system
+				$objAutomator->generateSymlinks();
+				
+				die('Symlinks created and Symphony cache cleared');
+			}
+			
 
 			return;
 		}
