@@ -905,6 +905,16 @@ class ThemeUpdater extends \Contao\BackendModule
 				$objFiles = Files::getInstance();
 				$arrIgnore = array('.ds_store','customize.css','customize.js');
 
+				// clear /templates folders in "pct_"-modules
+				$arrModuleFolders = \array_keys(System::getContainer()->getParameter('kernel.bundles'));
+				foreach($arrModuleFolders as $name)
+				{
+					if( strpos($name, 'pct_') === 0 )
+					{
+						$objFiles->rrdir('system/modules/'.$name.'/templates',true);
+					}
+				}
+
 				// folder to copy
 				$arrFolders = Folder::scan( $rootDir.'/'.$strFolder.'/upload' );
 
