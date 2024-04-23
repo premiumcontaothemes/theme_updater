@@ -31,8 +31,11 @@ use Contao\File;
 use Contao\StringUtil;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
+use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\Date;
 use Contao\Folder;
+use Contao\TemplateLoader;
+use PCT\ThemeUpdater\InstallerHelper;
 
 /**
  * Class file
@@ -72,9 +75,17 @@ class ThemeUpdater extends \Contao\BackendModule
 	{
 		\error_reporting(E_ERROR | E_PARSE | E_NOTICE);
 		
+		// validate
+		$blnIsValid = static::validate();
+		
+		$full_version = ContaoCoreBundle::getVersion();
+		$version = substr( $full_version, 0, strrpos($full_version, '.') );
+		$rootDir = System::getContainer()->getParameter('kernel.project_dir');
+		$uploadPath = Config::get('uploadPath') ?? 'files';
+
 		// check contao version
 		$blnAllowed = false;
-		if( \version_compare(VERSION, '4.9','==') || \version_compare(VERSION, '4.13','==') )
+		if( \version_compare($version, '4.13','==') || \version_compare($version, '5.3','>=') )
 		{
 			$blnAllowed = true;
 		}
@@ -90,12 +101,12 @@ class ThemeUpdater extends \Contao\BackendModule
 		System::loadLanguageFile('default');
 
 		// @var object Session
-		$objSession = System::getContainer()->get('session');
+		$objSession = System::getContainer()->get('request_stack')->getSession();
 		$arrSession = $objSession->get($this->strSession);
 		
 		$arrErrors = array();
 		$arrParams = array();		
-
+		
 		// updater config
 		$objConfig = \json_decode($this->request($GLOBALS['PCT_THEME_UPDATER']['config_url']));
 		$objConfig->local_version = $this->getThemeVersion();
@@ -106,7 +117,8 @@ class ThemeUpdater extends \Contao\BackendModule
 		{
 			$arrSession['errors'] = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['client_version_conflict']);
 			$objSession->set($this->strSession,$arrSession);
-			System::log('Current version: '.\PCT_THEME_UPDATER.' Min client version required: '.$objConfig->min_client_version,'Theme Updater',\TL_ERROR);
+			System::getContainer()->get('monolog.logger.contao.error')->info('Current version: '.\PCT_THEME_UPDATER.' Min client version required: '.$objConfig->min_client_version);
+
 			$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
 		}
 
@@ -183,9 +195,9 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 		// check if local version matches the required contao version
-		if( $strStatus !== 'error' && \version_compare($objConfig->local_version,'4','<') && \version_compare(VERSION,'4.9','>') )
+		if( $strStatus !== 'error' && \version_compare($objConfig->local_version,'4','<') && \version_compare($version,'4.9','>') )
 		{
-			$error = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict'],$objConfig->local_version,\VERSION,'4.9');
+			$error = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict'],$objConfig->local_version,$version,'4.9');
 			$arrSession['errors'] = array($error);
 			$objSession->set($this->strSession,$arrSession);
 
@@ -201,7 +213,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		
 			foreach($objUpdate->contao as $version)
 			{
-				if( \version_compare(\VERSION,$version,'==') )
+				if( \version_compare($version,$version,'==') )
 				{
 					$blnSupported = true;
 				}
@@ -209,7 +221,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			
 			if( $strStatus !== 'error' && $blnSupported === false && !empty($this->strTheme) )
 			{
-				$error = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_version_conflict'],\VERSION, \implode(',',$objUpdate->contao));
+				$error = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_version_conflict'],$version, \implode(',',$objUpdate->contao));
 				$arrSession['errors'] = array($error);
 				$objSession->set($this->strSession,$arrSession);
 	
@@ -545,8 +557,8 @@ class ThemeUpdater extends \Contao\BackendModule
 			#$this->Template->errors = $arrSession['errors'];
 
 			// log errers
-			System::log( \implode(',',$arrSession['errors']),__METHOD__,\TL_ERROR );
-			
+			System::getContainer()->get('monolog.logger.contao.error')->info( \implode(',',$arrSession['errors']) );
+
 			return;
 		}
 
@@ -717,7 +729,22 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				// redirect on done
 				if( Input::post('done') !== null )
-				{							
+				{			
+					// delete demo_files
+					if( Input::post('delete_demo_files') !== null )
+					{
+						$objFolder = new Folder('templates/demo_installer');
+						if( $objFolder->isEmpty() === false )
+						{
+							$objFolder->purge();
+						}
+						$objFolder = new Folder('files/cto_layout/img/delete_this');
+						if( $objFolder->isEmpty() === false )
+						{
+							$objFolder->purge();
+						}
+					}
+					
 					// remove version file
 					$objVersionFile = new File('var/pct_theme_version');
 					if ( $objVersionFile->exists() )
@@ -763,13 +790,13 @@ class ThemeUpdater extends \Contao\BackendModule
 		if(Input::get('status') == 'installation' && Input::get('step') == 'unzip')
 		{
 			// check if file still exists
-			if(empty($arrSession['file']) || !file_exists(TL_ROOT.'/'.$arrSession['file']))
+			if(empty($arrSession['file']) || !file_exists($rootDir.'/'.$arrSession['file']))
 			{
 				$this->Template->status = 'FILE_NOT_EXISTS';
 
 				// log
-				System::log('Theme Installer: File not found',__METHOD__,TL_ERROR);
-				
+				System::getContainer()->get('monolog.logger.contao.error')->info( 'Theme Installer: File not found' );
+
 				// track error				
 				$arrSession['errors'] = array('File not found');
 				$objSession->set($this->strSession,$arrSession);
@@ -803,9 +830,9 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				// extract zip
 				$objZip = new \ZipArchive;
-				if($objZip->open(TL_ROOT.'/'.$objFile->path) === true && !isset($arrSession['unzipped']))
+				if($objZip->open($rootDir.'/'.$objFile->path) === true && !isset($arrSession['unzipped']))
 				{
-					$objZip->extractTo(TL_ROOT.'/'.$strTargetDir);
+					$objZip->extractTo($rootDir.'/'.$strTargetDir);
 					$objZip->close();
 
 					// flag that the zip file has been extracted
@@ -816,7 +843,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					die('Zip extracted to: '.$strTargetDir);
 				}
 				// zip already extracted
-				elseif($arrSession['unzipped'] && is_dir(TL_ROOT.'/'.$strTargetDir))
+				elseif($arrSession['unzipped'] && is_dir($rootDir.'/'.$strTargetDir))
 				{
 					// ajax done
 					die('Zip extracted to: '.$strTargetDir);
@@ -825,7 +852,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				else
 				{
 					$log = sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['unzip_error'],$arrSession['file']);
-					System::log($log,__METHOD__,TL_ERROR);
+					System::getContainer()->get('monolog.logger.contao.error')->info( $log );
 				}
 
 				// redirect to the beginning
@@ -839,31 +866,28 @@ class ThemeUpdater extends \Contao\BackendModule
 		{
 			$this->Template->status = 'INSTALLATION';
 			$this->Template->step = 'COPY_FILES';
-			
+
 			// the target folder to extract to
 			$strTargetDir = $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/'.basename($arrSession['file'], ".zip").'_zip';
 			$strFolder = $strTargetDir; #$strTargetDir.'/'.basename($arrSession['file'], ".zip");
 
-			if(Input::get('action') == 'run' && is_dir(TL_ROOT.'/'.$strFolder))
-			{
-				// clear cache
-				$objInstallationController = new \PCT\ThemeUpdater\Contao4\InstallationController;
-				$objInstallationController->call('purgeSymfonyCache');
 
+			if(Input::get('action') == 'run' && is_dir($rootDir.'/'.$strFolder))
+			{
 				// backup an existing customize.css
 				$blnCustomizeCss = false;
-				if(file_exists(TL_ROOT.'/'.Config::get('uploadPath').'/cto_layout/css/customize.css'))
+				if(file_exists($rootDir.'/'.$uploadPath.'/cto_layout/css/customize.css'))
 				{
-					if (Files::getInstance()->copy(Config::get('uploadPath').'/cto_layout/css/customize.css',$GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css') )
+					if (Files::getInstance()->copy($uploadPath.'/cto_layout/css/customize.css',$GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css') )
 					{
 						$blnCustomizeCss = true;
 					}
 					
 				}
 				$blnCustomizeJs = false;
-				if(file_exists(TL_ROOT.'/'.Config::get('uploadPath').'/cto_layout/scripts/customize.js'))
+				if(file_exists($rootDir.'/'.$uploadPath.'/cto_layout/scripts/customize.js'))
 				{
-					if( Files::getInstance()->copy(Config::get('uploadPath').'/cto_layout/scripts/customize.js',$GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.js') )
+					if( Files::getInstance()->copy($uploadPath.'/cto_layout/scripts/customize.js',$GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.js') )
 					{
 						$blnCustomizeJs = true;
 					}
@@ -871,9 +895,9 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				// favicon folder
 				$blnFavicon = false;
-				if(is_dir(TL_ROOT.'/'.Config::get('uploadPath').'/cto_layout/img/favicon'))
+				if(is_dir($rootDir.'/'.$uploadPath.'/cto_layout/img/favicon'))
 				{
-					$folder = new Folder( Config::get('uploadPath').'/cto_layout/img/favicon' );
+					$folder = new Folder( $uploadPath.'/cto_layout/img/favicon' );
 					if( $folder->copyTo( $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/favicon') )
 					{
 						$blnFavicon = true;
@@ -884,7 +908,14 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrIgnore = array('.ds_store','customize.css','customize.js');
 
 				// folder to copy
-				$arrFolders = scan(TL_ROOT.'/'.$strFolder.'/upload');
+				$arrFolders = Folder::scan( $rootDir.'/'.$strFolder.'/upload' );
+
+				// clear /templates folders in "pct_"-modules
+				$arrModulesFolders = Folder::scan( $rootDir.'/'.$strFolder.'/upload/system/modules' );
+				foreach($arrModulesFolders as $name)
+				{
+					$objFiles->rrdir('system/modules/'.$name.'/templates',true);
+				}
 
 				foreach($arrFolders as $f)
 				{
@@ -898,30 +929,32 @@ class ThemeUpdater extends \Contao\BackendModule
 					$strDestination = $f;
 					if($f == 'files')
 					{
-						$strDestination = Config::get('uploadPath') ?: 'files';
+						$strDestination = $uploadPath ?: 'files';
 					}
+
+					$objFiles->rcopy($strSource,$strDestination);
 					
-					if($objFiles->rcopy($strSource,$strDestination) !== true)
-					{
-						$arrErrors[] = 'Copy "'.$strSource.'" to "'.$strDestination.'" failed';
-					}
+					#if($objFiles->rcopy($strSource,$strDestination) !== true)
+					#{
+					#	$arrErrors[] = 'Copy "'.$strSource.'" to "'.$strDestination.'" failed';
+					#}
 				}
 
 				// reinstall the customize.css
 				if($blnCustomizeCss)
 				{
-					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css',Config::get('uploadPath').'/cto_layout/css/customize.css');
+					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.css',$uploadPath.'/cto_layout/css/customize.css');
 				}
 				if($blnCustomizeJs)
 				{
-					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.js',Config::get('uploadPath').'/cto_layout/scripts/customize.js');
+					Files::getInstance()->copy($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/customize.js',$uploadPath.'/cto_layout/scripts/customize.js');
 				}
 
 				// favicon folder
 				if($blnFavicon)
 				{
 					$tmp_folder = new Folder( $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/favicon' );
-					$folder = new Folder( Config::get('uploadPath').'/cto_layout/img/favicon' );
+					$folder = new Folder( $uploadPath.'/cto_layout/img/favicon' );
 					$folder->purge();
 					$tmp_folder->copyTo( $folder->__get('path') );
 				}
@@ -929,8 +962,8 @@ class ThemeUpdater extends \Contao\BackendModule
 				// log errors
 				if(count($arrErrors) > 0)
 				{
-					System::log('Theme Installer: Copy files: '.implode(', ', $arrErrors),__METHOD__,TL_ERROR);
-					
+					System::getContainer()->get('monolog.logger.contao.error')->info( 'Theme Updater: Copy files: '.implode(', ', $arrErrors) );
+
 					// track error				
 					$arrSession['errors'] = $arrErrors;
 					$objSession->set($this->strSession,$arrSession);
@@ -947,7 +980,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				else
 				{
 					// write log
-					System::log( sprintf($GLOBALS['TL_LANG']['pct_theme_updater']['copy_files_completed'],$arrSession['file']),__METHOD__,TL_CRON);
+					System::getContainer()->get('monolog.logger.contao.cron')->info( sprintf($GLOBALS['TL_LANG']['pct_theme_updater']['copy_files_completed'],$arrSession['file']) );
 
 					// ajax done
 					if($blnAjax)
@@ -969,48 +1002,11 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'INSTALLATION';
 			$this->Template->step = 'CLEAR_CACHE';
 
-			if(Input::get('action') == 'run')
-			{
-				// clear internal cache of Contao 4.4
-				$objContainer = System::getContainer();
-				$strCacheDir = StringUtil::stripRootDir($objContainer->getParameter('kernel.cache_dir'));
-				$strRootDir = $objContainer->getParameter('kernel.project_dir');
-				$strWebDir = $objContainer->getParameter('contao.web_dir');
-				$arrBundles = $objContainer->getParameter('kernel.bundles');
-				
-				// @var object Contao\Automator
-				$objAutomator = new Automator;
-				// generate symlinks to /assets, /files, /system
-				$objAutomator->generateSymlinks();
-				// generate bundles symlinks
-				$objSymlink = new \Contao\CoreBundle\Util\SymlinkUtil;
-				$arrBundles = array('calendar','comments','core','faq','news','newsletter');
-				foreach($arrBundles as $bundle)
-				{
-					$from = $strRootDir.'/vendor/contao/'.$bundle.'-bundle/src/Resources/public';
-					$to = $strWebDir.'/bundles/contao'.$bundle;
-					$objSymlink::symlink($from, $to,$strRootDir);
-				}
-
-				// clear the internal cache
-				if ( \version_compare(VERSION,'4.4','<=') )
-				{
-					$objAutomator->purgeInternalCache();
-					// rebuild the internal cache
-					$objAutomator->generateInternalCache();
-				}
-				// purge the whole folder
-				#Files::getInstance()->rrdir($strCacheDir,true);
-
-				// try to rebuild the symphony cache
-				$objInstallationController = new \PCT\ThemeUpdater\Contao4\InstallationController;
-				$objInstallationController->call('purgeSymfonyCache');
-				#$objInstallationController->call('warmUpSymfonyCache');
-
-				die('Symlinks created and Symphony cache cleared');
+			// @var object Contao\Automator
+			$objAutomator = new Automator;
+			// generate symlinks to /assets, /files, /system
+			$objAutomator->generateSymlinks();
 			
-			}
-
 			return;
 		}
 
@@ -1021,43 +1017,47 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->step = 'DB_UPDATE_MODULES';
 			
 			$arrErrors = array();
+			$arrStatements = array();
+
 			try
 			{
-				// Contao 4.4 >=
-				if(version_compare(VERSION, '4.4','>='))
+				$objInstallHelper = new InstallerHelper;
+				$arrSQL = $objInstallHelper->sqlCompileCommandsCallback(array());
+
+				if(!empty($arrSQL) && is_array($arrSQL))
 				{
-					$objContainer = System::getContainer();
-					$objInstaller = $objContainer->get('contao.installer');
-					// compile sql
-					$arrSQL = $objInstaller->getCommands();
-					if(!empty($arrSQL) && is_array($arrSQL))
+					foreach($arrSQL as $operation => $sql)
 					{
-						foreach($arrSQL as $operation => $sql)
+						// never run operations
+						if(in_array($operation, array('DELETE','DROP','ALTER_DROP','ALTER_CHANGE')))
 						{
-							// never run operations
-							if(in_array($operation, array('DELETE','DROP','ALTER_DROP')))
+							continue;
+						}
+						
+						foreach($sql as $statement)
+						{
+							if( \strpos($statement,'ADD KEY') || \strpos($statement,'ADD UNIQUE KEY') )
 							{
 								continue;
-							}
-
-							foreach($sql as $hash => $statement)
-							{
-								$objInstaller->execCommand($hash);
-							}
+							}	
+							// track the statements executed
+							$arrStatements[] = $statement;
+							// execute
+							$this->Database->query( $statement );
 						}
 					}
-				}
+				}		
 			}
 			catch(\Exception $e)
 			{
 				$arrErrors[] = $e->getMessage();
 			}
-			
+
 			// log errors and redirect
 			if(count($arrErrors) > 0)
 			{
-				System::log('Theme Installer: Database update returned errors: '.implode(', ', $arrErrors),__METHOD__,TL_ERROR);
-				
+				System::getContainer()->get('monolog.logger.contao.error')->info( 'Theme Installer: Database update returned errors: '.implode(', ', $arrErrors) );
+
 				// track error				
 				$arrSession['errors'] = $arrErrors;
 				$objSession->set($this->strSession,$arrSession);
@@ -1076,13 +1076,13 @@ class ThemeUpdater extends \Contao\BackendModule
 		if($arrSession['status'] == 'FILE_CREATED' && !empty($arrSession['file']))
 		{
 			// check if file still exists
-			if(!file_exists(TL_ROOT.'/'.$arrSession['file']))
+			if(!file_exists($rootDir.'/'.$arrSession['file']))
 			{
 				$this->Template->status = 'FILE_NOT_EXISTS';
 
 				// log
-				System::log('Theme Installer: File not found or file could not be created',__METHOD__,TL_ERROR);
-				
+				System::getContainer()->get('monolog.logger.contao.error')->info( 'Theme Installer: File not found or file could not be created' );
+
 				// track error				
 				$arrSession['errors'] = array('File not found or file could not be created');
 				$objSession->set($this->strSession,$arrSession);
@@ -1230,8 +1230,8 @@ class ThemeUpdater extends \Contao\BackendModule
 			// log errors and redirect to error page
 			if(count($arrErrors) > 0)
 			{
-				System::log('Theme Updater: '.implode(', ', $arrErrors),__METHOD__,TL_ERROR);
-				
+				System::getContainer()->get('monolog.logger.contao.error')->info( 'Theme Updater: '.implode(', ', $arrErrors) );
+
 				// track error				
 				$arrSession['errors'] = $arrErrors;
 				$objSession->set($this->strSession,$arrSession);
@@ -1252,7 +1252,8 @@ class ThemeUpdater extends \Contao\BackendModule
 	 */
 	public function injectScripts($objTemplate)
 	{
-		if(TL_MODE == 'BE' && $objTemplate->getName() == 'be_main')
+		$request = System::getContainer()->get('request_stack')->getCurrentRequest();
+		if( $request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)	&& $objTemplate->getName() == 'be_main')
 		{
 			$objScripts = new BackendTemplate('be_js_pct_theme_updater');
 
@@ -1277,7 +1278,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		$arrItems = array();
 		$i = 0;
 
-		$objSession = System::getContainer()->get('session');
+		$objSession = System::getContainer()->get('request_stack')->getSession();
 		$arrSession = $objSession->get($this->strSession);
 		
 		// store the processed steps
@@ -1341,7 +1342,8 @@ class ThemeUpdater extends \Contao\BackendModule
 				$class[] = 'pending';
 			}
 
-			$data['href'] = Controller::addToUrl($data['href'].'&rt='.REQUEST_TOKEN,true,array('step'));
+			$strToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
+			$data['href'] = Controller::addToUrl($data['href'].'&rt='.$strToken,true,array('step'));
 			$data['class'] = implode(' ', array_unique($class));
 			
 			if( !isset($data['isLink']) )
@@ -1406,7 +1408,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		// log
 		if( $GLOBALS['PCT_THEME_UPDATER']['debug'] === true )
 		{
-			System::log('Sending request: '.$strRequest,__METHOD__,\TL_GENERAL);
+			System::getContainer()->get('monolog.logger.contao.general')->info( 'Sending request: '.$strRequest  );
 		}
 		// validate the license
 		$curl = \curl_init();
@@ -1421,5 +1423,66 @@ class ThemeUpdater extends \Contao\BackendModule
 		unset($curl);
 
 		return $strResponse;
+	}
+
+
+	/**
+	 * Check if the theme updater license is valid
+	 * @return boolean
+	 */
+	// ! validate
+	public static function validate()
+	{
+		$objSession = System::getContainer()->get('request_stack')->getSession();
+		$strLicense = '';
+		$strThemeLicense = '';
+			
+		// check license
+		$arrSession = $objSession->get('pct_theme_updater');
+		$objUpdaterLicense = $arrSession['updater_license'] ?? null;
+		if( isset($arrSession['updater_license']) && \is_string($arrSession['updater_license']) && empty($arrSession['updater_license']) === false)
+		{
+			$objUpdaterLicense = \json_decode($arrSession['updater_license']);
+		}
+		else
+		{
+			$objFile = new File('var/pct_license');
+			if( $objFile->exists() === true )
+			{
+				$strThemeLicense = trim( $objFile->getContent() );
+			}
+			$objFile = new File('var/pct_license_themeupdater');
+			if( $objFile->exists() === true )
+			{
+				$strLicense = trim( $objFile->getContent() );
+			}
+
+			// registration logic
+			$strRegistration = $strThemeLicense.'___'.StringUtil::decodeEntities( str_replace(array('www.'),'',Environment::get('host')) );
+			
+			// validate
+			$arrParams = array
+			(
+				'domain'	=> $strRegistration,
+				'key'		=> $strLicense,
+			);
+
+			if( empty($strLicense) === false )
+			{
+				$objThemeUpdater = new ThemeUpdater;
+				// request license
+				$objUpdaterLicense = \json_decode( $objThemeUpdater->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
+			}
+		}
+
+		// all good, update the session
+		if( $objUpdaterLicense !== null && isset($objUpdaterLicense->status) && \strtolower($objUpdaterLicense->status) == 'ok')
+		{
+			$arrSession['updater_license'] = $objUpdaterLicense;
+			$objSession->set('pct_theme_updater',$arrSession);
+			return true;
+		}
+
+		return false;
 	}
 }

@@ -142,7 +142,8 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sq
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['version_conflict'] 					= 'Versionskonflikt';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['manual_adjustment'] 					= 'Manuelle Anpassungen';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['done'] 								= 'Zusammenfassung';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['agreement'] 						= 'Ich habe ein aktuelles Backup aller relevanten Daten erstellt, mit dem ich im Bedarfsfall ausgehend die Webseite wiederherstellen kann. Alle Theme-Dateien (ausgenommen templates/, customize.css/js, ThemeDesigner-Anpassungen) werden überschrieben. Ein Update in einer Live-Umgebung ist nicht empfohlen. Seamedia® Themes übernimmt keine Haftung oder Gewährleistungen für Updates. (*Pflichtfeld)';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['agreement'] 							= 'Ich habe ein aktuelles Backup aller relevanten Daten erstellt, mit dem ich im Bedarfsfall ausgehend die Webseite wiederherstellen kann. Alle Theme-Dateien (ausgenommen templates/, customize.css/js, ThemeDesigner-Anpassungen) werden überschrieben. Ein Update in einer Live-Umgebung ist nicht empfohlen. Seamedia® Themes übernimmt keine Haftung oder Gewährleistungen für Updates. (*Pflichtfeld)';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['delete_demo_files']					= 'Demo-Dateien löschen: Leert mit Abschluss des Updates die Ordner: /templates/demo_installer, files/cto_layout/img/delete_this<p>Hinweis: Die Daten werden für die Nutzung des Demo-Installers benötigt.</p>';
 
 /**
  * Categories

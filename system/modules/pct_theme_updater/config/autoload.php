@@ -9,38 +9,34 @@
  * @link    https://contao.org
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
- 
-namespace Contao;
 
-/**
- * Register the namespaces
- */
-ClassLoader::addNamespaces(array
-(
-	'PCT',
-));
-
+  
+// path relative from composer directory
+$path = \Contao\System::getContainer()->getParameter('kernel.project_dir').'/vendor/composer/../../system/modules/pct_theme_updater';
 
 /**
  * Register the classes
  */
-ClassLoader::addClasses(array
+$classMap = array
 (
-	'PCT\ThemeUpdater' 							=> 'system/modules/pct_theme_updater/PCT/ThemeUpdater.php',
-	'PCT\ThemeUpdater\SystemCallbacks'			=> 'system/modules/pct_theme_updater/PCT/ThemeUpdater/SystemCallbacks.php',
-));
+	'PCT\ThemeUpdater' 							=> $path.'/PCT/ThemeUpdater.php',
+	'PCT\ThemeUpdater\SystemCallbacks'			=> $path.'/PCT/ThemeUpdater/SystemCallbacks.php',
+	'PCT\ThemeUpdater\InstallerHelper'			=> $path.'/PCT/ThemeUpdater/InstallerHelper.php',
+	'PCT\ThemeUpdater\Maintenance' 				=> $path.'/PCT/ThemeUpdater/Maintenance.php',
+	'PCT\ThemeUpdater\Maintenance\Jobs' 		=> $path.'/PCT/ThemeUpdater/Maintenance/Jobs.php',
+);
 
-ClassLoader::addClasses(array
-(
-	'PCT\ThemeUpdater\Contao4\InstallationController'		=> 'system/modules/pct_theme_updater/PCT/ThemeUpdater/Contao4/InstallationController.php',
-));
+$loader = new \Composer\Autoload\ClassLoader();
+$loader->addClassMap($classMap);
+$loader->register();
 
 /**
  * Register the templates
  */
-TemplateLoader::addFiles(array
+\Contao\TemplateLoader::addFiles(array
 (
 	'be_pct_theme_updater'					=> 'system/modules/pct_theme_updater/templates',
 	'be_js_pct_theme_updater'				=> 'system/modules/pct_theme_updater/templates',
 	'pct_theme_updater_breadcrumb'			=> 'system/modules/pct_theme_updater/templates',
+	'be_maintenance_theme_updater'		=> 'system/modules/pct_theme_updater/templates'
 ));

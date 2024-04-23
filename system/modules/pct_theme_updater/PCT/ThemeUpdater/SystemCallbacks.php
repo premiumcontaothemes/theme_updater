@@ -36,7 +36,8 @@ class SystemCallbacks extends System
 	 */
 	public function initializeSystemCallback()
 	{
-		if( TL_MODE == 'BE' )
+		$request = System::getContainer()->get('request_stack')->getCurrentRequest();
+		if( $request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request) )
 		{
 			$objUser = BackendUser::getInstance();
 			if( !$objUser->admin )
@@ -61,7 +62,8 @@ class SystemCallbacks extends System
 	 */
 	public function injectScripts($objTemplate)
 	{
-		if(TL_MODE == 'BE' && $objTemplate->getName() == 'be_main')
+		$request = System::getContainer()->get('request_stack')->getCurrentRequest();
+		if( $request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)	&& $objTemplate->getName() == 'be_main')
 		{
 			$objScripts = new \Contao\BackendTemplate('be_js_pct_theme_updater');
 			$objTemplate->javascripts .= $objScripts->parse();
@@ -86,7 +88,7 @@ class SystemCallbacks extends System
 		// store the checked tasks in the session
 		if( $strAction == 'toggle_tasks' )
 		{
-			$objSession = System::getContainer()->get('session');
+			$objSession = System::getContainer()->get('request_stack')->getSession();
 			$arrSession = $objSession->get('pct_theme_updater');
 			$arrSession[$strAction][Input::post('task')] = Input::post('checked');
 			$objSession->set('pct_theme_updater',$arrSession);

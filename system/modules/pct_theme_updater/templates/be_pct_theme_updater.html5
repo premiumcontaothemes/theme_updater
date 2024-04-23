@@ -1,6 +1,7 @@
 <?php
 namespace Contao;
 
+$strToken = \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 $this->l_status = strtolower($this->status);
 $this->l_step = strtolower($this->step);
 $this->l_status_step = strtolower($this->status).($this->step ? '.'.strtolower($this->step) : '');
@@ -53,7 +54,7 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 		
 		<form action="<?php echo $this->action; ?>" class="tl_form" method="post">
 			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
-			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
+			<input type="hidden" name="REQUEST_TOKEN" value="<?= $strToken ; ?>">
 			
 			<div class="tl_formbody_top">
 				<div class="input_wrapper licence_check">
@@ -93,18 +94,18 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 		
 		<form action="<?php echo $this->action; ?>" class="tl_form" method="post">
 			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
-			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
+			<input type="hidden" name="REQUEST_TOKEN" value="<?= $strToken; ?>">
 			
 			<div class="tl_formbody_top">
 				<div class="input_wrapper licence_check">
 					<div class="widget field w50 license">
 						<h3><?= $arrLangTpl['input_license_theme'][0]; ?></h3>
-						<input type="text" name="license" value="" class="tl_text" placeholder="">
+						<input type="text" name="license" value="" class="tl_text" placeholder="" required>
 						<p class="tl_help tl_tip"><?= $arrLangTpl['input_license_theme'][1]; ?></p>
 					</div>
 					<div class="widget field w50 email">
 						<h3><?= $arrLangTpl['input_email'][0]; ?></h3>
-						<input type="text" name="email" value="" class="tl_text" placeholder="">
+						<input type="email" name="email" value="" class="tl_text" placeholder="" required>
 						<p class="tl_help tl_tip"><?= $arrLangTpl['input_email'][1]; ?></p>
 					</div>
 				</div>
@@ -225,7 +226,7 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 		
 		<form id="form_pct_theme_updater" action="<?php echo $this->action; ?>" class="tl_form" method="post">
 			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
-			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
+			<input type="hidden" name="REQUEST_TOKEN" value="<?= $strToken ; ?>">
 			
 			<div class="tl_formbody_top">
 			</div>
@@ -288,9 +289,13 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 
 		<form id="form_pct_theme_updater" action="<?= $this->action; ?>" class="tl_form" method="post">
 			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
-			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
+			<input type="hidden" name="REQUEST_TOKEN" value="<?= $strToken; ?>">
 			<div class="tl_formbody_submit">
 				<div class="tl_submit_container">
+					<div class="checkbox_container">
+						<input type="checkbox" name="delete_demo_files" id="delete_demo_files">
+						<label for="agreement"><?= $arrLang['BACKEND_DESCRIPTION']['delete_demo_files']; ?></label>
+					</div>
 					<button type="submit" class="tl_submit" name="done"><?= $arrLangTpl['submit_done']; ?></button>
 				</div>
 			</div>
@@ -298,7 +303,7 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 		<?php else: ?>
 		<form id="form_pct_theme_updater" action="<?= $this->action; ?>" class="tl_form" method="post">
 			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
-			<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN; ?>">
+			<input type="hidden" name="REQUEST_TOKEN" value="<?= $strToken; ?>">
 			<input type="hidden" name="action" value="toggle_tasks">
 		<div class="content">
 		<?php foreach($this->tasks as $k => $category): ?>
@@ -473,6 +478,10 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 
 			<div class="tl_formbody_submit">
 				<div class="tl_submit_container">
+					<div class="checkbox_container">
+						<input type="checkbox" name="delete_demo_files" id="delete_demo_files">
+						<label for="agreement"><?= $arrLang['BACKEND_DESCRIPTION']['delete_demo_files']; ?></label>
+					</div>
 					<button type="submit" class="tl_submit" name="commit"><?= $arrLangTpl['submit_commit']; ?></button>
 					<button type="submit" class="tl_submit" name="done" disabled><?= $arrLangTpl['submit_done']; ?></button>
 				</div>

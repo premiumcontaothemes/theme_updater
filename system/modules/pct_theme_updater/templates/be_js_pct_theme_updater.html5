@@ -1,5 +1,7 @@
+<?php 
+$strToken = \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
+?>
 <script type='text/javascript'>
-
 /**
  * Class
  * PCT_ThemeUpdater
@@ -10,7 +12,7 @@ var PCT_ThemeUpdater =
 	 * Contaos request token
 	 * @var string
 	 */
-	request_token : '<?= REQUEST_TOKEN; ?>',
+	request_token : '<?= $strToken; ?>',
 	
 	/**
 	 * Misc texts

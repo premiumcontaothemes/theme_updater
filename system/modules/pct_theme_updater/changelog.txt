@@ -1,6 +1,10 @@
-### 1.0.5
+### 2.0.0
+New: Support for Contao 4.13, 5.3 (#53)
+New: Checkbox "Delete demo files" to removed demo_installer files and delete_this folders after update has been checked in (#51)
 Update: error_reporting(E_ERROR | E_PARSE | E_NOTICE) (#49)
 Update: General PHP8 updates (#48)
+Update: Added maintenance jobs to migrate database values (#56)
+Removed: Contao 4.9 support (#53)
 
 ### 1.0.4
 Update: Removed commented out javascript code from be_js_pct_theme_updater.html5 template (#46)

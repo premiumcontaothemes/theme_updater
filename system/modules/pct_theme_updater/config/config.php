@@ -10,18 +10,31 @@
  * @package		pct_theme_updater
  */
 
+use Contao\CoreBundle\ContaoCoreBundle;
+use Contao\System;
+
 /**
  * Constants
  */
-define('PCT_THEME_UPDATER', '1.0.5');
+define('PCT_THEME_UPDATER', '2.0.0');
 define('PCT_THEME_UPDATER_PATH','system/modules/pct_theme_updater');
 
+if( version_compare(ContaoCoreBundle::getVersion(),'5.0','>=') )
+{
+	$rootDir = System::getContainer()->getParameter('kernel.project_dir');
+	include( $rootDir.'/'.PCT_THEME_UPDATER_PATH.'/config/autoload.php' );
+}
+
+/**
+ * Maintenance
+ */
+$GLOBALS['TL_MAINTENANCE'][] = 'PCT\ThemeUpdater\Maintenance';
 
 /**
  * Globals
  */
 $GLOBALS['PCT_THEME_UPDATER']['api_url'] = 'https://api.premium-contao-themes.com';
-$GLOBALS['PCT_THEME_UPDATER']['config_url'] = 'https://update.premium-contao-themes.com/updater.json';
+$GLOBALS['PCT_THEME_UPDATER']['config_url'] = 'https://update.premium-contao-themes.com/updater_200.json';
 $GLOBALS['PCT_THEME_UPDATER']['updater_api_url'] = 'https://update.premium-contao-themes.com/updater.php';
 $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'] = 'system/tmp/pct_theme_updater';
 $GLOBALS['PCT_THEME_UPDATER']['logFile'] = 'var/pct_themeupdater_log.json';
@@ -34,8 +47,8 @@ $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX'] = array
 	'mandatory' => array('upload'), // mandatory zip content on first level
 	'sql_templates' => array
 	(
-		'4.9' => 'eclipsex_contao_4_9.sql',
-		'4.13' => 'eclipsex_contao_4_13.sql'
+		'4.13' => 'eclipsex_contao_4_13.sql',
+		'5.3' => 'eclipsex_contao_5_3.sql',
 	),
 );
 $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc'] = array
@@ -46,8 +59,8 @@ $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc'] = array
 	'mandatory' => array('upload'), // mandatory zip content on first level
 	'sql_templates' => array
 	(
-		'4.9' => 'eclipsex_cc_contao_4_9.sql',
 		'4.13' => 'eclipsex_cc_contao_4_13.sql',
+		'5.3' => 'eclipsex_contao_5_3.sql',
 	),
 );
 
@@ -162,7 +175,6 @@ $GLOBALS['PCT_THEME_UPDATER']['routes'] = array
 /**
  * Register backend page / key
  */
-// Eclipse installer
 $GLOBALS['BE_MOD']['system']['pct_theme_updater'] = array
 (
 	'callback'    	=> 'PCT\ThemeUpdater',
