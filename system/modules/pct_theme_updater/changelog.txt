@@ -1,5 +1,6 @@
 ### 2.0.1
 Fixed: Purge the module folders completely to avoid deprecated files from older versions (#63)
+Fixed: TL_MODE error in InstallerHelper (#65)
 
 ### 2.0.0
 New: Support for Contao 4.13, 5.3 (#53)
