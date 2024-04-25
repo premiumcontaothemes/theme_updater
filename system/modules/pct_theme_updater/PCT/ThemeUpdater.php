@@ -914,7 +914,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrModulesFolders = Folder::scan( $rootDir.'/'.$strFolder.'/upload/system/modules' );
 				foreach($arrModulesFolders as $name)
 				{
-					$objFiles->rrdir('system/modules/'.$name.'/templates',true);
+					$objFiles->rrdir('system/modules/'.$name,true);
 				}
 
 				foreach($arrFolders as $f)
