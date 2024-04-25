@@ -78,7 +78,8 @@ class InstallerHelper extends \Contao\Database\Installer
 	 */
 	public function call($strMethod, $arrArguments=array())
 	{
-		if(TL_MODE != 'BE')
+		$request = \Contao\System::getContainer()->get('request_stack')->getCurrentRequest();
+		if( $request && \Contao\System::getContainer()->get('contao.routing.scope_matcher')->isFrontendRequest($request) )
 		{
 			throw new \Exception('Not allowed to be executed outside Contaos backend');
 		}
