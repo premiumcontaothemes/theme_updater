@@ -56,7 +56,7 @@ class Maintenance extends Backend implements MaintenanceModuleInterface
 		{
 			$arrJobs[$key] = array
 			(
-				'id' => 'pct_customelements_jobs_'.$key,
+				'id' => 'pct_themeupdater_jobs_'.$key,
 				'name' => $key,
 				'title' => $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater'][$key][0],
 				'description' => $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater'][$key][1],

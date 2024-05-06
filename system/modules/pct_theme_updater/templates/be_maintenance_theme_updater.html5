@@ -19,7 +19,7 @@
           <table>
           <thead>
             <tr>
-              <th><input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this, 'pct_customelement')"></th>
+              <th><input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this, 'pct_themeupdater')"></th>
               <th><?php echo $this->job; ?></th>
               <th><?php echo $this->description; ?></th>
             </tr>
