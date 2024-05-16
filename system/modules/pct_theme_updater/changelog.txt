@@ -1,3 +1,7 @@
+### 2.0.2
+New: System-maintenance job: form_textfield_form_text to update deprecated text formfield template selections (#68)
+Fixed: Checkbox "all" in maintenance did not toggle correctly (#67)
+
 ### 2.0.1
 Fixed: Purge the module folders completely to avoid deprecated files from older versions (#63)
 Fixed: TL_MODE error in InstallerHelper (#65)

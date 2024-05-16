@@ -170,4 +170,16 @@ class Jobs
 			}
 		}
 	}
+
+	public static function form_textfield_form_text()
+	{
+		$objDatabase = Database::getInstance();
+
+		// tl_form_field.customTpl
+		$objDatabase->prepare("UPDATE tl_form_field %s WHERE customTpl='form_textfield'")->set( array('customTpl'=>'form_text') )->execute();
+		$objDatabase->prepare("UPDATE tl_form_field %s WHERE customTpl='form_textfield_datepicker_short'")->set( array('customTpl'=>'form_text_datepicker_short') )->execute();
+		$objDatabase->prepare("UPDATE tl_form_field %s WHERE customTpl='form_textfield_datepicker'")->set( array('customTpl'=>'form_text_datepicker') )->execute();
+		$objDatabase->prepare("UPDATE tl_form_field %s WHERE customTpl='form_textfield_floatlabel'")->set( array('customTpl'=>'form_text_floatlabel') )->execute();
+		$objDatabase->prepare("UPDATE tl_form_field %s WHERE customTpl='form_textfield_timepicker'")->set( array('customTpl'=>'form_text_timepicker') )->execute();
+	}
 }

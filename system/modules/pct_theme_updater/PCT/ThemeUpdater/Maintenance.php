@@ -52,11 +52,11 @@ class Maintenance extends Backend implements MaintenanceModuleInterface
 		$objSession = System::getContainer()->get('request_stack')->getSession();
 		
 		$arrJobs = array();
-		foreach( array('news_order','center_center_to_crop') as $key)
+		foreach( array('news_order','center_center_to_crop','form_textfield_form_text') as $key)
 		{
 			$arrJobs[$key] = array
 			(
-				'id' => 'pct_customelements_jobs_'.$key,
+				'id' => 'pct_themeupdater_jobs_'.$key,
 				'name' => $key,
 				'title' => $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater'][$key][0],
 				'description' => $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater'][$key][1],

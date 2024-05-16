@@ -24,3 +24,5 @@ $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['news_order'][0] 				=
 $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['news_order'][1] 				= 'Change newslist sorting from "date DESC" (unknown option) to "order_date_desc"';
 $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['center_center_to_crop'][0] 	= 'Update image size selections';
 $GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['center_center_to_crop'][1] 	= 'Update image size seelctions from "CENTER_CENTER" (unknown option) to "CROP" ';
+$GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['form_textfield_form_text'][0] = 'Form field template selections';
+$GLOBALS['TL_LANG']['tl_maintenance']['pct_themeupdater']['form_textfield_form_text'][1] = 'Update form_textfield to form_text selections in form fields';
