@@ -150,3 +150,22 @@
 #pct_theme_updater .task .thead .status ul {float: left; font-size: 0.75rem; overflow: hidden;}
 #pct_theme_updater .task .thead .status ul li {float: left;}
 #pct_theme_updater .task .thead .status ul li:first-of-type {margin-right: 5px; border-right: 1px solid #ddd; padding-right: 5px;}
+
+/** dark mode **/
+html[data-color-scheme=dark] #pct_theme_updater .backend_explanation_additional {background: #333;}
+html[data-color-scheme=dark] #pct_theme_updater .breadcrumb table th {background: var(--table-header);}
+html[data-color-scheme=dark] #pct_theme_updater .breadcrumb table tr:nth-child(even) td {background: var(--table-even);}
+html[data-color-scheme=dark] #pct_theme_updater .breadcrumb table tr:nth-child(odd) td {background: var(--table-odd);}
+html[data-color-scheme=dark] #pct_theme_updater .breadcrumb table td {border-color: var(--border);}
+html[data-color-scheme=dark] #pct_theme_updater .breadcrumb table th {border-color: var(--border);}
+html[data-color-scheme=dark]  #pct_theme_updater #tl_buttons {border-color: var(--border);}
+html[data-color-scheme=dark] #pct_theme_updater .backend_explanation {color: #ddd;}
+html[data-color-scheme=dark] #pct_theme_updater .backend_explanation_additional.error {background: var(--table-header);}
+html[data-color-scheme=dark] #pct_theme_updater p.title {background-color: var(--table-header);}
+html[data-color-scheme=dark] #pct_theme_updater .task .thead .description {color: #ddd;}
+html[data-color-scheme=dark] #pct_theme_updater .task .only_needed_info {background-color: var(--table-header);}
+html[data-color-scheme=dark] #pct_theme_updater .content table tr:nth-child(even) td {background-color: var(--table-header); border-color: var(--border);}
+html[data-color-scheme=dark] #pct_theme_updater .task .thead,
+html[data-color-scheme=dark] #pct_theme_updater .task.open .documentation,
+html[data-color-scheme=dark] #pct_theme_updater .content table tr td {border-color: var(--border);}
+html[data-color-scheme=dark] #pct_theme_updater .label_gray {background: #444;}
