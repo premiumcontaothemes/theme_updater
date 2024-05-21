@@ -67,8 +67,8 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.unzip'][0] 
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.unzip'][1]				= 'Extracting data'; 
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.copy_files'][0] 			= 'Copy files';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.copy_files'][1] 			= 'Copying files to their destinations.';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.clear_cache'][0] 		= 'Clear internal cache';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.clear_cache'][1] 		= 'Clearing Contaos internal cache.';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.clear_cache'][0] 		= 'Clear prod. cache';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.clear_cache'][1] 		= 'Clearing Contaos prod. cache.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.db_update_modules'][0] 	= 'Database update';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.db_update_modules'][1] 	= 'The database will be updated with the theme information.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.sql_template_import'][0]	= 'Importing installation template...';
@@ -90,7 +90,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['loading'] = 'Loading data';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['session_lost'] = 'License-session timed out';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.unzip'] = 'Extracting data';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.copy_files'] = 'Copying data';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.clear_cache'] = 'Clearing internal cache';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.clear_cache'] = 'Clearing prod. cache';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.db_update_modules'] = 'Database update';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['STATUS']['installation.sql_template_import'] = 'Demo data import (SQL)';
 
@@ -121,7 +121,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['not_supported']
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['session_lost'] 						= 'The license session timed out. Please restart the installation.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.unzip'] 				= 'Extracting the Zip-file...';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.copy_files'] 			= 'Copying files to their destination folders...';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.clear_cache'] 			= 'Clearing and rebuilding Contaos interner Cache / symphony-Cache with new information.';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.clear_cache'] 			= 'Clearing and rebuilding cache with new information.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.db_update_modules'] 	= 'Updating the database with the module information.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sql_template_wait'] 	= 'The demo website (installations template) is ready to be installed';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sql_template_import'] 	= 'Importing the installation template.';
