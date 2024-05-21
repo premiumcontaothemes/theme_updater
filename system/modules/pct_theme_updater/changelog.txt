@@ -1,3 +1,6 @@
+### 2.0.3
+Update: Language files (#72)
+
 ### 2.0.2
 New: System-maintenance job: form_textfield_form_text to update deprecated text formfield template selections (#68)
 Fixed: Checkbox "all" in maintenance did not toggle correctly (#67)
