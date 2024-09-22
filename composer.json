@@ -3,7 +3,7 @@
 	"description":"Update manager for the Premium Contao Themes: EclipseX, EclipseX + CustomCatalog Bundle. https://www.premium-contao-themes.com/",
 	"keywords":["contao","themes","premiumcontaothemes","premium-contao-themes","seamedia themes"],
 	"type":"contao-module",
-    "homepage":"https://github.com/premiumcontaothemes/pct_theme_installer",
+    "homepage":"https://github.com/premiumcontaothemes/theme_updater",
 	"license": "LGPL-3.0+",
 	"authors":
 	[
