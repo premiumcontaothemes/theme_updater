@@ -166,6 +166,9 @@ class ThemeUpdater extends \Contao\BackendModule
 		$this->Template->license = $objLicense;
 		$this->Template->up_to_date = false;	
 		$this->Template->language = System::getContainer()->get('request_stack')->getCurrentRequest()->getLocale();
+		$this->Template->version_conflict = '';
+		$this->Template->contao_version_short = $version;
+		$this->Template->contao_version_full = $full_version;
 
 		$blnAjax = false;
 		if(Input::get('action') != '' && Environment::get('isAjaxRequest'))
@@ -197,12 +200,15 @@ class ThemeUpdater extends \Contao\BackendModule
 		// check if local version matches the required contao version
 		if( $strStatus !== 'error' && \version_compare($objConfig->local_version,'4','<') && \version_compare($version,'4.9','>') )
 		{
-			$error = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict'],$objConfig->local_version,$version,'4.9');
-			$arrSession['errors'] = array($error);
-			$objSession->set($this->strSession,$arrSession);
+			#Message::addInfo($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict']);
+			$this->Template->version_conflict = $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict'];
+			#
+	#		$error = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict'],$objConfig->local_version,$version,'4.9');
+	#		$arrSession['errors'] = array($error);
+	#		$objSession->set($this->strSession,$arrSession);
 
 			// redirect
-			$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
+	#		$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
 		}
 
 
