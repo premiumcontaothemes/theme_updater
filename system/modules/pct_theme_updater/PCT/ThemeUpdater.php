@@ -1008,10 +1008,22 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'INSTALLATION';
 			$this->Template->step = 'CLEAR_CACHE';
 
-			// @var object Contao\Automator
-			$objAutomator = new Automator;
-			// generate symlinks to /assets, /files, /system
-			$objAutomator->generateSymlinks();
+			if(Input::get('action') == 'run')
+			{
+				// clear internal cache of Contao 4.4
+				$objContainer = System::getContainer();
+				$strCacheDir = StringUtil::stripRootDir($objContainer->getParameter('kernel.cache_dir'));
+				
+				// @var object Contao\Automator
+				$objAutomator = new Automator;
+				// generate symlinks to /assets, /files, /system
+				$objAutomator->generateSymlinks();
+				
+				// purge the whole folder
+				Files::getInstance()->rrdir($strCacheDir,true);
+				
+				die('Symlinks created and Symphony cache cleared');
+			}
 			
 			return;
 		}
