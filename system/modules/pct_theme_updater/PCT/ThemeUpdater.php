@@ -1092,6 +1092,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_cookiebar_medium' WHERE `customTpl` = 'mod_cookiebar_medium';
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_cookiebar_slim' WHERE `customTpl` = 'mod_cookiebar_slim';
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_customcatalog_view_switch' WHERE `customTpl` = 'mod_customcatalog_view_switch';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_mobilenav_trigger',`html`='' WHERE `html` LIKE '%file::layout/mod_mobilenav_trigger%';
 				";
 				$objDatabase->execute($query);
 
