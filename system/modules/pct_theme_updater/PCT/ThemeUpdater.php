@@ -1095,36 +1095,46 @@ class ThemeUpdater extends \Contao\BackendModule
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_totop_link',`html`='' WHERE `html` LIKE '%layout/mod_totop_link%';
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_offcanvas_top_trigger',`html`='' WHERE `html` LIKE '%layout/mod_offcanvas_top_trigger%';
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_search_trigger',`html`='' WHERE `html` LIKE '%layout/mod_search_trigger%';
-				UPDATE `tl_module` SET `customTpl` = 'mod_html_smartmenu_trigger',`html`='' WHERE `html` LIKE '%layout/mod_smartmenu_trigger%';
-				";
-				$objDatabase->execute($query);
-
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_smartmenu_trigger',`html`='' WHERE `html` LIKE '%layout/mod_smartmenu_trigger%';";
+				foreach( array_filter( explode(';', $query) ) as $stmt )
+				{
+					$objDatabase->query($stmt);
+				}
+				
 				// update tl_module [newslist,eventlist teaser] templates
 				$query = "UPDATE `tl_module` SET `customTpl` = 'mod_eventlist_teaser_v1' WHERE `customTpl` = 'mod_eventteaser_v1';
 				UPDATE `tl_module` SET `customTpl` = 'mod_newslist_teaser' WHERE `customTpl` = 'mod_newsteaser';
-				UPDATE `tl_module` SET `customTpl` = 'mod_newslist_teaser_v6' WHERE `customTpl` = 'mod_newsteaser_v6';
-				";
-				$objDatabase->execute($query);
-	
+				UPDATE `tl_module` SET `customTpl` = 'mod_newslist_teaser_v6' WHERE `customTpl` = 'mod_newsteaser_v6';";
+				foreach( array_filter( explode(';', $query) ) as $stmt )
+				{
+					$objDatabase->query($stmt);
+				}
+				
 				// update tl_module [mod_navigation_] templates
-				$query = "UPDATE `tl_module` SET `customTpl` = 'mod_navigation_mobile_vertical' WHERE `customTpl` = 'mod_navigation_mobile';
-				";
-				$objDatabase->execute($query);
-
+				$query = "UPDATE `tl_module` SET `customTpl` = 'mod_navigation_mobile_vertical' WHERE `customTpl` = 'mod_navigation_mobile';";
+				foreach( array_filter( explode(';', $query) ) as $stmt )
+				{
+					$objDatabase->query($stmt);
+				}
+				
 				// update tl_content [accordion] templates
 				$query = "UPDATE `tl_content` SET `customTpl` = 'ce_accordionStart_v2' WHERE `customTpl` = 'ce_accordion_v2';
-				UPDATE `tl_content` SET `customTpl` = 'ce_accordionSingle_v2' WHERE `customTpl` = 'ce_accordion_single_v2';
-				";
-				$objDatabase->execute($query);
-
+				UPDATE `tl_content` SET `customTpl` = 'ce_accordionSingle_v2' WHERE `customTpl` = 'ce_accordion_single_v2';";
+				foreach( array_filter( explode(';', $query) ) as $stmt )
+				{
+					$objDatabase->query($stmt);
+				}
+				
 				// update tl_form_field [text] templates
 				$query = "UPDATE `tl_form_field` SET `customTpl` = 'form_text_datepicker_short' WHERE `customTpl` = 'form_textfield_datepicker_short';
 				UPDATE `tl_form_field` SET `customTpl` = 'form_text_datepicker' WHERE `customTpl` = 'form_textfield_datepicker';
 				UPDATE `tl_form_field` SET `customTpl` = 'form_text_floatlabel' WHERE `customTpl` = 'form_textfield_floatlabel';
 				UPDATE `tl_form_field` SET `customTpl` = 'form_text_timepicker' WHERE `customTpl` = 'form_textfield_timepicker';
-				UPDATE `tl_form_field` SET `customTpl` = 'form_text' WHERE `customTpl` = 'form_textfield';
-				";
-				$objDatabase->execute($query);
+				UPDATE `tl_form_field` SET `customTpl` = 'form_text' WHERE `customTpl` = 'form_textfield';";
+				foreach( array_filter( explode(';', $query) ) as $stmt )
+				{
+					$objDatabase->query($stmt);
+				}
 			}
 			catch(\Exception $e)
 			{
