@@ -1092,7 +1092,11 @@ class ThemeUpdater extends \Contao\BackendModule
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_cookiebar_medium' WHERE `customTpl` = 'mod_cookiebar_medium';
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_cookiebar_slim' WHERE `customTpl` = 'mod_cookiebar_slim';
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_customcatalog_view_switch' WHERE `customTpl` = 'mod_customcatalog_view_switch';
-				UPDATE `tl_module` SET `customTpl` = 'mod_html_mobilenav_trigger',`html`='' WHERE `html` LIKE '%file::layout/mod_mobilenav_trigger%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_mobilenav_trigger',`html`='' WHERE `html` LIKE '%layout/mod_mobilenav_trigger%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_totop_link',`html`='' WHERE `html` LIKE '%layout/mod_totop_link%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_offcanvas_top_trigger',`html`='' WHERE `html` LIKE '%layout/mod_offcanvas_top_trigger%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_search_trigger',`html`='' WHERE `html` LIKE '%layout/mod_search_trigger%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_smartmenu_trigger',`html`='' WHERE `html` LIKE '%layout/mod_smartmenu_trigger%';
 				";
 				$objDatabase->execute($query);
 
@@ -1103,7 +1107,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				UPDATE `tl_module` SET `customTpl` = 'mod_newslist_teaser_v6' WHERE `customTpl` = 'mod_newsteaser_v6';
 				";
 				$objDatabase->execute($query);
-
+	
 				// update tl_module [mod_navigation_] templates
 				$query = "
 				UPDATE `tl_module` SET `customTpl` = 'mod_navigation_mobile_vertical' WHERE `customTpl` = 'mod_navigation_mobile';
