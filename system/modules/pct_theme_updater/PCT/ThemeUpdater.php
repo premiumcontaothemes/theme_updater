@@ -1088,6 +1088,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_cookiebar' WHERE `customTpl` = 'mod_cookiebar';
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_cookiebar_medium' WHERE `customTpl` = 'mod_cookiebar_medium';
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_cookiebar_slim' WHERE `customTpl` = 'mod_cookiebar_slim';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_customcatalog_view_switch' WHERE `customTpl` = 'mod_customcatalog_view_switch';
 				";
 				\Contao\Database::getInstance()->execute($query);
 
