@@ -1141,6 +1141,15 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrErrors[] = $e->getMessage();
 			}
 
+			// rename templates/layout folder
+			$rootDir = System::getContainer()->getParameter('kernel.project_dir');
+
+			if( \is_dir($rootDir.'/templates/layout') )
+			{
+				$objFolder = new Folder('templates/layout');
+				$objFolder->renameTo('templates/layout_backup');
+			}
+			
 			// log errors and redirect
 			if(count($arrErrors) > 0)
 			{
