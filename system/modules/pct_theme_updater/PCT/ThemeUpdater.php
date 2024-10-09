@@ -1135,6 +1135,15 @@ class ThemeUpdater extends \Contao\BackendModule
 				{
 					$objDatabase->query($stmt);
 				}
+
+				$objResult = $objDatabase->prepare("SELECT * FROM tl_page WHERE addFontIcon=1 AND cssClass!=''")->execute();
+				while( $objResult->next() )
+				{
+					$row = $objResult->row();
+					$cssClass = \str_replace($row['fontIcon'],' ', $row['cssClass']);
+					$cssClass = \implode(' ', array_filter( \explode(' ', $cssClass)) );
+					$objDatabase->prepare("UPDATE tl_page %s WHERE id=?")->set( array('cssClass' => $cssClass ?? '') )->execute($objResult->id);
+				}
 			}
 			catch(\Exception $e)
 			{
