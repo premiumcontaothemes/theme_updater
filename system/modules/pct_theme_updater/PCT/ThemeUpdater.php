@@ -1136,6 +1136,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					$objDatabase->query($stmt);
 				}
 
+				// update tl_page: remove font-icon from cssClass
 				$objResult = $objDatabase->prepare("SELECT * FROM tl_page WHERE addFontIcon=1 AND cssClass!=''")->execute();
 				while( $objResult->next() )
 				{
