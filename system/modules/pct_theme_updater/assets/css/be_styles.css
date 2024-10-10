@@ -148,9 +148,7 @@
 
 #pct_theme_updater .task .only_needed_info {color: #4b85ba; background: #eff5fa; padding: 10px; margin-bottom: 20px;}
 
-#pct_theme_updater .task .thead .status ul {float: left; font-size: 0.75rem; overflow: hidden;}
-#pct_theme_updater .task .thead .status ul li {float: left;}
-#pct_theme_updater .task .thead .status ul li:first-of-type {margin-right: 5px; border-right: 1px solid #ddd; padding-right: 5px;}
+#pct_theme_updater .task .thead .status ul {font-size: 10px; overflow: hidden; margin-top: 5px;
 
 /** dark mode **/
 html[data-color-scheme=dark] #pct_theme_updater .backend_explanation_additional {background: #333;}
