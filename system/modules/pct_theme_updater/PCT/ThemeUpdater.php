@@ -1159,6 +1159,13 @@ class ThemeUpdater extends \Contao\BackendModule
 				$objFolder = new Folder('templates/layout');
 				$objFolder->renameTo('templates/layout_backup');
 			}
+
+			// rename be_tinyMCE to be_tinyMCE_backup.html5
+			if( \file_exists($rootDir.'/templates/be_tinyMCE.html5') )
+			{
+				$objFile = new File('templates/be_tinyMCE.html5');
+				$objFile->renameTo('templates/be_tinyMCE_backup.html5');
+			}
 			
 			// log errors and redirect
 			if(count($arrErrors) > 0)
