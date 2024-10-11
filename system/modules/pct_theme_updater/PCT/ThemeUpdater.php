@@ -922,12 +922,13 @@ class ThemeUpdater extends \Contao\BackendModule
 					$objFiles->rrdir('system/modules/'.$name,true);
 				}
 				
-				// remove pct_theme_installer when installed
+				// skip pct_theme_installer when installed
 				$bundles = array_keys( System::getContainer()->getParameter('kernel.bundles') );
 				if( \in_array('pct_theme_installer',$bundles) )
 				{
-					$objFolder = new Folder('system/modules/pct_theme_installer');
-					$objFolder->delete();
+					$skip = new File('system/modules/pct_theme_installer/.skip');
+					$skip->write('');
+					$skip->close();
 				}
 
 				foreach($arrFolders as $f)
