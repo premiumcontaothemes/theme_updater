@@ -1011,9 +1011,16 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			if(Input::get('action') == 'run')
 			{
-				// clear internal cache of Contao 4.4
 				$objContainer = System::getContainer();
 				$strCacheDir = StringUtil::stripRootDir($objContainer->getParameter('kernel.cache_dir'));
+				
+				// remove pct_theme_installer when installed
+				$bundles = array_keys( $objContainer->getParameter('kernel.bundles') );
+				if( \in_array('pct_theme_installer',$bundles) )
+				{
+					$objFolder = new Folder('system/modules/pct_theme_installer');
+					$objFolder->delete();
+				}
 				
 				// @var object Contao\Automator
 				$objAutomator = new Automator;
@@ -1150,7 +1157,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$arrErrors[] = $e->getMessage();
 			}
-
+			
 			// rename templates/layout folder
 			$rootDir = System::getContainer()->getParameter('kernel.project_dir');
 
