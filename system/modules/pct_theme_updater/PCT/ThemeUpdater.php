@@ -792,8 +792,6 @@ class ThemeUpdater extends \Contao\BackendModule
 
 
 		//! status: INSTALLATION | STEP 1.0: Unpack the zip
-
-
 		if(Input::get('status') == 'installation' && Input::get('step') == 'unzip')
 		{
 			// check if file still exists
@@ -923,6 +921,14 @@ class ThemeUpdater extends \Contao\BackendModule
 				{
 					$objFiles->rrdir('system/modules/'.$name,true);
 				}
+				
+				// remove pct_theme_installer when installed
+				$bundles = array_keys( System::getContainer()->getParameter('kernel.bundles') );
+				if( \in_array('pct_theme_installer',$bundles) )
+				{
+					$objFolder = new Folder('system/modules/pct_theme_installer');
+					$objFolder->delete();
+				}
 
 				foreach($arrFolders as $f)
 				{
@@ -1013,14 +1019,6 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$objContainer = System::getContainer();
 				$strCacheDir = StringUtil::stripRootDir($objContainer->getParameter('kernel.cache_dir'));
-				
-				// remove pct_theme_installer when installed
-				$bundles = array_keys( $objContainer->getParameter('kernel.bundles') );
-				if( \in_array('pct_theme_installer',$bundles) )
-				{
-					$objFolder = new Folder('system/modules/pct_theme_installer');
-					$objFolder->delete();
-				}
 				
 				// @var object Contao\Automator
 				$objAutomator = new Automator;
