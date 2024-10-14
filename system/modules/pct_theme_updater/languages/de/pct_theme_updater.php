@@ -81,8 +81,8 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.copy_files'
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.copy_files'][1] 			= 'Die Daten werden an Ihre Zielverzeichnisse verteilt.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.clear_cache'][0] 			= 'Prod. Cache leeren';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.clear_cache'][1] 			= 'Prod. Cache leeren.';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.db_update_modules'][0] 	= 'Datenbank-Update';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.db_update_modules'][1] 	= 'Die Datenbank wird mit den Modul-Informationen geupdated.';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.db_update_modules'][0] 	= 'Datenbank-Update & Migrationsskripte';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.db_update_modules'][1] 	= 'Die Datenbank wird mit den Modul-Informationen und Migrationsskripte aktualisiert.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.sql_template_import'][0]	= 'Installations-Template Import ausführen...';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.sql_template_import'][1]	= 'Installation des SQL-Installations-Templates der Demo-Daten';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BREADCRUMB']['installation.sql_template_wait'][0] 	= 'Installations-Template importieren...';
@@ -136,7 +136,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['session_lost'] 
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.unzip'] 				= 'Das Daten-Zip wird entpackt...';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.copy_files'] 			= 'Die Dateien werden an ihren Zielort kopiert...';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.clear_cache'] 			= 'Cache wird mit den neuen Informationen erstellt.';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.db_update_modules'] 		= 'Die Datenbank wird mit den neuen Modulinformationen aktualisiert.';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.db_update_modules'] 		= 'Die Datenbank wird mit den Modul-Informationen aktualisiert.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sql_template_wait'] 	= 'Die Demo-Webseite (Installations-Template) ist bereit installiert zu werden.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sql_template_import'] 	= 'Das Installations-Template wird importiert.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['version_conflict'] 					= 'Versionskonflikt';
