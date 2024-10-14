@@ -1156,44 +1156,52 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrErrors[] = $e->getMessage();
 			}
 			
-			// rename templates/layout folder
-			$rootDir = System::getContainer()->getParameter('kernel.project_dir');
-
-			if( \is_dir($rootDir.'/templates/layout') )
+			// template updates
+			try
 			{
-				$objFolder = new Folder('templates/layout');
-				$objFolder->renameTo('templates/layout_backup');
-			}
+				// rename templates/layout folder
+				$rootDir = System::getContainer()->getParameter('kernel.project_dir');
 
-			// rename be_tinyMCE to be_tinyMCE_backup.html5
-			if( \file_exists($rootDir.'/templates/be_tinyMCE.html5') )
-			{
-				$objFile = new File('templates/be_tinyMCE.html5');
-				$objFile->renameTo('templates/be_tinyMCE_backup.html5');
-			}
-
-			// copy /templates/set_, import_ templates to /templates/theme_updater_backup
-			if( \is_dir($rootDir.'/templates/theme_updater_backup') === false )
-			{
-				$objFolder = new Folder('templates/theme_updater_backup');
-			}
-
-			$arrFiles = Folder::scan( $rootDir.'/templates' ) ?? array();
-			foreach($arrFiles as $file)
-			{
-				// set_, import_ templates
-				if( \is_dir($rootDir.'/templates/'.$file) === false && ( \strpos($file,'set_') === 0 || \strpos($file,'import_') === 0) )
+				if( \is_dir($rootDir.'/templates/layout') )
 				{
-					$objFile = new File( 'templates/'.$file );
-					$objFile->copyTo( 'templates/theme_updater_backup/'.$file );
-					$objFile->delete();
+					$objFolder = new Folder('templates/layout');
+					$objFolder->renameTo('templates/layout_backup');
 				}
-				// demo_ templates
-				else if( \is_dir($rootDir.'/templates/'.$file) === false && \strpos($file,'demo_') === 0 )
+
+				// rename be_tinyMCE to be_tinyMCE_backup.html5
+				if( \file_exists($rootDir.'/templates/be_tinyMCE.html5') )
 				{
-					$objFile = new File( 'templates/'.$file );
-					$objFile->delete();
+					$objFile = new File('templates/be_tinyMCE.html5');
+					$objFile->renameTo('templates/be_tinyMCE_backup.html5');
 				}
+
+				// copy /templates/set_, import_ templates to /templates/theme_updater_backup
+				if( \is_dir($rootDir.'/templates/theme_updater_backup') === false )
+				{
+					$objFolder = new Folder('templates/theme_updater_backup');
+				}
+
+				$arrFiles = Folder::scan( $rootDir.'/templates' ) ?? array();
+				foreach($arrFiles as $file)
+				{
+					// set_, import_ templates
+					if( \is_dir($rootDir.'/templates/'.$file) === false && ( \strpos($file,'set_') === 0 || \strpos($file,'import_') === 0) )
+					{
+						$objFile = new File( 'templates/'.$file );
+						$objFile->copyTo( 'templates/theme_updater_backup/'.$file );
+						$objFile->delete();
+					}
+					// demo_ templates
+					else if( \is_dir($rootDir.'/templates/'.$file) === false && \strpos($file,'demo_') === 0 )
+					{
+						$objFile = new File( 'templates/'.$file );
+						$objFile->delete();
+					}
+				}
+			}
+			catch(\Exception $e)
+			{
+				$arrErrors[] = $e->getMessage();
 			}
 			
 			// log errors and redirect
