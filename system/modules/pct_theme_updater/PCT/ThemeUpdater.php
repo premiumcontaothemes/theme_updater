@@ -35,7 +35,6 @@ use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\Database;
 use Contao\Date;
 use Contao\Folder;
-use Contao\TemplateLoader;
 use PCT\ThemeUpdater\InstallerHelper;
 
 /**
@@ -1171,6 +1170,30 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$objFile = new File('templates/be_tinyMCE.html5');
 				$objFile->renameTo('templates/be_tinyMCE_backup.html5');
+			}
+
+			// copy /templates/set_, import_ templates to /templates/theme_updater_backup
+			if( \is_dir($rootDir.'/templates/theme_updater_backup') === false )
+			{
+				$objFolder = new Folder('templates/theme_updater_backup');
+			}
+
+			$arrFiles = Folder::scan( $rootDir.'/templates' ) ?? array();
+			foreach($arrFiles as $file)
+			{
+				// set_, import_ templates
+				if( \strpos($file,'set_') === 0 || \strpos($file,'import_') === 0 )
+				{
+					$objFile = new File( 'templates/'.$file );
+					$objFile->copyTo( 'templates/theme_updater_backup/'.$file );
+					$objFile->delete();
+				}
+				// demo_ templates
+				else if( \strpos($file,'demo_') === 0 )
+				{
+					$objFile = new File( 'templates/'.$file );
+					$objFile->delete();
+				}
 			}
 			
 			// log errors and redirect
