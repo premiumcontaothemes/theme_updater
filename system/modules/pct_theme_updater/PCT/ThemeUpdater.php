@@ -1182,14 +1182,14 @@ class ThemeUpdater extends \Contao\BackendModule
 			foreach($arrFiles as $file)
 			{
 				// set_, import_ templates
-				if( \strpos($file,'set_') === 0 || \strpos($file,'import_') === 0 )
+				if( \is_dir($rootDir.'/templates/'.$file) === false && ( \strpos($file,'set_') === 0 || \strpos($file,'import_') === 0) )
 				{
 					$objFile = new File( 'templates/'.$file );
 					$objFile->copyTo( 'templates/theme_updater_backup/'.$file );
 					$objFile->delete();
 				}
 				// demo_ templates
-				else if( \strpos($file,'demo_') === 0 )
+				else if( \is_dir($rootDir.'/templates/'.$file) === false && \strpos($file,'demo_') === 0 )
 				{
 					$objFile = new File( 'templates/'.$file );
 					$objFile->delete();
