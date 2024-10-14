@@ -16,5 +16,6 @@
 /**
  * Status
  */
-$GLOBALS['TL_LANG']['pct_theme_updater']['copy_files_completed']	= 'Installation (%s) : Copy files completed';
-$GLOBALS['TL_LANG']['pct_theme_updater']['completeStatusMessage']	= 'Installation (%s) completed';
+$GLOBALS['TL_LANG']['pct_theme_updater']['copy_files_completed'] = 'Installation (%s): Copying of data completed.';
+$GLOBALS['TL_LANG']['pct_theme_updater']['completeStatusMessage'] = 'Installation (%s) completed';
+
