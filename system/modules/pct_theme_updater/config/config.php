@@ -34,7 +34,7 @@ $GLOBALS['TL_MAINTENANCE'][] = 'PCT\ThemeUpdater\Maintenance';
  * Globals
  */
 $GLOBALS['PCT_THEME_UPDATER']['api_url'] = 'https://api.premium-contao-themes.com';
-$GLOBALS['PCT_THEME_UPDATER']['config_url'] = 'https://update.premium-contao-themes.com/updater_200.json';
+$GLOBALS['PCT_THEME_UPDATER']['config_url'] = 'https://update.premium-contao-themes.com/updater_pro.json';
 $GLOBALS['PCT_THEME_UPDATER']['updater_api_url'] = 'https://update.premium-contao-themes.com/updater.php';
 $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'] = 'system/tmp/pct_theme_updater';
 $GLOBALS['PCT_THEME_UPDATER']['logFile'] = 'var/pct_themeupdater_log.json';
