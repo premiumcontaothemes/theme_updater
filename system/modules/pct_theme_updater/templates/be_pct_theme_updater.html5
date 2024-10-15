@@ -187,7 +187,12 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 		<table>
 			<tr class="tl_blue">
 				<td>Installierte Version:</td>
-				<td><?= $this->local_version; ?></td>
+				<td><?= $this->local_version; ?>
+				<?php if( $this->version_conflict ): ?>
+				<span class="error">(<?= \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['min_theme_version'], $this->local_version); ?>)</span>
+				<?php endif; ?>
+				</td>
+				
 			<tr>
 			<tr class="tl_green">
 				<td>Verfügbare Version:</td>
