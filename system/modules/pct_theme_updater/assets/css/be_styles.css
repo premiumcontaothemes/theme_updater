@@ -83,11 +83,12 @@
 #pct_theme_updater .content table tr th.status {text-align: center;}
 #pct_theme_updater .desc_content,
 #pct_theme_updater table.documentation_inside tr td,
-#pct_theme_updater table.documentation_inside tr th {font-size: 12px;}
+#pct_theme_updater table.documentation_inside tr th {font-size: 12px; line-height: 18px;}
 #pct_theme_updater table.documentation_inside tr td pre {font-size: 10px;}
 #pct_theme_updater table.documentation_inside th.t_col1 {width: 25%;}
 #pct_theme_updater table.documentation_inside th.t_col2 {width: 25%;}
 #pct_theme_updater table.documentation_inside th.t_col3 {width: 50%;}
+#pct_theme_updater code {background: #f8f8f8; padding: 20px; display: block; font-family: monospace;}
 
 #pct_theme_updater .label_orange {color: #fff; background: #f47c00; border-radius: 3px; padding: 3px 5px; display: inline-block;}
 #pct_theme_updater .label_green {background-color: #589b0e; padding: 3px 5px; color: #fff;}
@@ -115,11 +116,11 @@
 #pct_theme_updater .task_columns,
 #pct_theme_updater .task .thead {display: flex; align-items: center;}
 #pct_theme_updater .task_columns .task,
-#pct_theme_updater .task .thead .title {flex: 0 0 10%; padding: 8px 0;}
+#pct_theme_updater .task .thead .title {flex: 0 0 20%; padding: 8px 0;}
 #pct_theme_updater .task_columns .description,
-#pct_theme_updater .task .thead .description {flex: 0 0 calc(60% - 25px); padding: 8px 0;}
+#pct_theme_updater .task .thead .description {flex: 0 0 calc(70% - 25px); padding: 8px 0;}
 #pct_theme_updater .task_columns .status,
-#pct_theme_updater .task .thead .status {flex: 0 0 30%; text-align: right; padding: 8px 0;}
+#pct_theme_updater .task .thead .status {flex: 0 0 10%; text-align: right; padding: 8px 0;}
 
 #pct_theme_updater .task_columns {font-weight: bold;}
 #pct_theme_updater .task_columns .task {padding-left: 25px;}
@@ -147,9 +148,7 @@
 
 #pct_theme_updater .task .only_needed_info {color: #4b85ba; background: #eff5fa; padding: 10px; margin-bottom: 20px;}
 
-#pct_theme_updater .task .thead .status ul {float: left; font-size: 0.75rem; overflow: hidden;}
-#pct_theme_updater .task .thead .status ul li {float: left;}
-#pct_theme_updater .task .thead .status ul li:first-of-type {margin-right: 5px; border-right: 1px solid #ddd; padding-right: 5px;}
+#pct_theme_updater .task .thead .status ul {font-size: 10px; overflow: hidden; margin-top: 5px;
 
 /** dark mode **/
 html[data-color-scheme=dark] #pct_theme_updater .backend_explanation_additional {background: #333;}

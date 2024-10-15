@@ -32,9 +32,9 @@ use Contao\StringUtil;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
 use Contao\CoreBundle\ContaoCoreBundle;
+use Contao\Database;
 use Contao\Date;
 use Contao\Folder;
-use Contao\TemplateLoader;
 use PCT\ThemeUpdater\InstallerHelper;
 
 /**
@@ -166,6 +166,9 @@ class ThemeUpdater extends \Contao\BackendModule
 		$this->Template->license = $objLicense;
 		$this->Template->up_to_date = false;	
 		$this->Template->language = System::getContainer()->get('request_stack')->getCurrentRequest()->getLocale();
+		$this->Template->version_conflict = '';
+		$this->Template->contao_version_short = $version;
+		$this->Template->contao_version_full = $full_version;
 
 		$blnAjax = false;
 		if(Input::get('action') != '' && Environment::get('isAjaxRequest'))
@@ -197,12 +200,15 @@ class ThemeUpdater extends \Contao\BackendModule
 		// check if local version matches the required contao version
 		if( $strStatus !== 'error' && \version_compare($objConfig->local_version,'4','<') && \version_compare($version,'4.9','>') )
 		{
-			$error = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict'],$objConfig->local_version,$version,'4.9');
-			$arrSession['errors'] = array($error);
-			$objSession->set($this->strSession,$arrSession);
+			#Message::addInfo($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict']);
+			$this->Template->version_conflict = $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict'];
+			#
+	#		$error = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict'],$objConfig->local_version,$version,'4.9');
+	#		$arrSession['errors'] = array($error);
+	#		$objSession->set($this->strSession,$arrSession);
 
 			// redirect
-			$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
+	#		$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
 		}
 
 
@@ -785,8 +791,6 @@ class ThemeUpdater extends \Contao\BackendModule
 
 
 		//! status: INSTALLATION | STEP 1.0: Unpack the zip
-
-
 		if(Input::get('status') == 'installation' && Input::get('step') == 'unzip')
 		{
 			// check if file still exists
@@ -916,6 +920,15 @@ class ThemeUpdater extends \Contao\BackendModule
 				{
 					$objFiles->rrdir('system/modules/'.$name,true);
 				}
+				
+				// skip pct_theme_installer when installed
+				$bundles = array_keys( System::getContainer()->getParameter('kernel.bundles') );
+				if( \in_array('pct_theme_installer',$bundles) )
+				{
+					$skip = new File('system/modules/pct_theme_installer/.skip');
+					$skip->write('');
+					$skip->close();
+				}
 
 				foreach($arrFolders as $f)
 				{
@@ -1002,10 +1015,21 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'INSTALLATION';
 			$this->Template->step = 'CLEAR_CACHE';
 
-			// @var object Contao\Automator
-			$objAutomator = new Automator;
-			// generate symlinks to /assets, /files, /system
-			$objAutomator->generateSymlinks();
+			if(Input::get('action') == 'run')
+			{
+				$objContainer = System::getContainer();
+				$strCacheDir = StringUtil::stripRootDir($objContainer->getParameter('kernel.cache_dir'));
+				
+				// @var object Contao\Automator
+				$objAutomator = new Automator;
+				// generate symlinks to /assets, /files, /system
+				$objAutomator->generateSymlinks();
+				
+				// purge the whole folder
+				Files::getInstance()->rrdir($strCacheDir,true);
+				
+				die('Symlinks created and Symphony cache cleared');
+			}
 			
 			return;
 		}
@@ -1053,6 +1077,133 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrErrors[] = $e->getMessage();
 			}
 
+			// update database
+			try
+			{
+				$objDatabase = Database::getInstance();
+
+				// update tl_module [html] templates
+				$query = "UPDATE `tl_module` SET `customTpl` = 'mod_html_phone' WHERE `customTpl` = 'mod_phone';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_email' WHERE `customTpl` = 'mod_email';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_mobilenav_trigger' WHERE `customTpl` = 'mod_mobilenav_trigger';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_socials' WHERE `customTpl` = 'mod_socials';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_offcanvas_top' WHERE `customTpl` = 'mod_offcanvas_top';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_offcanvas_top_trigger' WHERE `customTpl` = 'mod_offcanvas_top_trigger';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_search_trigger' WHERE `customTpl` = 'mod_search_trigger';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_smartmenu_trigger' WHERE `customTpl` = 'mod_smartmenu_trigger';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_totop_link' WHERE `customTpl` = 'mod_totop_link';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_cookiebar' WHERE `customTpl` = 'mod_cookiebar';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_cookiebar_medium' WHERE `customTpl` = 'mod_cookiebar_medium';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_cookiebar_slim' WHERE `customTpl` = 'mod_cookiebar_slim';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_customcatalog_view_switch' WHERE `customTpl` = 'mod_customcatalog_view_switch';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_mobilenav_trigger',`html`='' WHERE `html` LIKE '%layout/mod_mobilenav_trigger%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_totop_link',`html`='' WHERE `html` LIKE '%layout/mod_totop_link%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_offcanvas_top_trigger',`html`='' WHERE `html` LIKE '%layout/mod_offcanvas_top_trigger%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_search_trigger',`html`='' WHERE `html` LIKE '%layout/mod_search_trigger%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_smartmenu_trigger',`html`='' WHERE `html` LIKE '%layout/mod_smartmenu_trigger%';";
+				foreach( array_filter( explode(';', $query) ) as $stmt )
+				{
+					$objDatabase->query($stmt);
+				}
+				
+				// update tl_module [newslist,eventlist teaser] templates
+				$query = "UPDATE `tl_module` SET `customTpl` = 'mod_eventlist_teaser_v1' WHERE `customTpl` = 'mod_eventteaser_v1';
+				UPDATE `tl_module` SET `customTpl` = 'mod_newslist_teaser' WHERE `customTpl` = 'mod_newsteaser';
+				UPDATE `tl_module` SET `customTpl` = 'mod_newslist_teaser_v6' WHERE `customTpl` = 'mod_newsteaser_v6';";
+				foreach( array_filter( explode(';', $query) ) as $stmt )
+				{
+					$objDatabase->query($stmt);
+				}
+				
+				// update tl_module [mod_navigation_] templates
+				$query = "UPDATE `tl_module` SET `customTpl` = 'mod_navigation_mobile_vertical' WHERE `customTpl` = 'mod_navigation_mobile';";
+				foreach( array_filter( explode(';', $query) ) as $stmt )
+				{
+					$objDatabase->query($stmt);
+				}
+				
+				// update tl_content [accordion] templates
+				$query = "UPDATE `tl_content` SET `customTpl` = 'ce_accordionStart_v2' WHERE `customTpl` = 'ce_accordion_v2';
+				UPDATE `tl_content` SET `customTpl` = 'ce_accordionSingle_v2' WHERE `customTpl` = 'ce_accordion_single_v2';";
+				foreach( array_filter( explode(';', $query) ) as $stmt )
+				{
+					$objDatabase->query($stmt);
+				}
+				
+				// update tl_form_field [text] templates
+				$query = "UPDATE `tl_form_field` SET `customTpl` = 'form_text_datepicker_short' WHERE `customTpl` = 'form_textfield_datepicker_short';
+				UPDATE `tl_form_field` SET `customTpl` = 'form_text_datepicker' WHERE `customTpl` = 'form_textfield_datepicker';
+				UPDATE `tl_form_field` SET `customTpl` = 'form_text_floatlabel' WHERE `customTpl` = 'form_textfield_floatlabel';
+				UPDATE `tl_form_field` SET `customTpl` = 'form_text_timepicker' WHERE `customTpl` = 'form_textfield_timepicker';
+				UPDATE `tl_form_field` SET `customTpl` = 'form_text' WHERE `customTpl` = 'form_textfield';";
+				foreach( array_filter( explode(';', $query) ) as $stmt )
+				{
+					$objDatabase->query($stmt);
+				}
+
+				// update tl_page: remove font-icon from cssClass
+				$objResult = $objDatabase->prepare("SELECT * FROM tl_page WHERE addFontIcon=1 AND cssClass!=''")->execute();
+				while( $objResult->next() )
+				{
+					$row = $objResult->row();
+					$cssClass = \str_replace($row['fontIcon'],' ', $row['cssClass']);
+					$cssClass = \implode(' ', array_filter( \explode(' ', $cssClass)) );
+					$objDatabase->prepare("UPDATE tl_page %s WHERE id=?")->set( array('cssClass' => $cssClass ?? '') )->execute($objResult->id);
+				}
+			}
+			catch(\Exception $e)
+			{
+				$arrErrors[] = $e->getMessage();
+			}
+			
+			// template updates
+			try
+			{
+				// rename templates/layout folder
+				$rootDir = System::getContainer()->getParameter('kernel.project_dir');
+
+				if( \is_dir($rootDir.'/templates/layout') )
+				{
+					$objFolder = new Folder('templates/layout');
+					$objFolder->renameTo('templates/layout_backup');
+				}
+
+				// rename be_tinyMCE to be_tinyMCE_backup.html5
+				if( \file_exists($rootDir.'/templates/be_tinyMCE.html5') )
+				{
+					$objFile = new File('templates/be_tinyMCE.html5');
+					$objFile->renameTo('templates/be_tinyMCE_backup.html5');
+				}
+
+				// copy /templates/set_, import_ templates to /templates/theme_updater_backup
+				if( \is_dir($rootDir.'/templates/theme_updater_backup') === false )
+				{
+					$objFolder = new Folder('templates/theme_updater_backup');
+				}
+
+				$arrFiles = Folder::scan( $rootDir.'/templates' ) ?? array();
+				foreach($arrFiles as $file)
+				{
+					// set_, import_ templates
+					if( \is_dir($rootDir.'/templates/'.$file) === false && ( \strpos($file,'set_') === 0 || \strpos($file,'import_') === 0) )
+					{
+						$objFile = new File( 'templates/'.$file );
+						$objFile->copyTo( 'templates/theme_updater_backup/'.$file );
+						$objFile->delete();
+					}
+					// demo_ templates
+					else if( \is_dir($rootDir.'/templates/'.$file) === false && \strpos($file,'demo_') === 0 )
+					{
+						$objFile = new File( 'templates/'.$file );
+						$objFile->delete();
+					}
+				}
+			}
+			catch(\Exception $e)
+			{
+				$arrErrors[] = $e->getMessage();
+			}
+			
 			// log errors and redirect
 			if(count($arrErrors) > 0)
 			{
