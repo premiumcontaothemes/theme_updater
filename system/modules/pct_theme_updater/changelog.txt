@@ -1,5 +1,14 @@
-### 2.0.3
-Update: Language files (#72)
+### 3.0.0
+New: Automatic migration scripts (#75,#76,#77#,78)
+Update: Migration: Rename deprecated /templates/layout folder to /templates/layout_backend (#77)
+Update: Migration: Rename deprecated be_tinyMCE template to be_tinyMCE_backup (#80)
+Update: Migration: Add .skip file to pct_theme_installer module in case it exists (#81)
+Update: Migration: Move deprecated set_, import_ in /templates folder to /templates/theme_updater_backup (#82)
+Update: Migration: Remove deprecated demo_ templates in /templates folder (#82) 
+Update: General styling updates (#76)
+Update: Removed strict version compare (#74)
+Update: Renamed to Theme-Updater Pro for internal usage
+Update: Language files (#72,#84,#85)
 
 ### 2.0.2
 New: System-maintenance job: form_textfield_form_text to update deprecated text formfield template selections (#68)
