@@ -1017,8 +1017,8 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			if(Input::get('action') == 'run')
 			{
-				$objContainer = System::getContainer();
-				$strCacheDir = StringUtil::stripRootDir($objContainer->getParameter('kernel.cache_dir'));
+				#$objContainer = System::getContainer();
+				#$strCacheDir = StringUtil::stripRootDir($objContainer->getParameter('kernel.cache_dir'));
 				
 				// @var object Contao\Automator
 				$objAutomator = new Automator;
@@ -1026,7 +1026,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				$objAutomator->generateSymlinks();
 				
 				// purge the whole folder
-				Files::getInstance()->rrdir($strCacheDir,true);
+				Files::getInstance()->rrdir('var/cache',true);
 				
 				die('Symlinks created and Symphony cache cleared');
 			}
