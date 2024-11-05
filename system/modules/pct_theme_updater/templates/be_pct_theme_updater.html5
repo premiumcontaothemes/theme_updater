@@ -406,16 +406,6 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 					checkboxes.splice( checkboxes.indexOf(id), 1 );
 				}
 				localStorage.setItem('ThemeUpdater.checked', JSON.stringify(checkboxes));
-
-				// set button to disabled or not
-				if( checkboxes.length >= numberOfTasks )
-				{
-					jQuery('form#form_pct_theme_updater button[name="done"]').prop('disabled',false);
-				}
-				else
-				{
-					jQuery('form#form_pct_theme_updater button[name="done"]').prop('disabled',true);
-				}
 			});
 			
 			//-- Togglers
@@ -488,7 +478,7 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 						<label for="agreement"><?= $arrLang['BACKEND_DESCRIPTION']['delete_demo_files']; ?></label>
 					</div>
 					<button type="submit" class="tl_submit" name="commit"><?= $arrLangTpl['submit_commit']; ?></button>
-					<button type="submit" class="tl_submit" name="done" disabled><?= $arrLangTpl['submit_done']; ?></button>
+					<button type="submit" class="tl_submit" name="done"><?= $arrLangTpl['submit_done']; ?></button>
 				</div>
 			</div>
 		</form>
