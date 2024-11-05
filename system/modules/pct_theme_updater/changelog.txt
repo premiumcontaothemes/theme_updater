@@ -1,3 +1,7 @@
+### 3.0.1
+Update: The update process can now be finished without checking the task checkboxes (#89)
+Update: Purge the whole /var/cache folder (#90)
+
 ### 3.0.0
 New: Automatic migration scripts (#75,#76,#77#,78)
 Update: Migration: Rename deprecated /templates/layout folder to /templates/layout_backend (#77)
