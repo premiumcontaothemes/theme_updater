@@ -431,6 +431,20 @@ class ThemeUpdater extends \Contao\BackendModule
 					{
 						$arrParams['product'] = Input::post('product');
 					}
+
+					// point to a product
+					if( isset($GLOBALS['PCT_THEME_UPDATER']['product']) && empty($GLOBALS['PCT_THEME_UPDATER']['product']) === false )
+					{
+						$product = strtolower($GLOBALS['PCT_THEME_UPDATER']['product']);
+						if( $product == 'eclipsex' )
+						{
+							$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX']['product_id'] ?? 158;
+						}
+						if( $product == 'eclipsex_cc' )
+						{
+							$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc']['product_id'] ?? 163;
+						}
+					}
 				
 					$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/api.php',$arrParams) );
 				}
@@ -449,6 +463,20 @@ class ThemeUpdater extends \Contao\BackendModule
 				if(Input::post('product') != '')
 				{
 					$arrParams['product'] = Input::post('product');
+				}
+
+				// point to a product
+				if( isset($GLOBALS['PCT_THEME_UPDATER']['product']) && empty($GLOBALS['PCT_THEME_UPDATER']['product']) === false )
+				{
+					$product = strtolower($GLOBALS['PCT_THEME_UPDATER']['product']);
+					if( $product == 'eclipsex' )
+					{
+						$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX']['product_id'] ?? 158;
+					}
+					if( $product == 'eclipsex_cc' )
+					{
+						$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc']['product_id'] ?? 163;
+					}
 				}
 			
 				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/api.php',$arrParams) );
