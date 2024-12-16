@@ -1,3 +1,7 @@
+### 3.0.2
+Update: Manually point to a product in mixed-orders (#94)
+Update: Hide maintenance jobs when not needed anymore (#92)
+
 ### 3.0.1
 Update: The update process can now be finished without checking the task checkboxes (#89)
 Update: Purge the whole /var/cache folder (#90)

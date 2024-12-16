@@ -17,6 +17,7 @@ namespace PCT\ThemeUpdater;
 
 use Contao\Backend;
 use Contao\BackendTemplate;
+use Contao\Database;
 use Contao\Environment;
 use Contao\File;
 use Contao\Input;
@@ -50,6 +51,7 @@ class Maintenance extends Backend implements MaintenanceModuleInterface
 		}
 		
 		$objSession = System::getContainer()->get('request_stack')->getSession();
+		$objDatabase = Database::getInstance();
 		
 		$arrJobs = array();
 		foreach( array('news_order','center_center_to_crop','form_textfield_form_text') as $key)
@@ -65,6 +67,11 @@ class Maintenance extends Backend implements MaintenanceModuleInterface
 			);
 		}
 
+		$objResult = $objDatabase->prepare("SELECT id FROM tl_module WHERE news_order=?")->limit(1)->execute('date DESC');
+		if($objResult->numRows < 1)
+		{
+			unset($arrJobs['news_order']);
+		}
 		
 		$objTemplate = new BackendTemplate('be_maintenance_theme_updater');
 		$objTemplate->isActive = $this->isActive();
