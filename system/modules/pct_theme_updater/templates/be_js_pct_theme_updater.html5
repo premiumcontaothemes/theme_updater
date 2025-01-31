@@ -1,7 +1,7 @@
 <?php 
 $strToken = \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 ?>
-<script type='text/javascript'>
+<script>
 /**
  * Class
  * PCT_ThemeUpdater
@@ -71,8 +71,7 @@ var PCT_ThemeUpdater =
 			// start
 			onRequest: function()
 			{
-		    	// show Contaos loading box
-		    	PCT_ThemeUpdater.showAjaxInfobox( PCT_ThemeUpdater.ajax_infotext );
+		    	console.log(PCT_ThemeUpdater.ajax_infotext);
 		    },
 			// process
 			onProgress: function(event, xhr)
@@ -106,9 +105,6 @@ var PCT_ThemeUpdater =
 				{
 					console.log(response);
 				}
-				
-				// hide Contaos loading box
-				AjaxRequest.hideBox();
 			},
 		});
 		objRequest.get(objData);
@@ -134,43 +130,16 @@ var PCT_ThemeUpdater =
 		
 		if(intDelay >= 50)
 		{
-			// show Contaos loading box
-		    PCT_ThemeUpdater.showAjaxInfobox( PCT_ThemeUpdater.ajax_infotext );
+			console.log(PCT_ThemeUpdater.ajax_infotext);
 		}
 		
 		setTimeout(function()
 		{
-			// hide Contaos loading box
-			PCT_ThemeUpdater.hideAjaxInfobox();
 			// log
 			console.log('ThemeUpdater redirect: '+strUrl);
 			// redirect
 			window.location = strUrl;		
 		}, intDelay);
-	},
-	
-	
-	/**
-	 * Show loading box
-	 * @var string	The info text
-	 */
-	showAjaxInfobox : function(strText)
-	{
-		if(strText == undefined)
-		{
-			strText = Contao.lang.loading + ' …';
-		}
-		AjaxRequest.displayBox(strText);
-	},
-	
-	
-	/**
-	 * Hide the loading box
-	 */
-	hideAjaxInfobox : function()
-	{
-		AjaxRequest.hideBox();
 	}
 }
-
 </script>
