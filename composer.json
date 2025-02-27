@@ -40,7 +40,7 @@
 	{
         "psr-0": 
         {
-            "PCT\\ThemeInstaller\\": "PCT/"
+            "PCT\\ThemeUpdater\\": "PCT/"
         }
     },
 	"extra":
