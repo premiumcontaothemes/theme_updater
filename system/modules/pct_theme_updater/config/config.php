@@ -47,7 +47,6 @@ $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX'] = array
 	'mandatory' => array('upload'), // mandatory zip content on first level
 	'sql_templates' => array
 	(
-		'4.13' => 'eclipsex_contao_4_13.sql',
 		'5.3' => 'eclipsex_contao_5_3.sql',
 	),
 );
@@ -59,7 +58,6 @@ $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc'] = array
 	'mandatory' => array('upload'), // mandatory zip content on first level
 	'sql_templates' => array
 	(
-		'4.13' => 'eclipsex_cc_contao_4_13.sql',
 		'5.3' => 'eclipsex_contao_5_3.sql',
 	),
 );
