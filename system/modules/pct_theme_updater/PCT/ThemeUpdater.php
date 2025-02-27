@@ -1226,6 +1226,20 @@ class ThemeUpdater extends \Contao\BackendModule
 						$objFile->delete();
 					}
 				}
+
+				// rename fe_page fe_page_backup_themeupdater.html5
+				if( \file_exists($rootDir.'/templates/fe_page.html5') )
+				{
+					$objFile = new File('templates/fe_page.html5');
+					$objFile->renameTo('templates/fe_page_backup_themeupdater.html5');
+				}
+				// if update version is EX5 or smaller, copy fe_page legacy template to templates folder
+				if( \version_compare($objConfig->local_version,'5','<=') && \file_exists($rootDir.'/system/modules/pct_theme_templates/deprecated/theme/fe_page.html5') )
+				{
+					$objFile = new File( 'system/modules/pct_theme_templates/deprecated/theme/fe_page.html5' );
+					$objFile->copyTo( 'templates/fe_page.html5' );
+				}
+
 			}
 			catch(\Exception $e)
 			{
