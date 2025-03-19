@@ -1,3 +1,6 @@
+### 3.0.3
+Update: Removed AjaxRequest.displayBox,.hideBox (#96)
+
 ### 3.0.2
 Update: Manually point to a product in mixed-orders (#94)
 Update: Hide maintenance jobs when not needed anymore (#92)
