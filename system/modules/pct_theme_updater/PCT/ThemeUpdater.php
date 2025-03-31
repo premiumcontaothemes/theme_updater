@@ -1235,7 +1235,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				}
 				// if update version is EX5 or smaller, copy fe_page legacy template to templates folder
 				$file = 'system/modules/pct_theme_templates/deprecated/theme/fe_page.html5';
-				if( \version_compare('5',$objConfig->local_version,'<=') && \file_exists($rootDir.'/'.$file) )
+				if( \version_compare($objConfig->local_version,'6.0','<') && \file_exists($rootDir.'/'.$file) )
 				{
 					$objFile = new File( $file );
 					$objFile->copyTo( 'templates/fe_page.html5' );
