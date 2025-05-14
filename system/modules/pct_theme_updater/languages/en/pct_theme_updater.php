@@ -34,7 +34,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_reset'][1]     = 'R
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['domainRegistrationError'] = '
 The domain of the theme license holder stored in the customer area differs from the domain <span style="font-weight:bold">%s</span>.<br><br>Please update your license holder domain (order number <span style="font-weight:bold">%s</span>) in your <a href="https://login.premium-contao-themes.com/" target="_blank" style="text-decoration:underline;">customer area</a>.<br>
 You can find the license terms and answers to frequently asked questions (FAQ) <a href="https://www.premium-contao-themes.com/lizenzbestimmungen.html" target="_blank" style="text-decoration:underline;">here</a>.<br><br>
-When starting the update routine, the request from the domain (%s) is saved in our system.';
+When starting the update routine, the request from the domain (%s) is saved in our system.<br><br>Note: For updates on a subdomain, the subdomain "update."LICENSEE_DOMAIN is available.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_headline']               = 'Ready to import the demo website.'; // title
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_subheadline']            = 'Note: Existing data will be lost. Your user profile will remain intact.'; // title
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['sql_template_info']                   = 'The import of the demo website (SQL template) '; // title

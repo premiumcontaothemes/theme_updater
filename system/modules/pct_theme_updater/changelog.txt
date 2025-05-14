@@ -1,3 +1,7 @@
+### 4.0.2
+Update: Added migration routine for replacing module templates in HTML-modules with inserttags related to deprecated /layout/ folder (Migration: EclipseX 4.0.0) (#104)
+Update: Added subdomain information in license notification (#105)
+
 ### 4.0.1
 Fixed: legacy fe_page was copied in already uptodate installations due to miss-leading version comparing (#102)
 
