@@ -1128,12 +1128,17 @@ class ThemeUpdater extends \Contao\BackendModule
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_totop_link',`html`='' WHERE `html` LIKE '%layout/mod_totop_link%';
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_offcanvas_top_trigger',`html`='' WHERE `html` LIKE '%layout/mod_offcanvas_top_trigger%';
 				UPDATE `tl_module` SET `customTpl` = 'mod_html_search_trigger',`html`='' WHERE `html` LIKE '%layout/mod_search_trigger%';
-				UPDATE `tl_module` SET `customTpl` = 'mod_html_smartmenu_trigger',`html`='' WHERE `html` LIKE '%layout/mod_smartmenu_trigger%';";
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_smartmenu_trigger',`html`='' WHERE `html` LIKE '%layout/mod_smartmenu_trigger%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_mobilenav_trigger',`html`='' WHERE `html` LIKE '%layout/mod_html_mobilenav_trigger%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_totop_link',`html`='' WHERE `html` LIKE '%layout/mod_html_totop_link%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_offcanvas_top_trigger',`html`='' WHERE `html` LIKE '%layout/mod_html_offcanvas_top_trigger%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_search_trigger',`html`='' WHERE `html` LIKE '%layout/mod_html_search_trigger%';
+				UPDATE `tl_module` SET `customTpl` = 'mod_html_smartmenu_trigger',`html`='' WHERE `html` LIKE '%layout/mod_html_smartmenu_trigger%';";
 				foreach( array_filter( explode(';', $query) ) as $stmt )
 				{
 					$objDatabase->query($stmt);
 				}
-				
+
 				// update tl_module [newslist,eventlist teaser] templates
 				$query = "UPDATE `tl_module` SET `customTpl` = 'mod_eventlist_teaser_v1' WHERE `customTpl` = 'mod_eventteaser_v1';
 				UPDATE `tl_module` SET `customTpl` = 'mod_newslist_teaser' WHERE `customTpl` = 'mod_newsteaser';
