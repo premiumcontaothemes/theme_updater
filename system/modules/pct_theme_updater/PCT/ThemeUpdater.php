@@ -1233,7 +1233,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				}
 
 				// rename fe_page fe_page_backup_themeupdater.html5
-				if( \file_exists($rootDir.'/templates/fe_page.html5') )
+				if( \version_compare($objConfig->local_version,'6.0','<') && \file_exists($rootDir.'/templates/fe_page.html5') )
 				{
 					$objFile = new File('templates/fe_page.html5');
 					$objFile->renameTo('templates/fe_page_backup_themeupdater.html5');
