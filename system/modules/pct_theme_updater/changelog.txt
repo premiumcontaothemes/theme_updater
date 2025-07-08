@@ -1,3 +1,6 @@
+### 4.0.4
+Fixed: Minor spelling mistake (#109)
+
 ### 4.0.3
 Fixed: Rename existing fe_page template only when update-version is lower than 6.0 (#107)
 
