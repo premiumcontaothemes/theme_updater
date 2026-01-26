@@ -328,6 +328,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			(
 				'domain'	=> $strRegistration,
 				'key'		=> $strLicense,
+				'caller'	=> 'updater',
 			);
 
 			if( empty($strLicense) === false )
@@ -413,6 +414,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				(
 					'domain'	=> StringUtil::decodeEntities( Environment::get('host') ),
 					'key'		=> $strLicense,
+					'caller'	=> 'updater',
 				);
 
 				// validation
@@ -425,6 +427,7 @@ class ThemeUpdater extends \Contao\BackendModule
 						'key'   => trim($strLicense),
 						'email'  => trim($objLicense->email),
 						'domain' => StringUtil::decodeEntities( Environment::get('host') ),
+						'caller'	=> 'updater',
 					);
 	
 					if(Input::post('product') != '')
@@ -458,6 +461,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					'key'   => trim(Input::post('license')),
 					'email'  => trim(Input::post('email')),
 					'domain' => StringUtil::decodeEntities( Environment::get('host') ),
+					'caller'	=> 'updater',
 				);
 
 				if(Input::post('product') != '')
@@ -1378,6 +1382,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrParams['domain'] = $objLicense->domain;
 				$arrParams['sendToAjax'] = 1;
 				$arrParams['product'] = $objLicense->file->id;
+				$arrParams['caller'] = 'updater';
 
 				$strFileRequest = html_entity_decode( $GLOBALS['PCT_THEME_UPDATER']['api_url'].'/api.php?'.http_build_query($arrParams) );
 				try
@@ -1664,6 +1669,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			(
 				'domain'	=> $strRegistration,
 				'key'		=> $strLicense,
+				'caller'	=> 'updater',
 			);
 
 			if( empty($strLicense) === false )
