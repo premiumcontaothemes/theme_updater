@@ -449,7 +449,7 @@ class ThemeUpdater extends \Contao\BackendModule
 						}
 					}
 				
-					$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/api.php',$arrParams) );
+					$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php',$arrParams) );
 				}
 			}
 			
@@ -483,7 +483,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					}
 				}
 			
-				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/api.php',$arrParams) );
+				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php',$arrParams) );
 			}
 			
 			// license is ok
@@ -1384,7 +1384,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrParams['product'] = $objLicense->file->id;
 				$arrParams['caller'] = 'updater';
 
-				$strFileRequest = html_entity_decode( $GLOBALS['PCT_THEME_UPDATER']['api_url'].'/api.php?'.http_build_query($arrParams) );
+				$strFileRequest = html_entity_decode( $GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php?'.http_build_query($arrParams) );
 				try
 				{
 					$curl = curl_init();
