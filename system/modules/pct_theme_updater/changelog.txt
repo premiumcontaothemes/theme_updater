@@ -1,4 +1,4 @@
-### 4.0.4
+### 4.1.0
 Fixed: Minor spelling mistake (#109)
 Update: Request logic (#110)
 
