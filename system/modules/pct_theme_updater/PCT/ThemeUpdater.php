@@ -789,6 +789,13 @@ class ThemeUpdater extends \Contao\BackendModule
 					{
 						$objVersionFile->delete();
 					}
+
+					// remove pct_validation
+					$objValidationFile = new File('var/pct_validation');
+					if ( $objValidationFile->exists() )
+					{
+						$objValidationFile->delete();
+					}
 					
 					$this->redirect( Backend::addToUrl('do=pct_theme_updater',true,array('step','status')) );
 				}
