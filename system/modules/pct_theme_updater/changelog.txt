@@ -1,4 +1,5 @@
 ### 4.1.1
+Update: Purge Symphony cache in the same step as copying the new files (#115) 
 Update: General updates (#114)
 
 ### 4.1.0
