@@ -1010,6 +1010,15 @@ class ThemeUpdater extends \Contao\BackendModule
 					$folder->purge();
 					$tmp_folder->copyTo( $folder->__get('path') );
 				}
+
+				// Clear the cache here
+				// @var object Contao\Automator
+				$objAutomator = new Automator;
+				// generate symlinks to /assets, /files, /system
+				$objAutomator->generateSymlinks();
+				
+				// purge the whole folder
+				Files::getInstance()->rrdir('var/cache',true);
 				
 				// log errors
 				if(count($arrErrors) > 0)
