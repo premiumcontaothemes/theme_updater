@@ -50,7 +50,9 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['not_supported']           
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_installer_buy']                = 'Contao Installer';        
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['enter_updater_license_info']          = 'Enter your order number for the Theme Updater and click "Check License".<br>After your license information is verified, you will be redirected, and you can start the 1-click updater.<br>The theme data will automatically be downloaded from the Premium Contao Themes server to your server and then installed.';        
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['enter_theme_license_info']            = 'Enter your order number for the theme.';        
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_license_buy']                  = 'Purchase Theme Updater License';        
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_license_buy']                  = 'Purchase Theme Updater License';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_license_buy_main']             = 'Buy Theme Updater license';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_license_buy_sub']              = 'Via Care Package in customer area';        
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['task']        = 'Task';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['description'] = 'Description';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['status']      = 'Completed';
@@ -59,6 +61,15 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_commit']           
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['submit_done']                         = 'Complete update';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['empty_tasks']                         = 'No further tasks.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['up_to_date']                          = 'No new version available';
+
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['fallback_info']				= 'The Theme Updater is ready but no valid license information is currently available. Please reset to start over.';
+
+// Version card
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['version_local']				= 'Installed version';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['version_remote']				= 'Available version';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['version_release_date']		= 'Released on %s';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['version_manual_steps']		= 'Manual update steps for version';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['changelog_link']				= 'View changelog';
 
 /**
  * Breadcrumb
