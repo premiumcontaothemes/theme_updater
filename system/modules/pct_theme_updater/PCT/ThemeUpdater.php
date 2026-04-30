@@ -308,7 +308,7 @@ class ThemeUpdater extends \Contao\BackendModule
 
 					$strDestination = $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/'.'theme_updater/'. \basename($objFile->path,'.zip');
 					$strModuleFolder = \PCT_THEME_UPDATER_PATH;
-					$strModuleFolder = 'system/modules/pct_theme_updater_dev';
+					#$strModuleFolder = 'system/modules/pct_theme_updater_dev';
 
 					// extract zip
 					$objZip = new \ZipArchive;
@@ -321,7 +321,7 @@ class ThemeUpdater extends \Contao\BackendModule
 					// clear old files
 					$objFiles->rrdir($strModuleFolder,true);
 
-					$folder = new Folder( $strDestination.'/theme_updater-'.\basename($objFile->path,'.zip') );
+					$folder = new Folder( $strDestination.'/theme_updater-'.\basename($objFile->path,'.zip').'/system/modules/pct_theme_updater' );
 					if( !$folder->copyTo( $strModuleFolder ) )
 					{
 						$this->Template->errors = array('Self update: Failed to copy files');
