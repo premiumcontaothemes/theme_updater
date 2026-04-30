@@ -187,7 +187,7 @@
 
 #pct_theme_updater .task .only_needed_info {color: #4b85ba; background: #eff5fa; padding: 10px; margin-bottom: 20px;}
 
-#pct_theme_updater .task .thead .status ul {font-size: 10px; overflow: hidden; margin-top: 5px;
+#pct_theme_updater .task .thead .status ul {font-size: 10px; overflow: hidden; margin-top: 5px};
 
 /** dark mode **/
 html[data-color-scheme=dark] #pct_theme_updater .backend_explanation_additional {background: #333;}
