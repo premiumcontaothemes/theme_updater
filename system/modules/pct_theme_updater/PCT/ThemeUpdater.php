@@ -305,19 +305,18 @@ class ThemeUpdater extends \Contao\BackendModule
 					$objFile->close();
 
 					$strModuleFolder = \PCT_THEME_UPDATER_PATH;
-					$strModuleFolder = 'system/modules/pct_theme_updater_dev';
+					#$strModuleFolder = 'system/modules/pct_theme_updater_dev';
 
 					// extract zip
 					$objZip = new \ZipArchive;
 					if( $objZip->open($rootDir.'/'.$objFile->path) === true )
 					{
-						$strTmpFolder = $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/'. \basename($objFile->path,'.zip');
 						$objZip->extractTo($rootDir.'/'.\dirname($objFile->path) );
 						$objZip->close();
 					}
 					
 					// clear old files
-					#$objFiles->rrdir($strModuleFolder,true);
+					$objFiles->rrdir($strModuleFolder,true);
 
 					$objFolder = new Folder( \dirname($objFile->path).'/'.\basename($objFile->path,'.zip').'/system/modules/pct_theme_updater' );
 					if( !$objFolder->copyTo( $strModuleFolder ) )
