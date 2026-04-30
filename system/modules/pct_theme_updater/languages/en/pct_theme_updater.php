@@ -148,6 +148,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.db
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sql_template_wait'] = 'The demo website (installation template) is ready to be installed.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['installation.sql_template_import'] = 'Importing the installation template.';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['version_conflict'] = 'Version conflict';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['self_update'] = 'A new version of the Theme Updater is available.<span class="subtitle">Please update the module before running a theme update.</span>';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['manual_adjustment'] = 'Manual Adjustments';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['done'] = 'Summary';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['BACKEND_DESCRIPTION']['agreement'] = 'I have created a current backup of all relevant data, which I can use to restore the website if needed. All theme files (except templates/, customize.css/js, and ThemeDesigner customizations) will be overwritten. An update in a live environment is not recommended. Seamedia® Themes assumes no liability or warranty for updates. (*Required field)';

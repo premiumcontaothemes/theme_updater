@@ -29,6 +29,7 @@
 #pct_theme_updater #contao_theme_select select, #pct_theme_updater #contao_theme_select .tl_select {min-width: 120px;}
 #pct_theme_updater .backend_explanation {padding: 15px; color:#444; font-size: 0.95rem; font-weight: bold;}
 #pct_theme_updater .backend_explanation .italic {font-style: italic;}
+#pct_theme_updater .backend_explanation .subtitle {display: block; margin-top: 6px; color: #666; font-size: 0.9rem; font-weight: 400; line-height: 1.5;}
 #pct_theme_updater .backend_explanation_additional {padding: 15px; margin-bottom: 15px; line-height: 17px; color: #4b85ba; background: #eff5fa;}
 #pct_theme_updater .backend_explanation_additional.error {color: #c33; background: #faeeee;}
 #pct_theme_updater .licence_check {overflow: hidden; border-top: 1px solid silver; padding: 15px 15px 25px 15px;}
@@ -94,6 +95,14 @@
 #pct_theme_updater .shop_link .main {font-weight: 600; text-decoration: underline;}
 #pct_theme_updater .shop_link .sub {font-size: 0.78rem; color: #888; font-weight: 400; text-decoration: none;}
 #pct_theme_updater .shop_link:hover .main {text-decoration: none;}
+
+/* Self-update screen — styles the raw markup of the SELF_UPDATE branch */
+#pct_theme_updater.self_update .tl_formbody_middle {padding: 20px;}
+#pct_theme_updater.self_update .tl_formbody_middle p.info {margin: 0 0 15px 0; padding: 14px 18px 14px 45px; background: #f8f8fa; border-left: 3px solid #f47c00; border-radius: 4px; background-position: 18px center; line-height: 1.5;}
+#pct_theme_updater.self_update form.tl_form {margin: 0; display: inline-block; padding: 16px 20px; background: #ffffff; border: 1px solid #e6e6ea; border-left: 3px solid #f47c00; border-radius: 4px;}
+#pct_theme_updater.self_update form.tl_form button[name="self_update"] {transition: opacity 0.2s ease; cursor: pointer; padding: 10px 20px; background: #f47c00; color: #fff; border: 0; border-radius: 3px; font-size: 0.95rem; font-weight: 600; line-height: 1.2;}
+#pct_theme_updater.self_update form.tl_form button[name="self_update"]:hover {opacity: 0.9;}
+#pct_theme_updater.self_update form.tl_form button[name="self_update"]:focus {outline: 2px solid rgba(244, 124, 0, 0.4); outline-offset: 2px;}
 
 #tl_ajaxOverlay {opacity: 0 !important;}
 #tl_ajaxBox {display: none !important;}
@@ -198,6 +207,7 @@ html[data-color-scheme=dark] #pct_theme_updater .breadcrumb table td {border-col
 html[data-color-scheme=dark] #pct_theme_updater .breadcrumb table th {border-color: var(--border);}
 html[data-color-scheme=dark]  #pct_theme_updater #tl_buttons {border-color: var(--border);}
 html[data-color-scheme=dark] #pct_theme_updater .backend_explanation {color: #ddd;}
+html[data-color-scheme=dark] #pct_theme_updater .backend_explanation .subtitle {color: #aaa;}
 html[data-color-scheme=dark] #pct_theme_updater .backend_explanation_additional.error {background: var(--table-header);}
 html[data-color-scheme=dark] #pct_theme_updater p.title {background-color: var(--table-header);}
 html[data-color-scheme=dark] #pct_theme_updater .task .thead .description {color: #ddd;}
@@ -239,3 +249,8 @@ html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.chang
 
 /* Agreement / install button area */
 html[data-color-scheme=dark] #pct_theme_updater .agreement_container label {color: #ddd;}
+
+/* Self-update screen — dark mode */
+html[data-color-scheme=dark] #pct_theme_updater.self_update .tl_formbody_middle p.info {background: #232529; color: #ddd;}
+html[data-color-scheme=dark] #pct_theme_updater.self_update form.tl_form {background: #1b1d21; border-color: #303236;}
+html[data-color-scheme=dark] #pct_theme_updater.self_update form.tl_form button[name="self_update"]:focus {outline-color: rgba(244, 160, 74, 0.4);}
