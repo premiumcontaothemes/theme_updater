@@ -32,8 +32,8 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 			<!-- <a class="shop_link" href="https://www.premium-contao-themes.com/contao-installer.html" target="_blank"><?= $arrLangTpl['button_installer_buy']; ?></a>-->
 			<a class="shop_link" href="https://login.premium-contao-themes.com/" target="_blank">
 				<span class="text">
-					<span class="main"><?= $arrLangTpl['button_license_buy_main']; ?></span>
-					<span class="sub"><?= $arrLangTpl['button_license_buy_sub']; ?></span>
+					<span class="main"><?= $arrLangTpl['button_license_buy_main'] ?? 'Theme-Updates buchen'; ?></span>
+					<span class="sub"><?= $arrLangTpl['button_license_buy_sub'] ?? 'EclipseX Care Package über den Kundenbereich'; ?></span>
 				</span>
 			</a>
 			<?php if($strStatus): ?>
@@ -217,7 +217,7 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 
 		<div class="version_card">
 			<div class="version_row local">
-				<span class="version_label"><?= $arrLangTpl['version_local']; ?></span>
+				<span class="version_label"><?= $arrLangTpl['version_local'] ?? 'Installierte Version'; ?></span>
 				<span class="version_value">
 					<?= $this->local_version; ?>
 					<?php if( $this->version_conflict ): ?>
@@ -226,21 +226,21 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 				</span>
 			</div>
 			<div class="version_row remote">
-				<span class="version_label"><?= $arrLangTpl['version_remote']; ?></span>
+				<span class="version_label"><?= $arrLangTpl['version_remote'] ?? 'Verfügbare Version'; ?></span>
 				<span class="version_value">
 					<?= $this->live_version; ?>
 					<?php if($this->release_date): ?>
-					<span class="version_date"><?= sprintf($arrLangTpl['version_release_date'], $this->release_date); ?></span>
+					<span class="version_date"><?= sprintf($arrLangTpl['version_release_date'] ?? 'Veröffentlicht am %s', $this->release_date); ?></span>
 					<?php endif; ?>
 				</span>
 			</div>
 			<?php if($this->changelog_txt): ?>
 			<div class="version_row changelog">
-				<a href="<?= $this->changelog_txt; ?>" title="<?= $arrLangTpl['changelog_link']; ?>" target="_blank"><?= $arrLangTpl['changelog_link']; ?></a>
+				<a href="<?= $this->changelog_txt; ?>" title="<?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?>" target="_blank"><?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?></a>
 			</div>
 			<?php endif; ?>
 		</div>
-
+		
 		<div class="license_information tl_formbody_middle">
 			<?php if($this->errors): ?>
 			<div class="tl_message">
@@ -313,12 +313,12 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 		
 		<div class="version_card">
 			<div class="version_row remote">
-				<span class="version_label"><?= $arrLangTpl['version_manual_steps']; ?></span>
+				<span class="version_label"><?= $arrLangTpl['version_manual_steps'] ?? 'Manuelle Update-Schritte für Version'; ?></span>
 				<span class="version_value"><?= $this->live_version; ?></span>
 			</div>
 			<?php if($this->changelog_txt): ?>
 			<div class="version_row changelog">
-				<a href="<?= $this->changelog_txt; ?>" title="<?= $arrLangTpl['changelog_link']; ?>" target="_blank"><?= $arrLangTpl['changelog_link']; ?></a>
+				<a href="<?= $this->changelog_txt; ?>" title="<?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?>" target="_blank"><?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?></a>
 			</div>
 			<?php endif; ?>
 		</div>
@@ -660,7 +660,7 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 <!-- ! FALLBACK: no status branch matched (license missing/invalid or unknown status) -->
 
 		<div class="backend_explanation_additional">
-			<p><?= $arrLangTpl['fallback_info']; ?></p>
+			<p><?= $arrLangTpl['fallback_info'] ?? 'Der Theme-Updater steht bereit, aber es liegen aktuell keine gültigen Lizenzinformationen vor.'; ?></p>
 		</div>
 		<p class="tl_message header_back"><a class="reset" href="<?= StringUtil::decodeEntities( Backend::addToUrl('status=reset',true,array('status','step')) ); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
 
