@@ -142,28 +142,33 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 <!-- ! SELF_UPDATE screen -->
 	<div class="tl_formbody_middle">
 	
-	<form action="<?php echo $this->action; ?>" class="tl_form" method="post">
-			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
-			<input type="hidden" name="REQUEST_TOKEN" value="<?= $strToken ; ?>">
-			<button name="self_update">Version <?= $this->online_version; ?> installieren</button>
-	</form>
+	<?php // contao manager
+	if( $this->contao_manager ): ?>
+	<p class="info">Bitte laden Sie die neue Version über den Contao Manager</p>
+	<?php else: ?>
+		<form action="<?php echo $this->action; ?>" class="tl_form" method="post">
+				<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
+				<input type="hidden" name="REQUEST_TOKEN" value="<?= $strToken ; ?>">
+				<button name="self_update">Version <?= $this->online_version; ?> installieren</button>
+		</form>
 
-	<?php if( !$this->ajax_running ): ?>
-	<!-- start the unzip command via ajax -->
-	<?php 
-	$url = StringUtil::decodeEntities( Backend::addToUrl('do=pct_theme_updater',true,array('status','step')) );
-	?>
-	<script>
-	jQuery(document).ready(function() 
-	{
-		jQuery('button[name="self_update"]').click(function(e)
+		<?php if( !$this->ajax_running ): ?>
+		<!-- start the unzip command via ajax -->
+		<?php 
+		$url = StringUtil::decodeEntities( Backend::addToUrl('do=pct_theme_updater',true,array('status','step')) );
+		?>
+		<script>
+		jQuery(document).ready(function() 
 		{
-			e.preventDefault();
-			PCT_ThemeUpdater.ajax_infotext = 'Self update running';
-			PCT_ThemeUpdater.request({'action':'run','redirectTo':'<?= $url; ?>'});
+			jQuery('button[name="self_update"]').click(function(e)
+			{
+				e.preventDefault();
+				PCT_ThemeUpdater.ajax_infotext = 'Self update running';
+				PCT_ThemeUpdater.request({'action':'run','redirectTo':'<?= $url; ?>'});
+			});
 		});
-	});
-	</script>
+		</script>
+		<?php endif; ?>
 	<?php endif; ?>
 
 	</div>

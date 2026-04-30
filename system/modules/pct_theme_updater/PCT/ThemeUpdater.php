@@ -280,7 +280,13 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			$this->Template->online_version = $objConfig->min_client_version;
 			$this->Template->local_version = $objConfig->local_version;
-	
+			$this->Template->contao_manager = false;
+			
+			if( \is_link( $rootDir.'/'.\PCT_THEME_UPDATER_PATH ) && \is_dir($rootDir.'/vendor/premium-contao-themes/theme_updater') )
+			{
+				$this->Template->contao_manager = true;
+			}
+
 			if( Input::get('action') == 'run' )
 			{
 				$strFileRequest = $objConfig->git;
