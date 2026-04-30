@@ -300,29 +300,27 @@ class ThemeUpdater extends \Contao\BackendModule
 				{
 					$objFiles = Files::getInstance();
 					
-					$fileName = basename($strFileRequest);
-					
-					$objFile = new File($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/'.'theme_updater/'.$fileName);
+					$objFile = new File($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/'. \basename($strFileRequest) );
 					$objFile->write( $strFileResponse );
 					$objFile->close();
 
-					$strDestination = $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/'.'theme_updater/'. \basename($objFile->path,'.zip');
 					$strModuleFolder = \PCT_THEME_UPDATER_PATH;
-					#$strModuleFolder = 'system/modules/pct_theme_updater_dev';
+					$strModuleFolder = 'system/modules/pct_theme_updater_dev';
 
 					// extract zip
 					$objZip = new \ZipArchive;
 					if( $objZip->open($rootDir.'/'.$objFile->path) === true )
 					{
-						$objZip->extractTo($rootDir.'/'.$strDestination);
+						$strTmpFolder = $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/'. \basename($objFile->path,'.zip');
+						$objZip->extractTo($rootDir.'/'.\dirname($objFile->path) );
 						$objZip->close();
 					}
 					
 					// clear old files
-					$objFiles->rrdir($strModuleFolder,true);
+					#$objFiles->rrdir($strModuleFolder,true);
 
-					$folder = new Folder( $strDestination.'/theme_updater-'.\basename($objFile->path,'.zip').'/system/modules/pct_theme_updater' );
-					if( !$folder->copyTo( $strModuleFolder ) )
+					$objFolder = new Folder( \dirname($objFile->path).'/'.\basename($objFile->path,'.zip').'/system/modules/pct_theme_updater' );
+					if( !$objFolder->copyTo( $strModuleFolder ) )
 					{
 						$this->Template->errors = array('Self update: Failed to copy files');
 						return;	
