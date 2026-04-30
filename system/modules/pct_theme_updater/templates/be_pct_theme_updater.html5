@@ -25,60 +25,6 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 }
 ?>
 
-<style>
-/* Dark-mode overrides emitted inline so browser-cached be_styles.css does not block them */
-html[data-color-scheme=dark] #pct_theme_updater,
-[data-color-scheme=dark] #pct_theme_updater {color: #ddd;}
-html[data-color-scheme=dark] #pct_theme_updater #tl_buttons .version,
-[data-color-scheme=dark] #pct_theme_updater #tl_buttons .version {color: #eaeaea;}
-html[data-color-scheme=dark] #pct_theme_updater .shop_link .main,
-[data-color-scheme=dark] #pct_theme_updater .shop_link .main {color: #eaeaea;}
-html[data-color-scheme=dark] #pct_theme_updater .shop_link .sub,
-[data-color-scheme=dark] #pct_theme_updater .shop_link .sub {color: #aaa;}
-html[data-color-scheme=dark] #pct_theme_updater .theme_updater_desc,
-[data-color-scheme=dark] #pct_theme_updater .theme_updater_desc {color: #ccc;}
-html[data-color-scheme=dark] #pct_theme_updater .update_progress,
-[data-color-scheme=dark] #pct_theme_updater .update_progress {background: #232529 !important; border-left-color: #f47c00;}
-html[data-color-scheme=dark] #pct_theme_updater .update_progress h3,
-[data-color-scheme=dark] #pct_theme_updater .update_progress h3 {color: #eaeaea;}
-html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li,
-[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li {border-color: #303236;}
-html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.pending,
-html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.pending .step_label,
-[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.pending,
-[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.pending .step_label {color: #777;}
-html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.pending .dot,
-[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.pending .dot {border-color: #555;}
-html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.active .step_label,
-[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.active .step_label {color: #eaeaea;}
-html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.completed .step_label,
-html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.completed .check,
-[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.completed .step_label,
-[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.completed .check {color: #8ec25c;}
-html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li .step_desc,
-[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li .step_desc {color: #999;}
-html[data-color-scheme=dark] #pct_theme_updater .version_card,
-[data-color-scheme=dark] #pct_theme_updater .version_card {background: #1b1d21 !important; border-color: #303236 !important;}
-html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row,
-[data-color-scheme=dark] #pct_theme_updater .version_card .version_row {border-color: #303236;}
-html[data-color-scheme=dark] #pct_theme_updater .version_card .version_label,
-[data-color-scheme=dark] #pct_theme_updater .version_card .version_label {color: #aaa;}
-html[data-color-scheme=dark] #pct_theme_updater .version_card .version_value,
-[data-color-scheme=dark] #pct_theme_updater .version_card .version_value {color: #eaeaea;}
-html[data-color-scheme=dark] #pct_theme_updater .version_card .version_value .version_date,
-[data-color-scheme=dark] #pct_theme_updater .version_card .version_value .version_date {color: #999;}
-html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.remote,
-[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.remote {background: rgba(118, 173, 65, 0.08);}
-html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.remote .version_value,
-[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.remote .version_value {color: #8ec25c;}
-html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.changelog,
-[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.changelog {background: #232529;}
-html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.changelog a,
-[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.changelog a {color: #4ea9d6;}
-html[data-color-scheme=dark] #pct_theme_updater .agreement_container label,
-[data-color-scheme=dark] #pct_theme_updater .agreement_container label {color: #ddd;}
-</style>
-
 <div id="pct_theme_updater" class="<?= \strtolower($this->status); ?>">
 	<div class="tl_formbody">
 		<div id="tl_buttons">
@@ -86,8 +32,8 @@ html[data-color-scheme=dark] #pct_theme_updater .agreement_container label,
 			<!-- <a class="shop_link" href="https://www.premium-contao-themes.com/contao-installer.html" target="_blank"><?= $arrLangTpl['button_installer_buy']; ?></a>-->
 			<a class="shop_link" href="https://login.premium-contao-themes.com/" target="_blank">
 				<span class="text">
-					<span class="main"><?= $arrLangTpl['button_license_buy_main'] ?? 'Theme-Updates buchen'; ?></span>
-					<span class="sub"><?= $arrLangTpl['button_license_buy_sub'] ?? 'EclipseX Care Package über den Kundenbereich'; ?></span>
+					<span class="main"><?= $arrLangTpl['button_license_buy_main']; ?></span>
+					<span class="sub"><?= $arrLangTpl['button_license_buy_sub']; ?></span>
 				</span>
 			</a>
 			<?php if($strStatus): ?>
@@ -271,7 +217,7 @@ html[data-color-scheme=dark] #pct_theme_updater .agreement_container label,
 
 		<div class="version_card">
 			<div class="version_row local">
-				<span class="version_label"><?= $arrLangTpl['version_local'] ?? 'Installierte Version'; ?></span>
+				<span class="version_label"><?= $arrLangTpl['version_local']; ?></span>
 				<span class="version_value">
 					<?= $this->local_version; ?>
 					<?php if( $this->version_conflict ): ?>
@@ -280,21 +226,21 @@ html[data-color-scheme=dark] #pct_theme_updater .agreement_container label,
 				</span>
 			</div>
 			<div class="version_row remote">
-				<span class="version_label"><?= $arrLangTpl['version_remote'] ?? 'Verfügbare Version'; ?></span>
+				<span class="version_label"><?= $arrLangTpl['version_remote']; ?></span>
 				<span class="version_value">
 					<?= $this->live_version; ?>
 					<?php if($this->release_date): ?>
-					<span class="version_date"><?= sprintf($arrLangTpl['version_release_date'] ?? 'Veröffentlicht am %s', $this->release_date); ?></span>
+					<span class="version_date"><?= sprintf($arrLangTpl['version_release_date'], $this->release_date); ?></span>
 					<?php endif; ?>
 				</span>
 			</div>
 			<?php if($this->changelog_txt): ?>
 			<div class="version_row changelog">
-				<a href="<?= $this->changelog_txt; ?>" title="<?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?>" target="_blank"><?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?></a>
+				<a href="<?= $this->changelog_txt; ?>" title="<?= $arrLangTpl['changelog_link']; ?>" target="_blank"><?= $arrLangTpl['changelog_link']; ?></a>
 			</div>
 			<?php endif; ?>
 		</div>
-		
+
 		<div class="license_information tl_formbody_middle">
 			<?php if($this->errors): ?>
 			<div class="tl_message">
@@ -367,12 +313,12 @@ html[data-color-scheme=dark] #pct_theme_updater .agreement_container label,
 		
 		<div class="version_card">
 			<div class="version_row remote">
-				<span class="version_label"><?= $arrLangTpl['version_manual_steps'] ?? 'Manuelle Update-Schritte für Version'; ?></span>
+				<span class="version_label"><?= $arrLangTpl['version_manual_steps']; ?></span>
 				<span class="version_value"><?= $this->live_version; ?></span>
 			</div>
 			<?php if($this->changelog_txt): ?>
 			<div class="version_row changelog">
-				<a href="<?= $this->changelog_txt; ?>" title="<?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?>" target="_blank"><?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?></a>
+				<a href="<?= $this->changelog_txt; ?>" title="<?= $arrLangTpl['changelog_link']; ?>" target="_blank"><?= $arrLangTpl['changelog_link']; ?></a>
 			</div>
 			<?php endif; ?>
 		</div>
@@ -714,7 +660,7 @@ html[data-color-scheme=dark] #pct_theme_updater .agreement_container label,
 <!-- ! FALLBACK: no status branch matched (license missing/invalid or unknown status) -->
 
 		<div class="backend_explanation_additional">
-			<p><?= $arrLangTpl['fallback_info'] ?? 'Der Theme-Updater steht bereit, aber es liegen aktuell keine gültigen Lizenzinformationen vor.'; ?></p>
+			<p><?= $arrLangTpl['fallback_info']; ?></p>
 		</div>
 		<p class="tl_message header_back"><a class="reset" href="<?= StringUtil::decodeEntities( Backend::addToUrl('status=reset',true,array('status','step')) ); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
 
