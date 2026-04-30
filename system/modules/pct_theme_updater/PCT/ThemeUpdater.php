@@ -378,6 +378,8 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 		
 			$strLicense = '';
+			$strThemeLicense = '';
+
 			$objLicenseFile = new File('var/pct_license_themeupdater');
 			if( $objLicenseFile->exists() )
 			{
@@ -593,7 +595,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$arrSession['status'] = $objLicense->status;
 				$arrSession['errors'] = array($objLicense->error);
-				$arrSession['key'] = $strLicense;
+				$arrSession['key'] = $objLicense->key;
 				$arrSession['license'] = $objLicense;
 				$arrSession['license_type'] = 'theme';
 				$objSession->set($this->strSession,$arrSession);
