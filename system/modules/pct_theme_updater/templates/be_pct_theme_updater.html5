@@ -189,9 +189,37 @@ html[data-color-scheme=dark] #pct_theme_updater .agreement_container label,
 	<div class="backend_explanation_additional error"><?= implode("\n", $this->errors); ?></div>
 	<?php endif; ?>
 	
-	
 	<p class="tl_message"><a href="<?= StringUtil::decodeEntities( Controller::addToUrl('do=log',true,array('step','status')) ); ?>" title="<?= $arrLangTpl['button_systemlog'][0]; ?>"><?= $arrLangTpl['button_systemlog'][0]; ?></a></p>
 	<p class="tl_message header_back"><a class="reset" href="<?= StringUtil::decodeEntities( Controller::addToUrl('status=reset',true) ); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
+	</div>
+<?php elseif($this->status == 'SELF_UPDATE'): ?>
+<!-- ! SELF_UPDATE screen -->
+	<div class="tl_formbody_middle">
+	
+	<form action="<?php echo $this->action; ?>" class="tl_form" method="post">
+			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
+			<input type="hidden" name="REQUEST_TOKEN" value="<?= $strToken ; ?>">
+			<button name="self_update">Version <?= $this->online_version; ?> installieren</button>
+	</form>
+
+	<?php if( !$this->ajax_running ): ?>
+	<!-- start the unzip command via ajax -->
+	<?php 
+	$url = StringUtil::decodeEntities( Backend::addToUrl('do=pct_theme_updater',true,array('status','step')) );
+	?>
+	<script>
+	jQuery(document).ready(function() 
+	{
+		jQuery('button[name="self_update"]').click(function(e)
+		{
+			e.preventDefault();
+			PCT_ThemeUpdater.ajax_infotext = 'Self update running';
+			PCT_ThemeUpdater.request({'action':'run','redirectTo':'<?= $url; ?>'});
+		});
+	});
+	</script>
+	<?php endif; ?>
+
 	</div>
 <?php elseif($this->status == 'DONE'): ?>
 <!-- ! DONE, COMPLETED screen -->
