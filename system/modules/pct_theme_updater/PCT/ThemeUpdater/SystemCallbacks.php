@@ -40,7 +40,7 @@ class SystemCallbacks extends System
 		if( $request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request) )
 		{
 			$objUser = BackendUser::getInstance();
-			if( !$objUser->admin )
+			if( !isset( $objUser->admin ) || empty($objUser->admin) )
 			{
 				unset( $GLOBALS['BE_MOD']['system']['pct_theme_updater'] );
 			}
