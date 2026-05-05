@@ -1,3 +1,9 @@
+### 5.0.0
+New: Self update feature (#117)
+Update: Cotao 5.7 compatibility (#119)
+Update: UI facelift (#118)
+Update: General code updates (#120)
+
 ### 4.1.1
 Update: Purge Symphony cache in the same step as copying the new files (#115) 
 Update: General updates (#114)
