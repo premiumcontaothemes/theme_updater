@@ -113,13 +113,13 @@ class ThemeUpdater extends \Contao\BackendModule
 		//--
 
 		// check client version
-		if( Input::get('status') != 'error' && \version_compare(\PCT_THEME_UPDATER,$objConfig->min_client_version,'<') )
+		if( Input::get('status') != 'self_update' && \version_compare(\PCT_THEME_UPDATER,$objConfig->min_client_version,'<') )
 		{
 			$arrSession['errors'] = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['client_version_conflict']);
 			$objSession->set($this->strSession,$arrSession);
 			System::getContainer()->get('monolog.logger.contao.error')->info('Current version: '.\PCT_THEME_UPDATER.' Min client version required: '.$objConfig->min_client_version);
 
-			$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
+			$this->redirect( Backend::addToUrl('status=self_update',true,array('step','action')) );
 		}
 
 		// updater license
@@ -270,6 +270,88 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->errors = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['version_conflict'] ?: 'Please use the LTS version 4.9');
 			return;
 		}
+
+//! status : SELF_UPDATE
+
+
+		if(Input::get('status') == 'self_update')
+		{
+			$this->Template->status = 'SELF_UPDATE';
+
+			$this->Template->online_version = $objConfig->min_client_version;
+			$this->Template->local_version = $objConfig->local_version;
+			$this->Template->contao_manager = false;
+			
+			if( \is_link( $rootDir.'/'.\PCT_THEME_UPDATER_PATH ) && \is_dir($rootDir.'/vendor/premium-contao-themes/theme_updater') )
+			{
+				$this->Template->contao_manager = true;
+			}
+
+			if( Input::get('action') == 'run' )
+			{
+				$strFileRequest = $objConfig->git;
+
+				$curl = curl_init();
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($curl, CURLOPT_URL, $strFileRequest);
+				curl_setopt($curl, CURLOPT_HEADER, 0);
+				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+	
+				$strFileResponse = curl_exec($curl);
+				curl_close($curl);
+				unset($curl);
+				
+				if(!empty($strFileResponse) && json_last_error() === JSON_ERROR_NONE)
+				{
+					$objFiles = Files::getInstance();
+					
+					$objFile = new File($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/'. \basename($strFileRequest) );
+					$objFile->write( $strFileResponse );
+					$objFile->close();
+
+					$strModuleFolder = \PCT_THEME_UPDATER_PATH;
+					#$strModuleFolder = 'system/modules/pct_theme_updater_dev';
+
+					// extract zip
+					$objZip = new \ZipArchive;
+					if( $objZip->open($rootDir.'/'.$objFile->path) === true )
+					{
+						$objZip->extractTo($rootDir.'/'.\dirname($objFile->path) );
+						$objZip->close();
+					}
+					
+					// clear old files
+					$objFiles->rrdir($strModuleFolder,true);
+
+					$objFolder = new Folder( \dirname($objFile->path).'/'.\basename($objFile->path,'.zip').'/system/modules/pct_theme_updater' );
+					if( !$objFolder->copyTo( $strModuleFolder ) )
+					{
+						$this->Template->errors = array('Self update: Failed to copy files');
+						return;	
+					}
+					
+					// remove composer.json, readme.md
+					$objFiles->delete($strModuleFolder.'/composer.json');
+					$objFiles->delete($strModuleFolder.'/README.md');
+
+					// Clear the cache here
+					// @var object Contao\Automator
+					$objAutomator = new Automator;
+					// generate symlinks to /assets, /files, /system
+					$objAutomator->generateSymlinks();
+					
+					// purge the whole folder
+					Files::getInstance()->rrdir('var/cache',true);
+					
+					die('Self update completed');
+					// redirect to the beginning
+					#$this->redirect( Backend::addToUrl('do=pct_theme_updater',true,array('status','step')) );
+				}
+			}
+		
+			return;
+		}
 		
 
 //! status: VALIDATION: ENTER UPDATER LICENSE
@@ -296,6 +378,8 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 		
 			$strLicense = '';
+			$strThemeLicense = '';
+
 			$objLicenseFile = new File('var/pct_license_themeupdater');
 			if( $objLicenseFile->exists() )
 			{
@@ -511,7 +595,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$arrSession['status'] = $objLicense->status;
 				$arrSession['errors'] = array($objLicense->error);
-				$arrSession['key'] = $strLicense;
+				$arrSession['key'] = $objLicense->key;
 				$arrSession['license'] = $objLicense;
 				$arrSession['license_type'] = 'theme';
 				$objSession->set($this->strSession,$arrSession);

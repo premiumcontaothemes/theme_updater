@@ -1,35 +1,38 @@
 
-<div class="breadcrumb">
-	<table>
-		<thead>
-			<tr>
-				<th class="col1">Status</th>
-				<th class="col2">Job</th>
-				<th class="col3">Beschreibung</th>
-			</tr>
-		</thead>
-		<tbody>
-			
-			<?php foreach($this->items as $item): ?>
-			
-			<tr class="<?= $item['class']; ?>">
-				<td><i></i></td>
-				<td>
+<div class="update_progress breadcrumb">
+	<ol class="progress_steps">
+		<?php foreach($this->items as $item): ?>
+		<?php
+		// map the legacy class names to the new active/completed/pending state
+		$strClass = 'pending';
+		$strIcon = '<span class="dot"></span>';
+		if(strpos($item['class'], 'completed') !== false)
+		{
+			$strClass = 'completed';
+			$strIcon = '<span class="check">&#10003;</span>';
+		}
+		else if($item['isActive'])
+		{
+			$strClass = 'active';
+			$strIcon = '<span class="spinner"></span>';
+		}
+		?>
+		<li class="<?= $strClass; ?> <?= $item['class']; ?>">
+			<span class="icon"><?= $strIcon; ?></span>
+			<div class="step_body">
+				<span class="step_label">
 					<?php if($item['isActive']): ?>
 					<span><?= $item['label']; ?></span>
 					<?php else: ?>
-					<?php 
-					$elem = $item['isLink'] ? 'a' : 'span';
-					?>
-					<<?= $elem; ?> href="<?= $item['href']; ?>" title="<?= $item['title']; ?>"><?= $item['label']; ?></<?= $elem; ?>>
+					<?php $strElem = $item['isLink'] ? 'a' : 'span'; ?>
+					<<?= $strElem; ?> href="<?= $item['href']; ?>" title="<?= $item['title']; ?>"><?= $item['label']; ?></<?= $strElem; ?>>
 					<?php endif; ?>
-				</td>
-				<td><?= $item['description']; ?></td>
-			</tr>
-			
-			<?php endforeach; ?>
-		</tbody>
-	</table>
+				</span>
+				<?php if(!empty($item['description'])): ?>
+				<span class="step_desc"><?= $item['description']; ?></span>
+				<?php endif; ?>
+			</div>
+		</li>
+		<?php endforeach; ?>
+	</ol>
 </div>
-	
-		

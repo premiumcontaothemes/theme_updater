@@ -23,8 +23,6 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 {
 	$arrLang['BACKEND_DESCRIPTION'][$this->l_status_step] = '';
 }
-
-
 ?>
 
 <div id="pct_theme_updater" class="<?= \strtolower($this->status); ?>">
@@ -32,7 +30,12 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 		<div id="tl_buttons">
 			<span class="version">Version: <?= \PCT_THEME_UPDATER; ?></span>
 			<!-- <a class="shop_link" href="https://www.premium-contao-themes.com/contao-installer.html" target="_blank"><?= $arrLangTpl['button_installer_buy']; ?></a>-->
-			<a class="shop_link" href="https://www.premium-contao-themes.com" target="_blank"><?= $arrLangTpl['button_license_buy']; ?></a>
+			<a class="shop_link" href="https://login.premium-contao-themes.com/" target="_blank">
+				<span class="text">
+					<span class="main"><?= $arrLangTpl['button_license_buy_main'] ?? 'Theme-Updates buchen'; ?></span>
+					<span class="sub"><?= $arrLangTpl['button_license_buy_sub'] ?? 'EclipseX Care Package über den Kundenbereich'; ?></span>
+				</span>
+			</a>
 			<?php if($strStatus): ?>
 			<span class="status hidden"><?= sprintf($arrLangTpl['label_status'],$strStatus); ?></span>
 			<?php endif; ?>
@@ -132,9 +135,42 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 	<div class="backend_explanation_additional error"><?= implode("\n", $this->errors); ?></div>
 	<?php endif; ?>
 	
-	
 	<p class="tl_message"><a href="<?= StringUtil::decodeEntities( Controller::addToUrl('do=log',true,array('step','status')) ); ?>" title="<?= $arrLangTpl['button_systemlog'][0]; ?>"><?= $arrLangTpl['button_systemlog'][0]; ?></a></p>
 	<p class="tl_message header_back"><a class="reset" href="<?= StringUtil::decodeEntities( Controller::addToUrl('status=reset',true) ); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
+	</div>
+<?php elseif($this->status == 'SELF_UPDATE'): ?>
+<!-- ! SELF_UPDATE screen -->
+	<div class="tl_formbody_middle">
+	
+	<?php // contao manager
+	if( $this->contao_manager ): ?>
+	<p class="info">Bitte laden Sie die neue Version über den Contao Manager</p>
+	<?php else: ?>
+		<form action="<?php echo $this->action; ?>" class="tl_form" method="post">
+				<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
+				<input type="hidden" name="REQUEST_TOKEN" value="<?= $strToken ; ?>">
+				<button name="self_update">Version <?= $this->online_version; ?> installieren</button>
+		</form>
+
+		<?php if( !$this->ajax_running ): ?>
+		<!-- start the unzip command via ajax -->
+		<?php 
+		$url = StringUtil::decodeEntities( Backend::addToUrl('do=pct_theme_updater',true,array('status','step')) );
+		?>
+		<script>
+		jQuery(document).ready(function() 
+		{
+			jQuery('button[name="self_update"]').click(function(e)
+			{
+				e.preventDefault();
+				PCT_ThemeUpdater.ajax_infotext = 'Self update running';
+				PCT_ThemeUpdater.request({'action':'run','redirectTo':'<?= $url; ?>'});
+			});
+		});
+		</script>
+		<?php endif; ?>
+	<?php endif; ?>
+
 	</div>
 <?php elseif($this->status == 'DONE'): ?>
 <!-- ! DONE, COMPLETED screen -->
@@ -183,26 +219,31 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 <?php elseif($this->status == 'READY'): ?>
 <!-- ! READY  -->
 		<div class="theme_updater_desc"><?= $arrLang['BACKEND_DESCRIPTION']['theme_updater_desc']; ?></div>
-		<div class="backend_explanation_additional">
-		<table>
-			<tr class="tl_blue">
-				<td>Installierte Version:</td>
-				<td><?= $this->local_version; ?>
-				<?php if( $this->version_conflict ): ?>
-				<span class="error">(<?= \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['min_theme_version'], $this->local_version); ?>)</span>
-				<?php endif; ?>
-				</td>
-				
-			<tr>
-			<tr class="tl_green">
-				<td>Verfügbare Version:</td>
-				<td><?= $this->live_version; ?>, Datum der Veröffentlichung: <?= $this->release_date; ?></td>
-			<tr>
-			<tr>
-				<td><a href="<?= $this->changelog_txt; ?>" title="Siehe Changelog.txt" target="_blank">Siehe Changelog.txt</a></td>
-			</tr>
-		</table>
-		
+
+		<div class="version_card">
+			<div class="version_row local">
+				<span class="version_label"><?= $arrLangTpl['version_local'] ?? 'Installierte Version'; ?></span>
+				<span class="version_value">
+					<?= $this->local_version; ?>
+					<?php if( $this->version_conflict ): ?>
+					<span class="error">(<?= \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['min_theme_version'], $this->local_version); ?>)</span>
+					<?php endif; ?>
+				</span>
+			</div>
+			<div class="version_row remote">
+				<span class="version_label"><?= $arrLangTpl['version_remote'] ?? 'Verfügbare Version'; ?></span>
+				<span class="version_value">
+					<?= $this->live_version; ?>
+					<?php if($this->release_date): ?>
+					<span class="version_date"><?= sprintf($arrLangTpl['version_release_date'] ?? 'Veröffentlicht am %s', $this->release_date); ?></span>
+					<?php endif; ?>
+				</span>
+			</div>
+			<?php if($this->changelog_txt): ?>
+			<div class="version_row changelog">
+				<a href="<?= $this->changelog_txt; ?>" title="<?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?>" target="_blank"><?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?></a>
+			</div>
+			<?php endif; ?>
 		</div>
 		
 		<div class="license_information tl_formbody_middle">
@@ -275,16 +316,16 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 		</div>
 		<?php endif; ?>
 		
-		<div class="backend_explanation_additional">
-		<table>
-			<tr class="tl_green">
-				<td>Manuelle Update-Schritte für Version:&nbsp;</td>
-				<td><?= $this->live_version; ?></td>
-			<tr>
-			<tr>
-				<td><a href="<?= $this->changelog_txt; ?>" title="Siehe Changelog.txt" target="_blank">Siehe Changelog.txt</a></td>
-			</tr>
-		</table>
+		<div class="version_card">
+			<div class="version_row remote">
+				<span class="version_label"><?= $arrLangTpl['version_manual_steps'] ?? 'Manuelle Update-Schritte für Version'; ?></span>
+				<span class="version_value"><?= $this->live_version; ?></span>
+			</div>
+			<?php if($this->changelog_txt): ?>
+			<div class="version_row changelog">
+				<a href="<?= $this->changelog_txt; ?>" title="<?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?>" target="_blank"><?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?></a>
+			</div>
+			<?php endif; ?>
 		</div>
 
 		<?php if( empty($this->tasks) ): ?>
@@ -608,18 +649,26 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 
 <?php elseif($this->status == 'NOT_SUPPORTED'): ?>
 <!-- ! THEME NOT SUPPORTED... -->
-		
-		<?php 
+
+		<?php
 		$themes = array();
 		foreach($GLOBALS['PCT_THEME_UPDATER']['THEMES'] as $data)
 		{
 			$themes[] = $data['label'];
-		}	
+		}
 		?>
-		
+
 		<p class="backend_explanation_additional error"><?= sprintf($arrLangTpl['not_supported'], implode(', ', $themes)); ?></p>
 		<p class="tl_message header_back"><a class="reset" href="<?= Backend::addToUrl('status=reset',true,array('status','step')); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
-						
+
+<?php else: ?>
+<!-- ! FALLBACK: no status branch matched (license missing/invalid or unknown status) -->
+
+		<div class="backend_explanation_additional">
+			<p><?= $arrLangTpl['fallback_info'] ?? 'Der Theme-Updater steht bereit, aber es liegen aktuell keine gültigen Lizenzinformationen vor.'; ?></p>
+		</div>
+		<p class="tl_message header_back"><a class="reset" href="<?= StringUtil::decodeEntities( Backend::addToUrl('status=reset',true,array('status','step')) ); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
+
 		<?php endif; ?>
 
 
