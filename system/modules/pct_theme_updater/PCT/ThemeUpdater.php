@@ -1097,12 +1097,12 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				// Clear the cache here
 				// @var object Contao\Automator
-				$objAutomator = new Automator;
+				#$objAutomator = new Automator;
 				// generate symlinks to /assets, /files, /system
-				$objAutomator->generateSymlinks();
+				#$objAutomator->generateSymlinks();
 				
 				// purge the whole folder
-				Files::getInstance()->rrdir('var/cache',true);
+				#Files::getInstance()->rrdir('var/cache',true);
 				
 				// log errors
 				if(count($arrErrors) > 0)
