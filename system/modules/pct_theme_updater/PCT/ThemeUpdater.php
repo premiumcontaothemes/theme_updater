@@ -542,33 +542,47 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$arrParams = array
 				(
-					'key'   => trim(Input::post('license')),
-					'email'  => trim(Input::post('email')),
-					'domain' => StringUtil::decodeEntities( Environment::get('host') ),
+					'domain'	=> StringUtil::decodeEntities( Environment::get('host') ),
+					'key'		=> Input::post('license'),
 					'caller'	=> 'updater',
 				);
-
-				if(Input::post('product') != '')
-				{
-					$arrParams['product'] = Input::post('product');
-				}
-
-				// point to a product
-				if( isset($GLOBALS['PCT_THEME_UPDATER']['product']) && empty($GLOBALS['PCT_THEME_UPDATER']['product']) === false )
-				{
-					$product = strtolower($GLOBALS['PCT_THEME_UPDATER']['product']);
-					if( $product == 'eclipsex' )
-					{
-						$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX']['product_id'] ?? 158;
-					}
-					if( $product == 'eclipsex_cc' )
-					{
-						$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc']['product_id'] ?? 163;
-					}
-				}
-			
+				
+				// validation
 				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
+				
+				if( $objLicense !== null && $objLicense->status == 'OK' )
+				{
+					$arrParams = array
+					(
+						'key'   => $objLicense->key,
+						'email'  => trim($objLicense->email),
+						'domain' => StringUtil::decodeEntities( Environment::get('host') ),
+						'caller'	=> 'updater',
+					);
+	
+					if(Input::post('product') != '')
+					{
+						$arrParams['product'] = Input::post('product');
+					}
+
+					// point to a product
+					if( isset($GLOBALS['PCT_THEME_UPDATER']['product']) && empty($GLOBALS['PCT_THEME_UPDATER']['product']) === false )
+					{
+						$product = strtolower($GLOBALS['PCT_THEME_UPDATER']['product']);
+						if( $product == 'eclipsex' )
+						{
+							$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX']['product_id'] ?? 158;
+						}
+						if( $product == 'eclipsex_cc' )
+						{
+							$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc']['product_id'] ?? 163;
+						}
+					}
+					
+					$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php',$arrParams) );
+				}
 			}
+			
 			
 
 			// license is ok
