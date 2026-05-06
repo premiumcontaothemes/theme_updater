@@ -1619,6 +1619,9 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			$avoid_complete =  $data['avoid_complete'] ?? false;
 
+			$data['completed'] = false;
+			$data['isActive'] = false;
+
 			// active
 			if($strCurrent == $status && $avoid_complete === false )
 			{
@@ -1628,9 +1631,6 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				$arrSession['BREADCRUMB']['completed'][$k] = true;
 			}
-
-			$data['completed'] = false;
-			$data['isActive'] = false;
 
 			// completed
 			if( isset($arrSession['BREADCRUMB']['completed'][$k]) && $arrSession['BREADCRUMB']['completed'][$k] === true && $strCurrent != $status)

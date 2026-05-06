@@ -316,6 +316,19 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 		</div>
 		<?php endif; ?>
 		
+		<?php if( empty($this->tasks) ): ?>
+		<div class="version_card empty_state">
+			<div class="status_message">
+				<span class="check">&#10003;</span>
+				<span class="text"><?= sprintf($arrLangTpl['version_no_manual_steps'] ?? 'Keine manuellen Schritte für Version %s erforderlich', '<strong>'.$this->live_version.'</strong>'); ?></span>
+			</div>
+			<?php if($this->changelog_txt): ?>
+			<div class="version_row changelog">
+				<a href="<?= $this->changelog_txt; ?>" title="<?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?>" target="_blank"><?= $arrLangTpl['changelog_link'] ?? 'Changelog ansehen'; ?></a>
+			</div>
+			<?php endif; ?>
+		</div>
+		<?php else: ?>
 		<div class="version_card">
 			<div class="version_row remote">
 				<span class="version_label"><?= $arrLangTpl['version_manual_steps'] ?? 'Manuelle Update-Schritte für Version'; ?></span>
@@ -327,12 +340,9 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 			</div>
 			<?php endif; ?>
 		</div>
+		<?php endif; ?>
 
 		<?php if( empty($this->tasks) ): ?>
-		<div class="content">
-			<p class="info"><?= $arrLangTpl['empty_tasks']; ?></p>
-		</div>
-
 		<form id="form_pct_theme_updater" action="<?= $this->action; ?>" class="tl_form" method="post">
 			<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
 			<input type="hidden" name="REQUEST_TOKEN" value="<?= $strToken; ?>">
