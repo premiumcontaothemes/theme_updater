@@ -1413,7 +1413,7 @@ class ThemeUpdater extends \Contao\BackendModule
 //! status: READY, waiting for GO
 
 
-		if(Input::get('status') == 'ready' && $objLicense->status == 'OK')
+		if(Input::get('status') == 'ready' && $objLicense->status == 'OK' && $objUpdaterLicense->status == 'OK')
 		{
 			$this->Template->status = 'READY';
 			$this->Template->license = $objLicense;
