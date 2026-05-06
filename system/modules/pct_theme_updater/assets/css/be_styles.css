@@ -71,6 +71,12 @@
 #pct_theme_updater .version_card .version_row.changelog a {color: #4b85ba;}
 #pct_theme_updater .version_card .version_row .error {color: #c33; font-weight: 400; font-size: 0.85rem; margin-left: 6px;}
 
+#pct_theme_updater .version_card.empty_state .status_message {display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: #f8fbf3; border-bottom: 1px solid #ececec;}
+#pct_theme_updater .version_card.empty_state .status_message:last-child {border-bottom: 0;}
+#pct_theme_updater .version_card.empty_state .status_message .check {flex: 0 0 22px; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #5b8a3c; color: #fff; font-size: 13px; font-weight: 700; line-height: 1;}
+#pct_theme_updater .version_card.empty_state .status_message .text {flex: 1 1 auto; font-size: 0.95rem; color: #2a2a2a;}
+#pct_theme_updater .version_card.empty_state .status_message .text strong {color: #5b8a3c; font-weight: 700;}
+
 #pct_theme_updater td.tl_green,
 #pct_theme_updater td.tl_green a {color: #77ac45;}
 #pct_theme_updater tr.not_accepted td,
@@ -92,7 +98,7 @@
 #pct_theme_updater .shop_link {display: inline-flex; align-items: center; gap: 10px; text-decoration: none; line-height: 1.2;}
 #pct_theme_updater .shop_link::before {content: ""; flex: 0 0 auto; display: block; width: 18px; height: 18px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='%23e7397a'/><rect x='7.1' y='3.5' width='1.8' height='9' rx='0.6' fill='%23fff'/><rect x='3.5' y='7.1' width='9' height='1.8' rx='0.6' fill='%23fff'/></svg>"); background-repeat: no-repeat; background-position: center; background-size: contain;}
 #pct_theme_updater .shop_link .text {display: inline-flex; flex-direction: column; gap: 1px;}
-#pct_theme_updater .shop_link .main {font-weight: 600; text-decoration: underline;}
+#pct_theme_updater .shop_link .main {text-align: left; font-weight: 600; text-decoration: underline;}
 #pct_theme_updater .shop_link .sub {font-size: 0.78rem; color: #888; font-weight: 400; text-decoration: none;}
 #pct_theme_updater .shop_link:hover .main {text-decoration: none;}
 
@@ -246,6 +252,9 @@ html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.remot
 html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.remote .version_value {color: #8ec25c;}
 html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.changelog {background: #232529;}
 html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.changelog a {color: #4ea9d6;}
+html[data-color-scheme=dark] #pct_theme_updater .version_card.empty_state .status_message {background: rgba(118, 173, 65, 0.08); border-color: #303236;}
+html[data-color-scheme=dark] #pct_theme_updater .version_card.empty_state .status_message .text {color: #eaeaea;}
+html[data-color-scheme=dark] #pct_theme_updater .version_card.empty_state .status_message .text strong {color: #8ec25c;}
 
 /* Agreement / install button area */
 html[data-color-scheme=dark] #pct_theme_updater .agreement_container label {color: #ddd;}

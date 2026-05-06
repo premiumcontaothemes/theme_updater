@@ -69,6 +69,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['version_local']				= 'Inst
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['version_remote']				= 'Available version';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['version_release_date']		= 'Released on %s';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['version_manual_steps']		= 'Manual update steps for version';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['version_no_manual_steps']		= 'No manual steps required for version %s';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['changelog_link']				= 'View changelog';
 
 /**

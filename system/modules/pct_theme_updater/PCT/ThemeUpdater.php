@@ -246,7 +246,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$this->redirect( Backend::addToUrl('status=enter_theme_license') );
 			}
-
+			
 			// reset session but the lisense information
 			$objSession->remove($this->strSession);
 			$arrSession = array
@@ -542,34 +542,49 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$arrParams = array
 				(
-					'key'   => trim(Input::post('license')),
-					'email'  => trim(Input::post('email')),
-					'domain' => StringUtil::decodeEntities( Environment::get('host') ),
+					'domain'	=> StringUtil::decodeEntities( Environment::get('host') ),
+					'key'		=> Input::post('license'),
 					'caller'	=> 'updater',
 				);
-
-				if(Input::post('product') != '')
+				
+				// validation
+				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
+				
+				if( $objLicense !== null && $objLicense->status == 'OK' )
 				{
-					$arrParams['product'] = Input::post('product');
-				}
+					$arrParams = array
+					(
+						'key'   => $objLicense->key,
+						'email'  => trim($objLicense->email),
+						'domain' => StringUtil::decodeEntities( Environment::get('host') ),
+						'caller'	=> 'updater',
+					);
+	
+					if(Input::post('product') != '')
+					{
+						$arrParams['product'] = Input::post('product');
+					}
 
-				// point to a product
-				if( isset($GLOBALS['PCT_THEME_UPDATER']['product']) && empty($GLOBALS['PCT_THEME_UPDATER']['product']) === false )
-				{
-					$product = strtolower($GLOBALS['PCT_THEME_UPDATER']['product']);
-					if( $product == 'eclipsex' )
+					// point to a product
+					if( isset($GLOBALS['PCT_THEME_UPDATER']['product']) && empty($GLOBALS['PCT_THEME_UPDATER']['product']) === false )
 					{
-						$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX']['product_id'] ?? 158;
+						$product = strtolower($GLOBALS['PCT_THEME_UPDATER']['product']);
+						if( $product == 'eclipsex' )
+						{
+							$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX']['product_id'] ?? 158;
+						}
+						if( $product == 'eclipsex_cc' )
+						{
+							$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc']['product_id'] ?? 163;
+						}
 					}
-					if( $product == 'eclipsex_cc' )
-					{
-						$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc']['product_id'] ?? 163;
-					}
+					
+					$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php',$arrParams) );
 				}
-			
-				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php',$arrParams) );
 			}
 			
+			
+
 			// license is ok
 			if( $objLicense !== null && $objLicense->status == 'OK' )
 			{
@@ -1097,12 +1112,12 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				// Clear the cache here
 				// @var object Contao\Automator
-				$objAutomator = new Automator;
+				#$objAutomator = new Automator;
 				// generate symlinks to /assets, /files, /system
-				$objAutomator->generateSymlinks();
+				#$objAutomator->generateSymlinks();
 				
 				// purge the whole folder
-				Files::getInstance()->rrdir('var/cache',true);
+				#Files::getInstance()->rrdir('var/cache',true);
 				
 				// log errors
 				if(count($arrErrors) > 0)
@@ -1413,7 +1428,7 @@ class ThemeUpdater extends \Contao\BackendModule
 //! status: READY, waiting for GO
 
 
-		if(Input::get('status') == 'ready' && $objLicense->status == 'OK')
+		if(Input::get('status') == 'ready' && $objLicense->status == 'OK' && $objUpdaterLicense->status == 'OK')
 		{
 			$this->Template->status = 'READY';
 			$this->Template->license = $objLicense;
@@ -1619,6 +1634,9 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			$avoid_complete =  $data['avoid_complete'] ?? false;
 
+			$data['completed'] = false;
+			$data['isActive'] = false;
+
 			// active
 			if($strCurrent == $status && $avoid_complete === false )
 			{
@@ -1628,9 +1646,6 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				$arrSession['BREADCRUMB']['completed'][$k] = true;
 			}
-
-			$data['completed'] = false;
-			$data['isActive'] = false;
 
 			// completed
 			if( isset($arrSession['BREADCRUMB']['completed'][$k]) && $arrSession['BREADCRUMB']['completed'][$k] === true && $strCurrent != $status)
