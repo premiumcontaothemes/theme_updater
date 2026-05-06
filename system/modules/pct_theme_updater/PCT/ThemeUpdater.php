@@ -567,9 +567,10 @@ class ThemeUpdater extends \Contao\BackendModule
 					}
 				}
 			
-				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php',$arrParams) );
+				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
 			}
 			
+
 			// license is ok
 			if( $objLicense !== null && $objLicense->status == 'OK' )
 			{
