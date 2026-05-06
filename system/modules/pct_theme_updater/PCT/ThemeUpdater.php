@@ -246,6 +246,14 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$this->redirect( Backend::addToUrl('status=enter_theme_license') );
 			}
+			else if( $objLicense->status != 'OK' || $objUpdaterLicense->status != 'OK' )
+			{
+				$arrSession['status'] = 'ACCESS DENIED';
+				$arrSession['errors'] = array('Theme or Theme-Updater license invalid');
+				$arrSession['license_type'] = 'theme_updater';
+				$objSession->set($this->strSession,$arrSession);
+				$this->redirect( Backend::addToUrl('status=access_denied',true) );
+			}
 
 			// reset session but the lisense information
 			$objSession->remove($this->strSession);
@@ -358,10 +366,10 @@ class ThemeUpdater extends \Contao\BackendModule
 
 
 		// check : UPDATER-LICENSE FILE
-		if( $objUpdaterLicense->status != 'OK' && !in_array($strStatus,array('welcome','access_denied','enter_updater_license','enter_theme_license','reset','error','version_conflict')))
-		{
-			$this->redirect( Backend::addToUrl('status=enter_theme_license',true) );
-		}
+		#if( $objUpdaterLicense->status != 'OK' && !in_array($strStatus,array('welcome','access_denied','enter_updater_license','enter_theme_license','reset','error','version_conflict')))
+		#{
+		#	$this->redirect( Backend::addToUrl('status=enter_theme_license',true) );
+		#}
 		
 		if( Input::get('status') == 'enter_updater_license' )
 		{
