@@ -358,10 +358,10 @@ class ThemeUpdater extends \Contao\BackendModule
 
 
 		// check : UPDATER-LICENSE FILE
-		#if( $objUpdaterLicense->status != 'OK' && !in_array($strStatus,array('welcome','access_denied','enter_updater_license','enter_theme_license','reset','error','version_conflict')))
-		#{
-		#	$this->redirect( Backend::addToUrl('status=enter_theme_license',true) );
-		#}
+		if( $objUpdaterLicense->status != 'OK' && !in_array($strStatus,array('welcome','access_denied','enter_updater_license','enter_theme_license','reset','error','version_conflict')))
+		{
+			$this->redirect( Backend::addToUrl('status=enter_theme_license',true) );
+		}
 		
 		if( Input::get('status') == 'enter_updater_license' )
 		{
