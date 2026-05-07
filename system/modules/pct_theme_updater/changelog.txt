@@ -3,6 +3,10 @@ New: Self update feature (#117)
 Update: Cotao 5.7 compatibility (#119)
 Update: UI facelift (#118)
 Update: General code updates (#120)
+Update: General security updates (#124)
+Update: Added system-logs for certain events (#129)
+Update: ACCESS-DENIED page now allows to reset the system (#125)
+Removed: Delete demo-data checkbox (#128)
 
 ### 4.1.1
 Update: Purge Symphony cache in the same step as copying the new files (#115) 

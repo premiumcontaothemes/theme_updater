@@ -351,6 +351,9 @@ class ThemeUpdater extends \Contao\BackendModule
 					// purge the whole folder
 					Files::getInstance()->rrdir('var/cache',true);
 					
+					// log
+					System::getContainer()->get('monolog.logger.contao.general')->info('Theme-Updater: Self-update completed');
+
 					die('Self update completed');
 					// redirect to the beginning
 					#$this->redirect( Backend::addToUrl('do=pct_theme_updater',true,array('status','step')) );
@@ -480,6 +483,9 @@ class ThemeUpdater extends \Contao\BackendModule
 				$objSession->set($this->strSession,$arrSession);
 				$this->redirect( Backend::addToUrl('status=error',true) );
 			}
+
+			// log
+			System::getContainer()->get('monolog.logger.contao.error')->info('Theme-Updater: '.\implode(', ', array($objUpdaterLicense->status,$objUpdaterLicense->error) ));
 
 			return;
 		}
@@ -624,6 +630,9 @@ class ThemeUpdater extends \Contao\BackendModule
 				$this->redirect( Backend::addToUrl('status=access_denied',true) );
 			}
 
+			// log
+			System::getContainer()->get('monolog.logger.contao.error')->info('Theme-Updater: '.\implode(', ', array($objLicense->status,$objLicense->error) ));
+
 			return;
 		}
 
@@ -648,6 +657,9 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->changelog_txt = $objUpdate->changelog;
 			$this->Template->local_version = $objConfig->local_version;
 			$this->Template->live_version = $objUpdate->version;
+
+			// log
+			System::getContainer()->get('monolog.logger.contao.general')->info('Theme-Updater: Update completed');
 
 			return;
 		}
@@ -1494,6 +1506,8 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->license = $objLicense;
 			$arrErrors = array();
 			
+			// log
+			System::getContainer()->get('monolog.logger.contao.general')->info('Theme-Updater: Update started...');
 
 			// coming from ajax request
 			if(Input::get('action') == 'run')
