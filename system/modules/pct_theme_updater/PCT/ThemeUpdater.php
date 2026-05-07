@@ -113,13 +113,13 @@ class ThemeUpdater extends \Contao\BackendModule
 		//--
 
 		// check client version
-		if( Input::get('status') != 'error' && \version_compare(\PCT_THEME_UPDATER,$objConfig->min_client_version,'<') )
+		if( Input::get('status') != 'self_update' && \version_compare(\PCT_THEME_UPDATER,$objConfig->min_client_version,'<') )
 		{
 			$arrSession['errors'] = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['client_version_conflict']);
 			$objSession->set($this->strSession,$arrSession);
 			System::getContainer()->get('monolog.logger.contao.error')->info('Current version: '.\PCT_THEME_UPDATER.' Min client version required: '.$objConfig->min_client_version);
 
-			$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
+			$this->redirect( Backend::addToUrl('status=self_update',true,array('step','action')) );
 		}
 
 		// updater license
@@ -246,7 +246,14 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$this->redirect( Backend::addToUrl('status=enter_theme_license') );
 			}
-
+			else if( $objLicense->status != 'OK' || $objUpdaterLicense->status != 'OK' )
+			{
+				$arrSession['errors'] = array( 'Theme- or Theme-Updater license invalid' );
+				$objSession->set($this->strSession,$arrSession);
+	
+				$this->redirect( Backend::addToUrl('status=error',true,array('step','action')) );
+			}
+			
 			// reset session but the lisense information
 			$objSession->remove($this->strSession);
 			$arrSession = array
@@ -268,6 +275,91 @@ class ThemeUpdater extends \Contao\BackendModule
 		{
 			$this->Template->status = 'VERSION_CONFLICT';
 			$this->Template->errors = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['version_conflict'] ?: 'Please use the LTS version 4.9');
+			return;
+		}
+
+//! status : SELF_UPDATE
+
+
+		if(Input::get('status') == 'self_update')
+		{
+			$this->Template->status = 'SELF_UPDATE';
+
+			$this->Template->online_version = $objConfig->min_client_version;
+			$this->Template->local_version = $objConfig->local_version;
+			$this->Template->contao_manager = false;
+			
+			if( \is_link( $rootDir.'/'.\PCT_THEME_UPDATER_PATH ) && \is_dir($rootDir.'/vendor/premium-contao-themes/theme_updater') )
+			{
+				$this->Template->contao_manager = true;
+			}
+
+			if( Input::get('action') == 'run' )
+			{
+				$strFileRequest = $objConfig->git;
+
+				$curl = curl_init();
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($curl, CURLOPT_URL, $strFileRequest);
+				curl_setopt($curl, CURLOPT_HEADER, 0);
+				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+	
+				$strFileResponse = curl_exec($curl);
+				curl_close($curl);
+				unset($curl);
+				
+				if(!empty($strFileResponse) && json_last_error() === JSON_ERROR_NONE)
+				{
+					$objFiles = Files::getInstance();
+					
+					$objFile = new File($GLOBALS['PCT_THEME_UPDATER']['tmpFolder'].'/'. \basename($strFileRequest) );
+					$objFile->write( $strFileResponse );
+					$objFile->close();
+
+					$strModuleFolder = \PCT_THEME_UPDATER_PATH;
+					#$strModuleFolder = 'system/modules/pct_theme_updater_dev';
+
+					// extract zip
+					$objZip = new \ZipArchive;
+					if( $objZip->open($rootDir.'/'.$objFile->path) === true )
+					{
+						$objZip->extractTo($rootDir.'/'.\dirname($objFile->path) );
+						$objZip->close();
+					}
+					
+					// clear old files
+					$objFiles->rrdir($strModuleFolder,true);
+
+					$objFolder = new Folder( \dirname($objFile->path).'/'.\basename($objFile->path,'.zip').'/system/modules/pct_theme_updater' );
+					if( !$objFolder->copyTo( $strModuleFolder ) )
+					{
+						$this->Template->errors = array('Self update: Failed to copy files');
+						return;	
+					}
+					
+					// remove composer.json, readme.md
+					$objFiles->delete($strModuleFolder.'/composer.json');
+					$objFiles->delete($strModuleFolder.'/README.md');
+
+					// Clear the cache here
+					// @var object Contao\Automator
+					$objAutomator = new Automator;
+					// generate symlinks to /assets, /files, /system
+					$objAutomator->generateSymlinks();
+					
+					// purge the whole folder
+					Files::getInstance()->rrdir('var/cache',true);
+					
+					// log
+					System::getContainer()->get('monolog.logger.contao.general')->info('Theme-Updater: Self-update completed');
+
+					die('Self update completed');
+					// redirect to the beginning
+					#$this->redirect( Backend::addToUrl('do=pct_theme_updater',true,array('status','step')) );
+				}
+			}
+		
 			return;
 		}
 		
@@ -296,6 +388,8 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 		
 			$strLicense = '';
+			$strThemeLicense = '';
+
 			$objLicenseFile = new File('var/pct_license_themeupdater');
 			if( $objLicenseFile->exists() )
 			{
@@ -390,6 +484,9 @@ class ThemeUpdater extends \Contao\BackendModule
 				$this->redirect( Backend::addToUrl('status=error',true) );
 			}
 
+			// log
+			System::getContainer()->get('monolog.logger.contao.error')->info('Theme-Updater: '.\implode(', ', array($objUpdaterLicense->status,$objUpdaterLicense->error) ));
+
 			return;
 		}
 
@@ -458,34 +555,49 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$arrParams = array
 				(
-					'key'   => trim(Input::post('license')),
-					'email'  => trim(Input::post('email')),
-					'domain' => StringUtil::decodeEntities( Environment::get('host') ),
+					'domain'	=> StringUtil::decodeEntities( Environment::get('host') ),
+					'key'		=> Input::post('license'),
 					'caller'	=> 'updater',
 				);
-
-				if(Input::post('product') != '')
+				
+				// validation
+				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
+				
+				if( $objLicense !== null && $objLicense->status == 'OK' )
 				{
-					$arrParams['product'] = Input::post('product');
-				}
+					$arrParams = array
+					(
+						'key'   => $objLicense->key,
+						'email'  => trim($objLicense->email),
+						'domain' => StringUtil::decodeEntities( Environment::get('host') ),
+						'caller'	=> 'updater',
+					);
+	
+					if(Input::post('product') != '')
+					{
+						$arrParams['product'] = Input::post('product');
+					}
 
-				// point to a product
-				if( isset($GLOBALS['PCT_THEME_UPDATER']['product']) && empty($GLOBALS['PCT_THEME_UPDATER']['product']) === false )
-				{
-					$product = strtolower($GLOBALS['PCT_THEME_UPDATER']['product']);
-					if( $product == 'eclipsex' )
+					// point to a product
+					if( isset($GLOBALS['PCT_THEME_UPDATER']['product']) && empty($GLOBALS['PCT_THEME_UPDATER']['product']) === false )
 					{
-						$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX']['product_id'] ?? 158;
+						$product = strtolower($GLOBALS['PCT_THEME_UPDATER']['product']);
+						if( $product == 'eclipsex' )
+						{
+							$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX']['product_id'] ?? 158;
+						}
+						if( $product == 'eclipsex_cc' )
+						{
+							$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc']['product_id'] ?? 163;
+						}
 					}
-					if( $product == 'eclipsex_cc' )
-					{
-						$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc']['product_id'] ?? 163;
-					}
+					
+					$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php',$arrParams) );
 				}
-			
-				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php',$arrParams) );
 			}
 			
+			
+
 			// license is ok
 			if( $objLicense !== null && $objLicense->status == 'OK' )
 			{
@@ -511,12 +623,15 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$arrSession['status'] = $objLicense->status;
 				$arrSession['errors'] = array($objLicense->error);
-				$arrSession['key'] = $strLicense;
+				$arrSession['key'] = $objLicense->key;
 				$arrSession['license'] = $objLicense;
 				$arrSession['license_type'] = 'theme';
 				$objSession->set($this->strSession,$arrSession);
 				$this->redirect( Backend::addToUrl('status=access_denied',true) );
 			}
+
+			// log
+			System::getContainer()->get('monolog.logger.contao.error')->info('Theme-Updater: '.\implode(', ', array($objLicense->status,$objLicense->error) ));
 
 			return;
 		}
@@ -542,6 +657,9 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->changelog_txt = $objUpdate->changelog;
 			$this->Template->local_version = $objConfig->local_version;
 			$this->Template->live_version = $objUpdate->version;
+
+			// log
+			System::getContainer()->get('monolog.logger.contao.general')->info('Theme-Updater: Update completed');
 
 			return;
 		}
@@ -1013,12 +1131,12 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				// Clear the cache here
 				// @var object Contao\Automator
-				$objAutomator = new Automator;
+				#$objAutomator = new Automator;
 				// generate symlinks to /assets, /files, /system
-				$objAutomator->generateSymlinks();
+				#$objAutomator->generateSymlinks();
 				
 				// purge the whole folder
-				Files::getInstance()->rrdir('var/cache',true);
+				#Files::getInstance()->rrdir('var/cache',true);
 				
 				// log errors
 				if(count($arrErrors) > 0)
@@ -1329,7 +1447,7 @@ class ThemeUpdater extends \Contao\BackendModule
 //! status: READY, waiting for GO
 
 
-		if(Input::get('status') == 'ready' && $objLicense->status == 'OK')
+		if(Input::get('status') == 'ready' && $objLicense->status == 'OK' && $objUpdaterLicense->status == 'OK')
 		{
 			$this->Template->status = 'READY';
 			$this->Template->license = $objLicense;
@@ -1388,6 +1506,8 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->license = $objLicense;
 			$arrErrors = array();
 			
+			// log
+			System::getContainer()->get('monolog.logger.contao.general')->info('Theme-Updater: Update started...');
 
 			// coming from ajax request
 			if(Input::get('action') == 'run')
@@ -1535,6 +1655,9 @@ class ThemeUpdater extends \Contao\BackendModule
 
 			$avoid_complete =  $data['avoid_complete'] ?? false;
 
+			$data['completed'] = false;
+			$data['isActive'] = false;
+
 			// active
 			if($strCurrent == $status && $avoid_complete === false )
 			{
@@ -1544,9 +1667,6 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				$arrSession['BREADCRUMB']['completed'][$k] = true;
 			}
-
-			$data['completed'] = false;
-			$data['isActive'] = false;
 
 			// completed
 			if( isset($arrSession['BREADCRUMB']['completed'][$k]) && $arrSession['BREADCRUMB']['completed'][$k] === true && $strCurrent != $status)

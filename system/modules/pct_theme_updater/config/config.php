@@ -16,7 +16,7 @@ use Contao\System;
 /**
  * Constants
  */
-define('PCT_THEME_UPDATER', '4.1.1');
+define('PCT_THEME_UPDATER', '5.0.0');
 define('PCT_THEME_UPDATER_PATH','system/modules/pct_theme_updater');
 
 if( version_compare(ContaoCoreBundle::getVersion(),'5.0','>=') )
@@ -45,10 +45,6 @@ $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX'] = array
 	'label'	=> 'EclipseX',
 	'zip_folder' => 'eclipseX_zip',
 	'mandatory' => array('upload'), // mandatory zip content on first level
-	'sql_templates' => array
-	(
-		'5.3' => 'eclipsex_contao_5_3.sql',
-	),
 );
 $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc'] = array
 (
@@ -56,10 +52,6 @@ $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc'] = array
 	'isCustomCatalog' => true,
 	'zip_folder' => 'eclipseX_cc_zip',
 	'mandatory' => array('upload'), // mandatory zip content on first level
-	'sql_templates' => array
-	(
-		'5.3' => 'eclipsex_contao_5_3.sql',
-	),
 );
 
 // Logic: STATUS.STEP

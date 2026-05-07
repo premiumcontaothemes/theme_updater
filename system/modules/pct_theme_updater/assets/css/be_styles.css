@@ -8,8 +8,9 @@
 #pct_theme_updater .tl_panel.categories {text-align: left; padding: 10px;}
 #pct_theme_updater .tl_panel.categories h3 {margin: 0 0 4px 0; padding: 0;}
 #pct_theme_updater .tl_panel.categories .search-field input {width: auto !important;}
-#pct_theme_updater #tl_buttons {padding: 10px 20px; border-bottom: 1px solid silver;}
-#pct_theme_updater #tl_buttons .version {float: left;}
+#pct_theme_updater #tl_buttons {padding: 12px 20px; border-bottom: 1px solid silver; display: flex; align-items: center; gap: 16px;}
+#pct_theme_updater #tl_buttons .version {margin-right: auto; font-weight: 600; color: #2a2a2a;}
+#pct_theme_updater #tl_buttons a {display: inline-flex; align-items: center;}
 #pct_theme_updater .content_wrapper { padding: 20px; max-width: 900px;}
 #pct_theme_updater .content_wrapper .inside.grid_wrapper {margin-left: -1%; margin-right: -1%;}
 #pct_theme_updater .image_container {line-height: 0;}
@@ -28,18 +29,53 @@
 #pct_theme_updater #contao_theme_select select, #pct_theme_updater #contao_theme_select .tl_select {min-width: 120px;}
 #pct_theme_updater .backend_explanation {padding: 15px; color:#444; font-size: 0.95rem; font-weight: bold;}
 #pct_theme_updater .backend_explanation .italic {font-style: italic;}
+#pct_theme_updater .backend_explanation .subtitle {display: block; margin-top: 6px; color: #666; font-size: 0.9rem; font-weight: 400; line-height: 1.5;}
 #pct_theme_updater .backend_explanation_additional {padding: 15px; margin-bottom: 15px; line-height: 17px; color: #4b85ba; background: #eff5fa;}
 #pct_theme_updater .backend_explanation_additional.error {color: #c33; background: #faeeee;}
 #pct_theme_updater .licence_check {overflow: hidden; border-top: 1px solid silver; padding: 15px 15px 25px 15px;}
 
-#pct_theme_updater .breadcrumb table {width: 100%;}
-#pct_theme_updater .breadcrumb table th {background: #f6f6f8; padding: 15px; border-top: 1px solid #e9e9e9; border-bottom: 1px solid #e9e9e9; font-weight: 700;}
-#pct_theme_updater .breadcrumb table td {border-bottom: 1px solid #e9e9e9; padding: 15px; line-height: 1.2;}
-#pct_theme_updater .breadcrumb table tr:nth-child(even) td {background: #fcfcfe;}
-#pct_theme_updater .breadcrumb table tr.last td {border-bottom: 0;}
-#pct_theme_updater .breadcrumb table th.col1 {width: 8%;}
-#pct_theme_updater .breadcrumb table th.col2 {width: 42%;}
-#pct_theme_updater .breadcrumb table th.col3 {width: 50%;}
+/* Modern progress / breadcrumb component */
+#pct_theme_updater .update_progress {margin: 15px; padding: 20px 25px; background: #f8f8fa; border-left: 3px solid #f47c00; border-radius: 4px;}
+#pct_theme_updater .update_progress h3 {margin: 0 0 12px 0; font-size: 1rem; font-weight: 700; color: #2a2a2a;}
+#pct_theme_updater .update_progress .progress_steps {list-style: none; margin: 0; padding: 0;}
+#pct_theme_updater .update_progress .progress_steps li {display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #ececec; transition: opacity 0.2s ease;}
+#pct_theme_updater .update_progress .progress_steps li:last-child {border-bottom: 0;}
+#pct_theme_updater .update_progress .progress_steps li .icon {flex: 0 0 22px; display: inline-flex; align-items: center; justify-content: center; height: 22px; width: 22px; margin-top: 1px;}
+#pct_theme_updater .update_progress .progress_steps li .step_body {flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; min-width: 0;}
+#pct_theme_updater .update_progress .progress_steps li .step_label {font-weight: 600; color: #444;}
+#pct_theme_updater .update_progress .progress_steps li .step_label a {color: inherit;}
+#pct_theme_updater .update_progress .progress_steps li .step_desc {font-size: 0.85rem; color: #888; line-height: 1.4;}
+
+#pct_theme_updater .update_progress .progress_steps li.pending {color: #b0b0b0;}
+#pct_theme_updater .update_progress .progress_steps li.pending .step_label {color: #b0b0b0; font-weight: 500;}
+#pct_theme_updater .update_progress .progress_steps li.pending .dot {display: inline-block; width: 12px; height: 12px; border: 2px solid #d0d0d0; border-radius: 50%;}
+
+#pct_theme_updater .update_progress .progress_steps li.active .step_label {color: #2a2a2a; font-weight: 700;}
+#pct_theme_updater .update_progress .progress_steps li.active .spinner {display: inline-block; width: 14px; height: 14px; border: 2px solid #e0e0e0; border-top-color: #f47c00; border-radius: 50%; animation: pct_spin 0.8s linear infinite;}
+
+#pct_theme_updater .update_progress .progress_steps li.completed .step_label {color: #5b8a3c;}
+#pct_theme_updater .update_progress .progress_steps li.completed .check {color: #5b8a3c; font-weight: 700; font-size: 14px; line-height: 1;}
+
+@keyframes pct_spin { to { transform: rotate(360deg); } }
+
+/* Version-info cards (replaces the old <table> on the ready / manual_adjustment screens) */
+#pct_theme_updater .version_card {margin: 15px; padding: 0; background: #ffffff; border: 1px solid #e6e6ea; border-radius: 4px; overflow: hidden;}
+#pct_theme_updater .version_card .version_row {display: flex; align-items: baseline; gap: 16px; padding: 14px 20px; border-bottom: 1px solid #ececec;}
+#pct_theme_updater .version_card .version_row:last-child {border-bottom: 0;}
+#pct_theme_updater .version_card .version_label {flex: 0 0 200px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; color: #888; font-weight: 600;}
+#pct_theme_updater .version_card .version_value {flex: 1 1 auto; font-size: 1rem; color: #2a2a2a; font-weight: 600;}
+#pct_theme_updater .version_card .version_value .version_date {display: block; font-size: 0.85rem; font-weight: 400; color: #888; margin-top: 2px;}
+#pct_theme_updater .version_card .version_row.remote {background: #f8fbf3;}
+#pct_theme_updater .version_card .version_row.remote .version_value {color: #5b8a3c;}
+#pct_theme_updater .version_card .version_row.changelog {padding: 12px 20px; background: #fafafa; font-size: 0.9rem;}
+#pct_theme_updater .version_card .version_row.changelog a {color: #4b85ba;}
+#pct_theme_updater .version_card .version_row .error {color: #c33; font-weight: 400; font-size: 0.85rem; margin-left: 6px;}
+
+#pct_theme_updater .version_card.empty_state .status_message {display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: #f8fbf3; border-bottom: 1px solid #ececec;}
+#pct_theme_updater .version_card.empty_state .status_message:last-child {border-bottom: 0;}
+#pct_theme_updater .version_card.empty_state .status_message .check {flex: 0 0 22px; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #5b8a3c; color: #fff; font-size: 13px; font-weight: 700; line-height: 1;}
+#pct_theme_updater .version_card.empty_state .status_message .text {flex: 1 1 auto; font-size: 0.95rem; color: #2a2a2a;}
+#pct_theme_updater .version_card.empty_state .status_message .text strong {color: #5b8a3c; font-weight: 700;}
 
 #pct_theme_updater td.tl_green,
 #pct_theme_updater td.tl_green a {color: #77ac45;}
@@ -59,19 +95,37 @@
 #pct_theme_updater .select_container {margin: 15px;}
 #pct_theme_updater .select_container .styled_select {min-width: 200px;}
 
-#pct_theme_updater .shop_link {background: url(../img/store.svg) left center no-repeat; padding: 3px 0 3px 21px}
+#pct_theme_updater .shop_link {display: inline-flex; align-items: center; gap: 10px; text-decoration: none; line-height: 1.2;}
+#pct_theme_updater .shop_link::before {content: ""; flex: 0 0 auto; display: block; width: 18px; height: 18px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='%23e7397a'/><rect x='7.1' y='3.5' width='1.8' height='9' rx='0.6' fill='%23fff'/><rect x='3.5' y='7.1' width='9' height='1.8' rx='0.6' fill='%23fff'/></svg>"); background-repeat: no-repeat; background-position: center; background-size: contain;}
+#pct_theme_updater .shop_link .text {display: inline-flex; flex-direction: column; gap: 1px;}
+#pct_theme_updater .shop_link .main {text-align: left; font-weight: 600; text-decoration: underline;}
+#pct_theme_updater .shop_link .sub {font-size: 0.78rem; color: #888; font-weight: 400; text-decoration: none;}
+#pct_theme_updater .shop_link:hover .main {text-decoration: none;}
+
+/* Self-update screen — styles the raw markup of the SELF_UPDATE branch */
+#pct_theme_updater.self_update .tl_formbody_middle {padding: 20px;}
+#pct_theme_updater.self_update .tl_formbody_middle p.info {margin: 0 0 15px 0; padding: 14px 18px 14px 45px; background: #f8f8fa; border-left: 3px solid #f47c00; border-radius: 4px; background-position: 18px center; line-height: 1.5;}
+#pct_theme_updater.self_update form.tl_form {margin: 0; display: inline-block; padding: 16px 20px; background: #ffffff; border: 1px solid #e6e6ea; border-left: 3px solid #f47c00; border-radius: 4px;}
+#pct_theme_updater.self_update form.tl_form button[name="self_update"] {transition: opacity 0.2s ease; cursor: pointer; padding: 10px 20px; background: #f47c00; color: #fff; border: 0; border-radius: 3px; font-size: 0.95rem; font-weight: 600; line-height: 1.2;}
+#pct_theme_updater.self_update form.tl_form button[name="self_update"]:hover {opacity: 0.9;}
+#pct_theme_updater.self_update form.tl_form button[name="self_update"]:focus {outline: 2px solid rgba(244, 124, 0, 0.4); outline-offset: 2px;}
 
 #tl_ajaxOverlay {opacity: 0 !important;}
 #tl_ajaxBox {display: none !important;}
 
+/* Legacy breadcrumb rules (kept for backward compatibility, no longer used by the markup) */
 #pct_theme_updater .breadcrumb tr.completed td {color: #77AC45;}
 #pct_theme_updater .breadcrumb tr.pending td {color: #b0b0b0;}
 #pct_theme_updater .breadcrumb tr.active i {background: url(../img/loader.svg) center center no-repeat;	height: 25px; width: 25px; display: block;}
 #pct_theme_updater .breadcrumb tr.completed i {background: url(../img/completed.svg) center center no-repeat; background-size: 17px; height: 25px;	width: 25px; display: block;}
 
-@media only screen and (max-width: 767px) 
+@media only screen and (max-width: 767px)
 {
 	#pct_theme_updater .item.block {width: 100%;}
+	#pct_theme_updater #tl_buttons {flex-wrap: wrap; gap: 8px 16px;}
+	#pct_theme_updater #tl_buttons .version {flex: 1 0 100%;}
+	#pct_theme_updater .version_card .version_row {flex-direction: column; gap: 4px; align-items: flex-start;}
+	#pct_theme_updater .version_card .version_label {flex: 0 0 auto;}
 }
 
 #pct_theme_updater .content table {width: 100%;}
@@ -148,7 +202,7 @@
 
 #pct_theme_updater .task .only_needed_info {color: #4b85ba; background: #eff5fa; padding: 10px; margin-bottom: 20px;}
 
-#pct_theme_updater .task .thead .status ul {font-size: 10px; overflow: hidden; margin-top: 5px;
+#pct_theme_updater .task .thead .status ul {font-size: 10px; overflow: hidden; margin-top: 5px};
 
 /** dark mode **/
 html[data-color-scheme=dark] #pct_theme_updater .backend_explanation_additional {background: #333;}
@@ -159,6 +213,7 @@ html[data-color-scheme=dark] #pct_theme_updater .breadcrumb table td {border-col
 html[data-color-scheme=dark] #pct_theme_updater .breadcrumb table th {border-color: var(--border);}
 html[data-color-scheme=dark]  #pct_theme_updater #tl_buttons {border-color: var(--border);}
 html[data-color-scheme=dark] #pct_theme_updater .backend_explanation {color: #ddd;}
+html[data-color-scheme=dark] #pct_theme_updater .backend_explanation .subtitle {color: #aaa;}
 html[data-color-scheme=dark] #pct_theme_updater .backend_explanation_additional.error {background: var(--table-header);}
 html[data-color-scheme=dark] #pct_theme_updater p.title {background-color: var(--table-header);}
 html[data-color-scheme=dark] #pct_theme_updater .task .thead .description {color: #ddd;}
@@ -168,3 +223,43 @@ html[data-color-scheme=dark] #pct_theme_updater .task .thead,
 html[data-color-scheme=dark] #pct_theme_updater .task.open .documentation,
 html[data-color-scheme=dark] #pct_theme_updater .content table tr td {border-color: var(--border);}
 html[data-color-scheme=dark] #pct_theme_updater .label_gray {background: #444;}
+
+/* Dark-mode for the modernised components — uses Contao 5 dark palette with hex fallbacks */
+html[data-color-scheme=dark] #pct_theme_updater {color: #ddd;}
+html[data-color-scheme=dark] #pct_theme_updater #tl_buttons .version {color: #eaeaea;}
+html[data-color-scheme=dark] #pct_theme_updater .shop_link .main {color: #eaeaea;}
+html[data-color-scheme=dark] #pct_theme_updater .shop_link .sub {color: #aaa;}
+html[data-color-scheme=dark] #pct_theme_updater .theme_updater_desc {color: #ccc;}
+html[data-color-scheme=dark] #pct_theme_updater .theme_updater_desc a {color: #4ea9d6;}
+
+html[data-color-scheme=dark] #pct_theme_updater .update_progress {background: #232529; border-left-color: #f47c00;}
+html[data-color-scheme=dark] #pct_theme_updater .update_progress h3 {color: #eaeaea;}
+html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li {border-color: #303236;}
+html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.pending,
+html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.pending .step_label {color: #777;}
+html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.pending .dot {border-color: #555;}
+html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.active .step_label {color: #eaeaea;}
+html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.completed .step_label,
+html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li.completed .check {color: #8ec25c;}
+html[data-color-scheme=dark] #pct_theme_updater .update_progress .progress_steps li .step_desc {color: #999;}
+
+html[data-color-scheme=dark] #pct_theme_updater .version_card {background: #1b1d21; border-color: #303236;}
+html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row {border-color: #303236;}
+html[data-color-scheme=dark] #pct_theme_updater .version_card .version_label {color: #aaa;}
+html[data-color-scheme=dark] #pct_theme_updater .version_card .version_value {color: #eaeaea;}
+html[data-color-scheme=dark] #pct_theme_updater .version_card .version_value .version_date {color: #999;}
+html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.remote {background: rgba(118, 173, 65, 0.08);}
+html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.remote .version_value {color: #8ec25c;}
+html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.changelog {background: #232529;}
+html[data-color-scheme=dark] #pct_theme_updater .version_card .version_row.changelog a {color: #4ea9d6;}
+html[data-color-scheme=dark] #pct_theme_updater .version_card.empty_state .status_message {background: rgba(118, 173, 65, 0.08); border-color: #303236;}
+html[data-color-scheme=dark] #pct_theme_updater .version_card.empty_state .status_message .text {color: #eaeaea;}
+html[data-color-scheme=dark] #pct_theme_updater .version_card.empty_state .status_message .text strong {color: #8ec25c;}
+
+/* Agreement / install button area */
+html[data-color-scheme=dark] #pct_theme_updater .agreement_container label {color: #ddd;}
+
+/* Self-update screen — dark mode */
+html[data-color-scheme=dark] #pct_theme_updater.self_update .tl_formbody_middle p.info {background: #232529; color: #ddd;}
+html[data-color-scheme=dark] #pct_theme_updater.self_update form.tl_form {background: #1b1d21; border-color: #303236;}
+html[data-color-scheme=dark] #pct_theme_updater.self_update form.tl_form button[name="self_update"]:focus {outline-color: rgba(244, 160, 74, 0.4);}
