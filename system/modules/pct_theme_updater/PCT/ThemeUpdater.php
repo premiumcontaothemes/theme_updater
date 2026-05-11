@@ -329,9 +329,20 @@ class ThemeUpdater extends \Contao\BackendModule
 					}
 					
 					// clear old files
-					$objFiles->rrdir($strModuleFolder,true);
+					#$objFiles->rrdir($strModuleFolder,true);
+					
+					$zipFolder = 'theme_updater-'.\basename($objFile->path,'.zip');
+					$folder = \dirname($objFile->path).'/'.$zipFolder.'/system/modules/pct_theme_updater';
+					
+					if( \file_exists( $rootDir.'/'.$folder.'/config/config.php' ) === false )
+					{
+						$this->Template->errors = array('Self update: Zip folder not found or extraction failed');
+						System::getContainer()->get('monolog.logger.contao.error')->info('Theme-Updater: Self update: Zip folder not found');
 
-					$objFolder = new Folder( \dirname($objFile->path).'/'.\basename($objFile->path,'.zip').'/system/modules/pct_theme_updater' );
+						return;
+					}
+					
+					$objFolder = new Folder( $folder );
 					if( !$objFolder->copyTo( $strModuleFolder ) )
 					{
 						$this->Template->errors = array('Self update: Failed to copy files');
@@ -344,12 +355,12 @@ class ThemeUpdater extends \Contao\BackendModule
 
 					// Clear the cache here
 					// @var object Contao\Automator
-					$objAutomator = new Automator;
+					#$objAutomator = new Automator;
 					// generate symlinks to /assets, /files, /system
-					$objAutomator->generateSymlinks();
+					#$objAutomator->generateSymlinks();
 					
 					// purge the whole folder
-					Files::getInstance()->rrdir('var/cache',true);
+					#Files::getInstance()->rrdir('var/cache',true);
 					
 					// log
 					System::getContainer()->get('monolog.logger.contao.general')->info('Theme-Updater: Self-update completed');
