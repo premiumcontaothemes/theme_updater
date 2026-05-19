@@ -1598,29 +1598,6 @@ class ThemeUpdater extends \Contao\BackendModule
 
 
 	/**
-	 * Inject javascript templates in the backend page
-	 * @param object
-	 *
-	 * Called from [parseTemplate] Hook
-	 */
-	public function injectScripts($objTemplate)
-	{
-		$request = System::getContainer()->get('request_stack')->getCurrentRequest();
-		if( $request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)	&& $objTemplate->getName() == 'be_main')
-		{
-			$objScripts = new BackendTemplate('be_js_pct_theme_updater');
-
-			$arrTexts = array
-			(
-				'hallo' => 'welt',
-			);
-			$objScripts->texts = json_encode($arrTexts);
-			$objTemplate->javascripts .= $objScripts->parse();
-		}
-	}
-
-
-	/**
 	 * Generate a breadcrumb
 	 */
 //! Breadcrumb
