@@ -39,6 +39,10 @@ $GLOBALS['PCT_THEME_UPDATER']['updater_api_url'] = 'https://update.premium-conta
 $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'] = 'system/tmp/pct_theme_updater';
 $GLOBALS['PCT_THEME_UPDATER']['logFile'] = 'var/pct_themeupdater_log.json';
 $GLOBALS['PCT_THEME_UPDATER']['debug'] = false;
+if( !isset($GLOBALS['PCT_THEME_UPDATER']['min_memory_limit']) )
+{
+	$GLOBALS['PCT_THEME_UPDATER']['min_memory_limit'] = 512;
+}
 
 $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX'] = array
 (

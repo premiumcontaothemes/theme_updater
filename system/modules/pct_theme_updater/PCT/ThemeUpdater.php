@@ -1467,7 +1467,9 @@ class ThemeUpdater extends \Contao\BackendModule
 			
 			// min memory_limit
 			$arrErrors = array();
-			if( (int)ini_get('memory_limit') < 512 && (int)ini_get('memory_limit') > 0)
+
+			$min_memory_limit = $GLOBALS['PCT_THEME_UPDATER']['min_memory_limit'] ?? 512;
+			if( (int)ini_get('memory_limit') < $min_memory_limit && (int)ini_get('memory_limit') > 0)
 			{
 				$arrErrors[] = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['memory_limit'],ini_get('memory_limit')) ?: 'Min. required memory_limit is 512M';
 			}
