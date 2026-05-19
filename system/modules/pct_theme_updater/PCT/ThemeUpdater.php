@@ -1467,7 +1467,9 @@ class ThemeUpdater extends \Contao\BackendModule
 			
 			// min memory_limit
 			$arrErrors = array();
-			if( (int)ini_get('memory_limit') < 512 && (int)ini_get('memory_limit') > 0)
+
+			$min_memory_limit = $GLOBALS['PCT_THEME_UPDATER']['min_memory_limit'] ?? 512;
+			if( (int)ini_get('memory_limit') < $min_memory_limit && (int)ini_get('memory_limit') > 0)
 			{
 				$arrErrors[] = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['memory_limit'],ini_get('memory_limit')) ?: 'Min. required memory_limit is 512M';
 			}
@@ -1591,29 +1593,6 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 
 			return;
-		}
-	}
-
-
-	/**
-	 * Inject javascript templates in the backend page
-	 * @param object
-	 *
-	 * Called from [parseTemplate] Hook
-	 */
-	public function injectScripts($objTemplate)
-	{
-		$request = System::getContainer()->get('request_stack')->getCurrentRequest();
-		if( $request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)	&& $objTemplate->getName() == 'be_main')
-		{
-			$objScripts = new BackendTemplate('be_js_pct_theme_updater');
-
-			$arrTexts = array
-			(
-				'hallo' => 'welt',
-			);
-			$objScripts->texts = json_encode($arrTexts);
-			$objTemplate->javascripts .= $objScripts->parse();
 		}
 	}
 
