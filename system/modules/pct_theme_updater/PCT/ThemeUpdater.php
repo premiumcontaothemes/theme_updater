@@ -1532,6 +1532,8 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrParams['sendToAjax'] = 1;
 				$arrParams['product'] = $objLicense->file->id;
 				$arrParams['caller'] = 'updater';
+				$arrParams['client_version'] = \PCT_THEME_UPDATER;
+			
 
 				$strFileRequest = html_entity_decode( $GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php?'.http_build_query($arrParams) );
 				try
@@ -1734,6 +1736,16 @@ class ThemeUpdater extends \Contao\BackendModule
 	// ! send requests
 	protected function request($strUrl,$arrParams=array())
 	{
+		if( !isset($arrParams['client_version']) )
+		{
+			$arrParams['client_version'] = \PCT_THEME_UPDATER;
+		}
+
+		if( !isset($arrParams['caller']) )
+		{
+			$arrParams['caller'] = 'updater';
+		}
+
 		$strRequest = \html_entity_decode($strUrl.(count($arrParams) > 0 ? '?'.\http_build_query($arrParams) : '') );
 		// log
 		if( $GLOBALS['PCT_THEME_UPDATER']['debug'] === true )

@@ -1,3 +1,8 @@
+### 5.0.1
+Added: $GLOBALS['PCT_THEME_UPDATER']['min_memory_limit'] configuration globale to adjust the memory_limit limitation (#132)
+Update: Removed deprecated code (#133)
+Update: Request logic (#136)
+
 ### 5.0.0
 New: Self update feature (#117)
 Update: Cotao 5.7 compatibility (#119)
