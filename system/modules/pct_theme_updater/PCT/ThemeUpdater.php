@@ -1467,7 +1467,9 @@ class ThemeUpdater extends \Contao\BackendModule
 			
 			// min memory_limit
 			$arrErrors = array();
-			if( (int)ini_get('memory_limit') < 512 && (int)ini_get('memory_limit') > 0)
+
+			$min_memory_limit = $GLOBALS['PCT_THEME_UPDATER']['min_memory_limit'] ?? 512;
+			if( (int)ini_get('memory_limit') < $min_memory_limit && (int)ini_get('memory_limit') > 0)
 			{
 				$arrErrors[] = \sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['memory_limit'],ini_get('memory_limit')) ?: 'Min. required memory_limit is 512M';
 			}
@@ -1530,6 +1532,8 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrParams['sendToAjax'] = 1;
 				$arrParams['product'] = $objLicense->file->id;
 				$arrParams['caller'] = 'updater';
+				$arrParams['client_version'] = \PCT_THEME_UPDATER;
+			
 
 				$strFileRequest = html_entity_decode( $GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php?'.http_build_query($arrParams) );
 				try
@@ -1591,29 +1595,6 @@ class ThemeUpdater extends \Contao\BackendModule
 			}
 
 			return;
-		}
-	}
-
-
-	/**
-	 * Inject javascript templates in the backend page
-	 * @param object
-	 *
-	 * Called from [parseTemplate] Hook
-	 */
-	public function injectScripts($objTemplate)
-	{
-		$request = System::getContainer()->get('request_stack')->getCurrentRequest();
-		if( $request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)	&& $objTemplate->getName() == 'be_main')
-		{
-			$objScripts = new BackendTemplate('be_js_pct_theme_updater');
-
-			$arrTexts = array
-			(
-				'hallo' => 'welt',
-			);
-			$objScripts->texts = json_encode($arrTexts);
-			$objTemplate->javascripts .= $objScripts->parse();
 		}
 	}
 
@@ -1755,6 +1736,16 @@ class ThemeUpdater extends \Contao\BackendModule
 	// ! send requests
 	protected function request($strUrl,$arrParams=array())
 	{
+		if( !isset($arrParams['client_version']) )
+		{
+			$arrParams['client_version'] = \PCT_THEME_UPDATER;
+		}
+
+		if( !isset($arrParams['caller']) )
+		{
+			$arrParams['caller'] = 'updater';
+		}
+
 		$strRequest = \html_entity_decode($strUrl.(count($arrParams) > 0 ? '?'.\http_build_query($arrParams) : '') );
 		// log
 		if( $GLOBALS['PCT_THEME_UPDATER']['debug'] === true )
