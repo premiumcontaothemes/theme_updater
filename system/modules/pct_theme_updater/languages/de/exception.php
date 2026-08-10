@@ -27,3 +27,4 @@ $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['client_version_conflict'] 	= 'E
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_compatiblity_conflict'] 	= 'Ihre aktuelle Theme Version %s ist nicht mit Contao %s kompatibel. Bitte updaten Sie das Theme von Contao %s aus und updaten Sie dann Contao.';		
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['theme_version_conflict'] 	= 'Contao %s wird nicht unterstützt. Unterstützte Contao Versionen: %s';
 $GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['min_theme_version'] 	= 'Die empfohlene Ausgangsversion für das Update ist EclipseX 4.0';
+$GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['missing_license_file'] = 'Die Lizenzdatei var/%s fehlt. Bitte ergänzen Sie die Lizenzinformationen in den <a href="contao?do=settings">Contao-Systemeinstellungen</a>.';

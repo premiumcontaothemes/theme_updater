@@ -392,7 +392,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 		
 
-//! status: VALIDATION: ENTER UPDATER LICENSE
+//! status: VALIDATION: THEME-UPDATER LICENSE
 
 
 		// check : UPDATER-LICENSE FILE
@@ -414,7 +414,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$this->Template->errors = array(\sprintf($GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['domainRegistrationError'],Environment::get('host'),$objLicense->key,Environment::get('host')) );
 			}
-		
+
 			$strLicense = '';
 			$strThemeLicense = '';
 
@@ -422,6 +422,26 @@ class ThemeUpdater extends \Contao\BackendModule
 			if( $objLicenseFile->exists() )
 			{
 				$strLicense = \trim( $objLicenseFile->getContent() ?: '' );
+			}
+			else
+			{
+				$arrSession['status'] = 'NO_THEMEUPDATER_LICENSE_FILE';
+				$arrSession['errors'] = array( sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['missing_license_file'],'pct_license_themeupdater') );
+				$objSession->set($this->strSession,$arrSession);
+				$this->redirect( Backend::addToUrl('status=error',true) );
+			}
+
+			$objThemeLicenseFile = new File('var/pct_license');
+			if( $objThemeLicenseFile->exists() )
+			{
+				$strThemeLicense = \trim( $objThemeLicenseFile->getContent() ?: '' );
+			}
+			else
+			{
+				$arrSession['status'] = 'NO_THEME_LICENSE_FILE';
+				$arrSession['errors'] = array( sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['missing_license_file'],'pct_license') );
+				$objSession->set($this->strSession,$arrSession);
+				$this->redirect( Backend::addToUrl('status=error',true) );
 			}
 
 			// registration logic
@@ -487,7 +507,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 
-//! status: VALIDATION: ENTER THEME LICENSE
+//! status: VALIDATION: THEME LICENSE
 
 
 		if( Input::get('status') == 'enter_theme_license' )
@@ -544,6 +564,13 @@ class ThemeUpdater extends \Contao\BackendModule
 				
 					$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php',$arrParams) );
 				}
+			}
+			else
+			{
+				$arrSession['status'] = 'NO_LICENSE_FILE';
+				$arrSession['errors'] = array( sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['missing_license_file'],'pct_license') );
+				$objSession->set($this->strSession,$arrSession);
+				$this->redirect( Backend::addToUrl('status=error',true) );
 			}
 			
 		
@@ -628,6 +655,9 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'ERROR';
 			$this->Template->breadcrumb = '';
 			$this->Template->errors = $arrSession['errors'];
+
+			var_dump($arrSession['errors']);
+
 			return;
 		}
 
