@@ -132,7 +132,9 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 		// host has subdomains
 		$tmp = explode('.',$strHost) ;
-		if( Input::get('status') != 'subdomain_error' && count($tmp) >= 2 && $tmp[0] != 'update' )
+		
+		$subdomainIsRegistrationDomain = $GLOBALS['PCT_THEME_UPDATER']['subdomain_is_registration_domain'] ?? false;
+		if( $subdomainIsRegistrationDomain === false && Input::get('status') != 'subdomain_error' && count($tmp) >= 2 && $tmp[0] != 'update' )
 		{
 			$arrSession['errors'] = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['subdomain_error']);
 			$objSession->set($this->strSession,$arrSession);

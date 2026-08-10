@@ -38,6 +38,7 @@ $GLOBALS['PCT_THEME_UPDATER']['config_url'] = 'https://update.premium-contao-the
 $GLOBALS['PCT_THEME_UPDATER']['updater_api_url'] = 'https://update.premium-contao-themes.com/updater.php';
 $GLOBALS['PCT_THEME_UPDATER']['tmpFolder'] = 'system/tmp/pct_theme_updater';
 $GLOBALS['PCT_THEME_UPDATER']['logFile'] = 'var/pct_themeupdater_log.json';
+$GLOBALS['PCT_THEME_UPDATER']['subdomain_is_registration_domain'] = false; // if true, the updater will allow subdomains as fixed registration domain (Lizenz-domain contains the subdomain: e.g. dev.example.com)
 $GLOBALS['PCT_THEME_UPDATER']['debug'] = false;
 if( !isset($GLOBALS['PCT_THEME_UPDATER']['min_memory_limit']) )
 {
