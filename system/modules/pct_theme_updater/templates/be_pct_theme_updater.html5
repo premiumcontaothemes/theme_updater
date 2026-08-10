@@ -653,6 +653,19 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 		
 		<p class="tl_message header_back"><a class="reset" href="<?= StringUtil::decodeEntities( Backend::addToUrl('status=reset',true,array('status','step')) ); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
 
+		<?php elseif($this->status == 'SUBDOMAIN_ERROR'): ?>
+<!-- ! SUBDOMAIN_ERROR... -->
+		
+		<div class="backend_explanation_additional">
+		<?php if($this->language == 'de'): ?>
+		Für Updates auf einer Subdomain nutzen Sie bitte die Subdomain "update."-Lizenznehmerdomain. Beispiel: <em>update.meinedomain.de</em>
+		<?php else: ?>
+		For updates on a subdomain, please use the subdomain "update."-licensee domain. Example: <em>update.my-domain.com</em>.
+		<?php endif; ?>
+		</div>
+
+		<p class="tl_message header_back"><a class="reset" href="<?= StringUtil::decodeEntities( Backend::addToUrl('status=reset',true,array('status','step')) ); ?>" title="<?= $arrLangTpl['button_reset'][1]; ?>"><?= $arrLangTpl['button_reset'][0]; ?></a></p>
+
 <?php elseif($this->status == 'NOT_SUPPORTED'): ?>
 <!-- ! THEME NOT SUPPORTED... -->
 

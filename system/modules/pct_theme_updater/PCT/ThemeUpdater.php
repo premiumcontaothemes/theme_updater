@@ -122,6 +122,23 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->redirect( Backend::addToUrl('status=self_update',true,array('step','action')) );
 		}
 
+		// check subdomain
+		$strHost = StringUtil::decodeEntities( Environment::get('host') );
+		$arrHost = \parse_url($strHost) ?? array();
+		$arrUrl = \array_map('strtolower',$arrHost);
+		if( isset($arrUrl['host']) && !empty($arrUrl['host']) )
+		{
+				$strHost = $arrUrl['host'];
+		}
+		// host has subdomains
+		$tmp = explode('.',$strHost) ;
+		if( Input::get('status') != 'subdomain_error' && count($tmp) >= 2 && $tmp[0] != 'update' )
+		{
+			$arrSession['errors'] = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['subdomain_error']);
+			$objSession->set($this->strSession,$arrSession);
+			$this->redirect( Backend::addToUrl('status=subdomain_error',true,array('step','action')) );
+		}
+		
 		// updater license
 		$objUpdaterLicense = $arrSession['updater_license'] ?? null;
 		if( isset($arrSession['updater_license']) && \is_string($arrSession['updater_license']) && empty($arrSession['updater_license']) === false)
@@ -729,6 +746,14 @@ class ThemeUpdater extends \Contao\BackendModule
 			return;
 		}
 
+//! status : SUBDOMAIN_ERROR		
+		if( Input::get('status') == 'subdomain_error' )
+		{
+			$this->Template->status = 'SUBDOMAIN_ERROR';
+			$this->Template->errors = $arrSession['errors'];
+			
+			return;
+		}
 
 //! status : MANUAL ADJUSTMENT
 
