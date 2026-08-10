@@ -1,3 +1,8 @@
+### 5.1.0
+Update: On subdomains: Check that the current subdomain is update. (#140)
+Update: Added $GLOBALS['PCT_THEME_UPDATER']['subdomain_is_registration_domain'] to allow updates on a registriation domains that already contains subdomain (#140)
+Update: Removed any further license inputs. License files must be given or set in Contaos system settings (#141)
+
 ### 5.0.1
 Added: $GLOBALS['PCT_THEME_UPDATER']['min_memory_limit'] configuration globale to adjust the memory_limit limitation (#132)
 Update: Removed deprecated code (#133)
