@@ -32,7 +32,7 @@ if( !isset($arrLang['BACKEND_DESCRIPTION'][$this->l_status_step]) )
 			<!-- <a class="shop_link" href="https://www.premium-contao-themes.com/contao-installer.html" target="_blank"><?= $arrLangTpl['button_installer_buy']; ?></a>-->
 			<a class="shop_link" href="https://login.premium-contao-themes.com/" target="_blank">
 				<span class="text">
-					<span class="main"><?= $arrLangTpl['button_license_buy_main'] ?? 'Theme-Updates buchen'; ?></span>
+					<span class="main"><?= $arrLangTpl['button_license_buy_main'] ?? 'Theme-Updater Lizenz kaufen/verlängern'; ?></span>
 					<span class="sub"><?= $arrLangTpl['button_license_buy_sub'] ?? 'EclipseX Care Package über den Kundenbereich'; ?></span>
 				</span>
 			</a>
