@@ -85,7 +85,7 @@ class ThemeUpdater extends \Contao\BackendModule
 
 		// check contao version
 		$blnAllowed = false;
-		if( \version_compare($version, '4.13','==') || \version_compare($version, '5.3','>=') )
+		if( \version_compare($version, '5.3','>=') )
 		{
 			$blnAllowed = true;
 		}
