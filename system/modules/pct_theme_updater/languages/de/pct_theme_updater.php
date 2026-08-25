@@ -52,7 +52,7 @@ $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_installer_buy'] 			
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['enter_updater_license_info'] 		= 'Tragen Sie Ihre Bestellnummer Ihrer Theme-Updater Bestellung ein und klicken Sie auf "Lizenz abfragen".<br>Nach Prüfung Ihrer Lizenzinformationen werden Sie weitergeleitet und können den 1-Click-Updater starten.<br>Die Theme-Daten werden automatisch vom Premium Contao Themes Server auf Ihren Server geladen und anschließend installiert.';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['enter_theme_license_info'] 		= 'Tragen Sie Ihre Bestellnummer für das Theme ein.';		
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_license_buy'] 				= 'Theme Updater Lizenz erwerben';
-$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_license_buy_main']			= 'Theme-Updater Lizenz kaufen';
+$GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_license_buy_main']			= 'Theme-Updater Lizenz kaufen/verlängern';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['button_license_buy_sub']			= 'Über Care Package im Kundenbereich';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['task']		= 'Aufgabe';
 $GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['manual_table']['head']['description'] = 'Beschreibung';
