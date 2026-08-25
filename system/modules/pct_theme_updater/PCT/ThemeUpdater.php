@@ -657,9 +657,6 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->Template->status = 'ERROR';
 			$this->Template->breadcrumb = '';
 			$this->Template->errors = $arrSession['errors'];
-
-			var_dump($arrSession['errors']);
-
 			return;
 		}
 
