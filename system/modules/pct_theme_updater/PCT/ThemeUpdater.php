@@ -85,7 +85,7 @@ class ThemeUpdater extends \Contao\BackendModule
 
 		// check contao version
 		$blnAllowed = false;
-		if( \version_compare($version, '4.13','==') || \version_compare($version, '5.3','>=') )
+		if( \version_compare($version, '5.3','>=') )
 		{
 			$blnAllowed = true;
 		}
@@ -122,6 +122,25 @@ class ThemeUpdater extends \Contao\BackendModule
 			$this->redirect( Backend::addToUrl('status=self_update',true,array('step','action')) );
 		}
 
+		// check subdomain
+		$strHost = StringUtil::decodeEntities( Environment::get('host') );
+		$arrHost = \parse_url($strHost) ?? array();
+		$arrUrl = \array_map('strtolower',$arrHost);
+		if( isset($arrUrl['host']) && !empty($arrUrl['host']) )
+		{
+				$strHost = $arrUrl['host'];
+		}
+		// host has subdomains
+		$tmp = explode('.',$strHost) ;
+		
+		$subdomainIsRegistrationDomain = $GLOBALS['PCT_THEME_UPDATER']['subdomain_is_registration_domain'] ?? false;
+		if( $subdomainIsRegistrationDomain === false && Input::get('status') != 'subdomain_error' && count($tmp) >= 2 && $tmp[0] != 'update' )
+		{
+			$arrSession['errors'] = array($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['subdomain_error']);
+			$objSession->set($this->strSession,$arrSession);
+			$this->redirect( Backend::addToUrl('status=subdomain_error',true,array('step','action')) );
+		}
+		
 		// updater license
 		$objUpdaterLicense = $arrSession['updater_license'] ?? null;
 		if( isset($arrSession['updater_license']) && \is_string($arrSession['updater_license']) && empty($arrSession['updater_license']) === false)
@@ -375,7 +394,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 		
 
-//! status: VALIDATION: ENTER UPDATER LICENSE
+//! status: VALIDATION: THEME-UPDATER LICENSE
 
 
 		// check : UPDATER-LICENSE FILE
@@ -397,7 +416,7 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$this->Template->errors = array(\sprintf($GLOBALS['TL_LANG']['PCT_THEME_UPDATER']['TEMPLATE']['domainRegistrationError'],Environment::get('host'),$objLicense->key,Environment::get('host')) );
 			}
-		
+
 			$strLicense = '';
 			$strThemeLicense = '';
 
@@ -406,11 +425,12 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$strLicense = \trim( $objLicenseFile->getContent() ?: '' );
 			}
-			
-			// license has been submitted
-			if(Input::post('license') != '' && Input::post('FORM_SUBMIT') == $strForm)
+			else
 			{
-				$strLicense = \trim( Input::post('license') );
+				$arrSession['status'] = 'NO_THEMEUPDATER_LICENSE_FILE';
+				$arrSession['errors'] = array( sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['missing_license_file'],'pct_license_themeupdater') );
+				$objSession->set($this->strSession,$arrSession);
+				$this->redirect( Backend::addToUrl('status=error',true) );
 			}
 
 			$objThemeLicenseFile = new File('var/pct_license');
@@ -418,11 +438,12 @@ class ThemeUpdater extends \Contao\BackendModule
 			{
 				$strThemeLicense = \trim( $objThemeLicenseFile->getContent() ?: '' );
 			}
-
-			// license has been submitted
-			if(Input::post('license_theme') != '' && Input::post('FORM_SUBMIT') == $strForm)
+			else
 			{
-				$strThemeLicense = \trim( Input::post('license_theme') );
+				$arrSession['status'] = 'NO_THEME_LICENSE_FILE';
+				$arrSession['errors'] = array( sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['missing_license_file'],'pct_license') );
+				$objSession->set($this->strSession,$arrSession);
+				$this->redirect( Backend::addToUrl('status=error',true) );
 			}
 
 			// registration logic
@@ -442,23 +463,9 @@ class ThemeUpdater extends \Contao\BackendModule
 				$objUpdaterLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
 			}
 			
-			// create license file, if not exists
-			if( !$objLicenseFile->exists() && $objUpdaterLicense !== null && $objUpdaterLicense->status == 'OK' )
-			{
-				$objLicenseFile->write($objUpdaterLicense->key);
-				$objLicenseFile->close();
-			}
-			// create theme license file, if not exists
-			if( !$objThemeLicenseFile->exists() && $objUpdaterLicense !== null && $objUpdaterLicense->status == 'OK' )
-			{
-				$objThemeLicenseFile->write($strThemeLicense);
-				$objThemeLicenseFile->close();
-			}
-	
 			// template variables
-			$this->Template->strLicense;
-			$this->Template->strThemeLicense;
-			$this->Template->themeLicenseFileExists = $objThemeLicenseFile->exists();
+			$this->Template->strLicense = $strLicense;
+			$this->Template->strThemeLicense = $strThemeLicense;
 					
 			// redirect to theme license
 			if( $objUpdaterLicense !== null && $objUpdaterLicense->status == 'OK' )
@@ -502,7 +509,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		}
 
 
-//! status: VALIDATION: ENTER THEME LICENSE
+//! status: VALIDATION: THEME LICENSE
 
 
 		if( Input::get('status') == 'enter_theme_license' )
@@ -560,55 +567,15 @@ class ThemeUpdater extends \Contao\BackendModule
 					$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php',$arrParams) );
 				}
 			}
-			
-			// check license from formular
-			if(Input::post('license') != '' && Input::post('email') != '' && Input::post('FORM_SUBMIT') == $strForm)
+			else
 			{
-				$arrParams = array
-				(
-					'domain'	=> StringUtil::decodeEntities( Environment::get('host') ),
-					'key'		=> Input::post('license'),
-					'caller'	=> 'updater',
-				);
-				
-				// validation
-				$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/license_api.php',$arrParams) );
-				
-				if( $objLicense !== null && $objLicense->status == 'OK' )
-				{
-					$arrParams = array
-					(
-						'key'   => $objLicense->key,
-						'email'  => trim($objLicense->email),
-						'domain' => StringUtil::decodeEntities( Environment::get('host') ),
-						'caller'	=> 'updater',
-					);
-	
-					if(Input::post('product') != '')
-					{
-						$arrParams['product'] = Input::post('product');
-					}
-
-					// point to a product
-					if( isset($GLOBALS['PCT_THEME_UPDATER']['product']) && empty($GLOBALS['PCT_THEME_UPDATER']['product']) === false )
-					{
-						$product = strtolower($GLOBALS['PCT_THEME_UPDATER']['product']);
-						if( $product == 'eclipsex' )
-						{
-							$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX']['product_id'] ?? 158;
-						}
-						if( $product == 'eclipsex_cc' )
-						{
-							$arrParams['product'] = $GLOBALS['PCT_THEME_UPDATER']['THEMES']['eclipseX_cc']['product_id'] ?? 163;
-						}
-					}
-					
-					$objLicense = \json_decode( $this->request($GLOBALS['PCT_THEME_UPDATER']['api_url'].'/updater_api.php',$arrParams) );
-				}
+				$arrSession['status'] = 'NO_LICENSE_FILE';
+				$arrSession['errors'] = array( sprintf($GLOBALS['TL_LANG']['XPT']['pct_theme_updater']['missing_license_file'],'pct_license') );
+				$objSession->set($this->strSession,$arrSession);
+				$this->redirect( Backend::addToUrl('status=error',true) );
 			}
 			
-			
-
+		
 			// license is ok
 			if( $objLicense !== null && $objLicense->status == 'OK' )
 			{
@@ -617,13 +584,6 @@ class ThemeUpdater extends \Contao\BackendModule
 				$arrSession['license'] = $objLicense;
 				$objSession->set($this->strSession,$arrSession);
 				
-				$objThemeLicenseFile = new File('var/pct_license');
-				if( !$objLicenseFile->exists() )
-				{
-					$objThemeLicenseFile->write($objLicense->key);
-					$objThemeLicenseFile->close();
-				}
-
 				// redirect to the beginning
 				#$this->redirect( Backend::addToUrl('status=ready',true) );
 				$this->redirect( Backend::addToUrl('status='.$GLOBALS['PCT_THEME_UPDATER']['routes'][$strStatus],true) );
@@ -682,21 +642,7 @@ class ThemeUpdater extends \Contao\BackendModule
 		// clear the session on status reset
 		if(Input::get('status') == 'reset')
 		{
-			$objLicense = null;
-			$objLicenseUpdater = null;
 			$objSession->remove( $this->strSession );
-			
-			$objFile = new File('var/pct_license');
-			if( $objFile->exists() )
-			{
-				$objFile->delete();
-			}
-			$objFile = new File('var/pct_license_themeupdater');
-			if( $objFile->exists() )
-			{
-				$objFile->delete();
-			}
-
 			// redirect to the beginning
 			$this->redirect( Backend::addToUrl('do=pct_theme_updater',true,array('status','step')) );
 		}
@@ -729,6 +675,14 @@ class ThemeUpdater extends \Contao\BackendModule
 			return;
 		}
 
+//! status : SUBDOMAIN_ERROR		
+		if( Input::get('status') == 'subdomain_error' )
+		{
+			$this->Template->status = 'SUBDOMAIN_ERROR';
+			$this->Template->errors = $arrSession['errors'];
+			
+			return;
+		}
 
 //! status : MANUAL ADJUSTMENT
 
