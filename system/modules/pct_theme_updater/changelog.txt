@@ -1,3 +1,6 @@
+### 5.1.1
+Fixed: Subdomain check had wrong counter check (#145)
+
 ### 5.1.0
 Update: On subdomains: Check that the current subdomain is update. (#140)
 Update: Added $GLOBALS['PCT_THEME_UPDATER']['subdomain_is_registration_domain'] to allow updates on a registriation domains that already contains subdomain (#140)
