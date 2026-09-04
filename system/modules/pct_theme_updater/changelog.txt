@@ -1,3 +1,6 @@
+### 5.1.2
+Update: Create pct_license_themeupdater from pct_license if it does not exists yet (#147)
+
 ### 5.1.1
 Fixed: Subdomain check had wrong counter check (#145)
 
