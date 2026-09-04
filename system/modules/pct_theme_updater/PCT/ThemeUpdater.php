@@ -128,8 +128,11 @@ class ThemeUpdater extends \Contao\BackendModule
 		$arrUrl = \array_map('strtolower',$arrHost);
 		if( isset($arrUrl['host']) && !empty($arrUrl['host']) )
 		{
-				$strHost = $arrUrl['host'];
+			$strHost = $arrUrl['host'];
 		}
+		$strHost = \str_replace(array('http://','https://','www.'), '', $strHost);
+		$strHost= \rtrim($strHost,'.');
+		
 		// host has subdomains
 		$tmp = explode('.',$strHost) ;
 		
