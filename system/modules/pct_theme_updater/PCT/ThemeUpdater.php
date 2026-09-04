@@ -421,6 +421,17 @@ class ThemeUpdater extends \Contao\BackendModule
 			$strThemeLicense = '';
 
 			$objLicenseFile = new File('var/pct_license_themeupdater');
+			$objThemeLicenseFile = new File('var/pct_license');
+			
+			// create pct_license_themeupdater from pct_license if it doesn't exist
+			if( $objLicenseFile->exists() === false && $objThemeLicenseFile->exists() === true )
+			{
+				$strThemeLicense = \trim( $objThemeLicenseFile->getContent() ?: '' );
+				$objLicenseFile->write($strThemeLicense);
+				$objLicenseFile->close();
+			}
+
+			$objLicenseFile = new File('var/pct_license_themeupdater');
 			if( $objLicenseFile->exists() )
 			{
 				$strLicense = \trim( $objLicenseFile->getContent() ?: '' );
@@ -433,7 +444,7 @@ class ThemeUpdater extends \Contao\BackendModule
 				$this->redirect( Backend::addToUrl('status=error',true) );
 			}
 
-			$objThemeLicenseFile = new File('var/pct_license');
+			// theme license
 			if( $objThemeLicenseFile->exists() )
 			{
 				$strThemeLicense = \trim( $objThemeLicenseFile->getContent() ?: '' );
