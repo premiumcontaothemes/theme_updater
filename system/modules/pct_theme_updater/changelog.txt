@@ -1,6 +1,7 @@
 ### 5.1.3
 Fixed: [www.] was detected as subdomain (#149)
-Update: Remove single dot at the end of host (#149) 
+Fixed: Always allow the self_update page (#151)
+Update: Remove single dot at the end of host (#149)
 
 ### 5.1.2
 Update: Create pct_license_themeupdater from pct_license if it does not exists yet (#147)
