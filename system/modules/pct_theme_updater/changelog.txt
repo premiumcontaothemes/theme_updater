@@ -1,6 +1,5 @@
 ### 5.1.4
-Fixed: Update aborts after copying files because the internal contao cache still references hooks of the replaced modules (e.g. EX7). Purge the internal cache after copying and after a self update (#154)
-Fixed: Revolution Slider with the removed JS template js_revoslider_default_optin broke the page after the update, it is switched to js_revoslider_default
+Fixed: Update aborts after copying files because the internal contao cache still references hooks of the replaced modules (e.g. EX7). Purge the internal Contao cache after copying and after a self-update. Revolution Slider with the removed JS template js_revoslider_default_optin broke the page after the update, it is switched to js_revoslider_default (#154)
 
 ### 5.1.3
 Fixed: [www.] was detected as subdomain (#149)
