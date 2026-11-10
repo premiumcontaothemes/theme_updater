@@ -377,7 +377,9 @@ class ThemeUpdater extends \Contao\BackendModule
 
 					// Clear the cache here
 					// @var object Contao\Automator
-					#$objAutomator = new Automator;
+					$objAutomator = new Automator;
+					// purge the internal cache (config, dca, languages, sql)
+					$objAutomator->purgeInternalCache();
 					// generate symlinks to /assets, /files, /system
 					#$objAutomator->generateSymlinks();
 					
@@ -1110,7 +1112,9 @@ class ThemeUpdater extends \Contao\BackendModule
 
 				// Clear the cache here
 				// @var object Contao\Automator
-				#$objAutomator = new Automator;
+				$objAutomator = new Automator;
+				// purge the internal cache (config, dca, languages, sql)
+				$objAutomator->purgeInternalCache();
 				// generate symlinks to /assets, /files, /system
 				#$objAutomator->generateSymlinks();
 				
@@ -1299,6 +1303,12 @@ class ThemeUpdater extends \Contao\BackendModule
 					$cssClass = \str_replace($row['fontIcon'],' ', $row['cssClass']);
 					$cssClass = \implode(' ', array_filter( \explode(' ', $cssClass)) );
 					$objDatabase->prepare("UPDATE tl_page %s WHERE id=?")->set( array('cssClass' => $cssClass ?? '') )->execute($objResult->id);
+				}
+
+				// update tl_revolutionslider: js_revoslider_default_optin has been removed (EX 6.0.13)
+				if( $objDatabase->tableExists('tl_revolutionslider') && $objDatabase->fieldExists('jsTemplate','tl_revolutionslider') )
+				{
+					$objDatabase->query("UPDATE `tl_revolutionslider` SET `jsTemplate` = 'js_revoslider_default' WHERE `jsTemplate` = 'js_revoslider_default_optin'");
 				}
 			}
 			catch(\Exception $e)
